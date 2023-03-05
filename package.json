@@ -1,0 +1,25 @@
+{
+  "name": "appuniq",
+  "version": "1.0.0",
+  "description": "Ad service for buying and selling unique products",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx cross-env SERVER=debug node server",
+    "hello": "echo \"Hola, bro\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frontend-park-mail-ru/2023-1_Yula.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/frontend-park-mail-ru/2023-1_Yula/issues"
+  },
+  "homepage": "https://github.com/frontend-park-mail-ru/2023-1_Yula#readme",
+  "dependencies": {
+    "cross-env": "^7.0.3",
+    "debug": "^4.3.4"
+  }
+}
