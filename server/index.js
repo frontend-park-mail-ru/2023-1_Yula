@@ -37,20 +37,22 @@ const ids = {};
 app.post('/signup', (req, res) => {
 	const password = req.body.password;
 	const email = req.body.email;
-	const age = req.body.age;
-	if (
-		!password || !email || !age ||
-		!password.match(/^\S{4,}$/) ||
-		!email.match(/@/)
-	) {
-		return res.status(400).json({error: 'Невалидные данные пользователя'});
+	const username = req.body.username;
+	if (!username || !username.match(/^\S{4,}$/)) {
+		return res.status(400).json({error: 'Имя пользователя не менее 4 символов', error_fill: 'username'});
 	}
+    if (!password || !password.match(/^\S{4,}$/)) {
+        return res.status(400).json({error: 'Минимальная длина пароля 4 символа', error_fill: 'password'});
+    }
+    if (!email || !username.match(/^\S{4,}$/)) {
+        return res.status(400).json({error: 'Невалидные данные пользователя', error_fill: 'email'});
+    }
 	if (users[email]) {
-		return res.status(400).json({error: 'Пользователь уже существует'});
+		return res.status(400).json({error: 'Пользователь уже существует', error_fill: 'username'});
 	}
 
 	const id = uuid();
-	const user = {password, email, age, images: []};
+	const user = {password, email, username, anns: []};
 	ids[id] = email;
 	users[email] = user;
 
@@ -71,20 +73,21 @@ app.post('/login',  (req, res) => {
 	const id = uuid();
 	ids[id] = email;
 
-	res.cookie('appuniq', id, {expires: new Date(Date.now() + 1000 * 60 * 10)});
+	res.cookie("appuniq", id, {expires: new Date(Date.now() + 1000 * 60 * 10)});
 	res.status(200).json({id});
 });
 
-app.get('/profile', (req, res) => {
+app.post('/logout',  (req, res) => {
 	const id = req.cookies['appuniq'];
-	const email = ids[id];
-	if (!email || !users[email]) {
+	const emailSession = ids[id];
+
+    if (!emailSession || !users[emailSession]) {
 		return res.status(401).end();
 	}
 
-	res.json(users[email]);
+    res.clearCookie("appuniq");
+	res.end();
 });
-
 
 app.get('/board', (req, res) => {
 	const id = req.cookies['appuniq'];
@@ -112,6 +115,7 @@ app.get('/me', (req, res) => {
         username: user.username,
         email: user.email,
         avatar: user.avatar,
+        anns: user.anns,
     });
 })
 
