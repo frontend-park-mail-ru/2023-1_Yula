@@ -1,3 +1,8 @@
+/**
+ * function to render modal window of authorization and authentication
+ * @function renderModals
+ * @param {any} parent - parent content element
+ */
 function renderModals(parent) {
     const modal = `
     <!-- Модальное окно вопроса -->
