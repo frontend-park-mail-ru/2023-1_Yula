@@ -8,23 +8,7 @@ const uuid = require('uuid').v4;
 const path = require('path');
 const app = express();
 
-const users = {
-    "az.bilalov@mail.ru": {
-        username: "Азат Билалов",
-        email: "az.bilalov@mail.ru",
-        password: "1234",
-        avatar: "/ava1.jpeg",
-        anns: [
-            {src: "/ann1.jpeg", category: "В быту", title: "Тележка", desc: "Удобная тележка", price: "500", address: "Москва, ул. Лобавческого 88"},
-            {src: "/ann2.jpeg", category: "Электрокина", title: "Планшет", desc: "Удобный планшет", price: "15000", address: "Москва, ул. Лобавческого 88"},
-        ]
-    },
-    "test@mail.ru": {
-        username: "Тестер",
-        email: 'test@mail.ru',
-        password: '000',
-    },
-}
+const users = require('./static/jsonData/anns.json')
 
 app.use(morgan('dev'));
 app.use(express.static(path.resolve(__dirname, '..', 'public')));

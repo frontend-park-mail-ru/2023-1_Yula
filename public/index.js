@@ -43,37 +43,42 @@ function ajax(method, url, body = null, callback) {
 function renderBoard(parent) {
     const boardElement = document.createElement('div');
 
-    ajax(
-        'GET',
-        '/board',
-        null,
-        (status, responseString) => {
-            const anns = JSON.parse(responseString);
+    try {
+        ajax(
+            'GET',
+            '/board',
+            null,
+            (status, responseString) => {
+                const anns = JSON.parse(responseString);
 
-            if (anns && Array.isArray(anns)) {
-                const ann_group = document.createElement('div');
-                ann_group.classList.add("ann-group")
-                boardElement.appendChild(ann_group)
+                if (anns && Array.isArray(anns)) {
+                    const ann_group = document.createElement('div');
+                    ann_group.classList.add("ann-group")
+                    boardElement.appendChild(ann_group)
 
-                anns.forEach(({src, category, title, price, address}) => {
-                    console.log(src, title);
-                    ann_group.innerHTML += `
-                    <div class="ann">
-                        <div class="ann-img">
-                            <img src="images/${src}" alt="">
-                        </div>
-                        <div class="ann-body">
-                            <div class="ann-category">${category}</div>
-                            <div class="ann-title">${title}</div>
-                            <div class="ann-sale">${price} ₽</div>
-                            <div class="ann-address">${address}</div>
-                        </div>
-                    </div>`
-                })
+                    anns.forEach(({src, category, title, price, address}) => {
+                        console.log(src, title);
+                        ann_group.innerHTML += `
+                        <div class="ann">
+                            <div class="ann-img">
+                                <img src="images/${src}" alt="">
+                            </div>
+                            <div class="ann-body">
+                                <div class="ann-category">${category}</div>
+                                <div class="ann-title">${title}</div>
+                                <div class="ann-sale">${price} ₽</div>
+                                <div class="ann-address">${address}</div>
+                            </div>
+                        </div>`
+                    })
+                }
+                parent.appendChild(boardElement);
             }
-            parent.appendChild(boardElement);
-        }
-    );
+        );
+    }
+    catch(err) {
+        alert("Server does not respond!");
+    };
 }
 
 function renderModals(parent) {
@@ -352,103 +357,113 @@ function renderHeader(parent) {
     parent.appendChild(search_input);
     parent.appendChild(add_ann_btn);
 
-    ajax(
-        'GET',
-        '/me',
-        null,
-        (status, responseString) => {
-            let isAuthorized = status === 200;
+    try {
+        ajax(
+            'GET',
+            '/me',
+            null,
+            (status, responseString) => {
+                let isAuthorized = status === 200;
 
-            if (isAuthorized) {
-                const user = JSON.parse(responseString);
-                if (!user.avatar) {
-                    user.avatar = "ava.jpg";
-                }
+                if (isAuthorized) {
+                    const user = JSON.parse(responseString);
+                    if (!user.avatar) {
+                        user.avatar = "ava.jpg";
+                    }
 
-                const profile = document.createElement("a");
+                    const profile = document.createElement("a");
 
-                const {username, avatar} = user
-                profile.classList.add("profile", "pointer");
-                profile.innerHTML = `<img src="images/${avatar}" alt="" class="avatar">${username}`;
+                    const {username, avatar} = user
+                    profile.classList.add("profile", "pointer");
+                    profile.innerHTML = `<img src="images/${avatar}" alt="" class="avatar">${username}`;
 
-                profile.addEventListener("click", () => {
-                    goToPage(config.profile);
-                })
-
-                const logout_btn = document.createElement('button');
-                logout_btn.classList.add("cell-btn-sm", "grid-center");
-                logout_btn.innerHTML = `<i class="log-out"></i>`;
-
-                logout_btn.addEventListener("click", () => {
-                    ajax("POST", "/logout", null, (req, res) => {
-                        goToPage(config.board);
+                    profile.addEventListener("click", () => {
+                        goToPage(config.profile);
                     })
-                })
 
-                parent.appendChild(profile);
-                parent.appendChild(logout_btn);
+                    const logout_btn = document.createElement('button');
+                    logout_btn.classList.add("cell-btn-sm", "grid-center");
+                    logout_btn.innerHTML = `<i class="log-out"></i>`;
 
-            } else {
-                renderModals(contentElement);
+                    logout_btn.addEventListener("click", () => {
+                        ajax("POST", "/logout", null, (req, res) => {
+                            goToPage(config.board);
+                        })
+                    })
 
-                const enter_btn = document.createElement("button");
-                enter_btn.classList.add("btn", "btn-primary");
-                enter_btn.innerHTML = `<span><i class="chevron-right"></i></span>Войти`;
+                    parent.appendChild(profile);
+                    parent.appendChild(logout_btn);
 
-                parent.appendChild(enter_btn);
+                } else {
+                    renderModals(contentElement);
 
-                enter_btn.onclick = () => {
-                    const enter_modal = document.getElementById("enterModal");
-                    enter_modal.style.display = "block";
+                    const enter_btn = document.createElement("button");
+                    enter_btn.classList.add("btn", "btn-primary");
+                    enter_btn.innerHTML = `<span><i class="chevron-right"></i></span>Войти`;
+
+                    parent.appendChild(enter_btn);
+
+                    enter_btn.onclick = () => {
+                        const enter_modal = document.getElementById("enterModal");
+                        enter_modal.style.display = "block";
+                    }
                 }
-            }
-        });
+            });
+    }
+    catch(err) {
+        alert("Server does not respond!");
+    }
 }
 
 function renderProfile(parent) {
     const profileElement = document.createElement("div");
     
-    ajax(
-        'GET',
-        '/me',
-        null,
-        (status, responseString) => {
-            let isAuthorized = status === 200;
+    try {
+        ajax(
+            'GET',
+            '/me',
+            null,
+            (status, responseString) => {
+                let isAuthorized = status === 200;
 
-            if (!isAuthorized) {
-                goToPage(config.board);
-                return;
+                if (!isAuthorized) {
+                    goToPage(config.board);
+                    return;
+                }
+
+                const {username, email, anns} = JSON.parse(responseString);
+                const span = document.createElement('span');
+                span.textContent = `${username}, ${email}`;
+                profileElement.appendChild(span);
+
+                if (anns && Array.isArray(anns)) {
+                    const ann_group = document.createElement('div');
+                    ann_group.classList.add("ann-group");
+                    profileElement.appendChild(ann_group);
+
+                    anns.forEach(({src, category, title, price, address}) => {
+                        console.log(src, title);
+                        ann_group.innerHTML += `
+                        <div class="ann">
+                            <div class="ann-img">
+                                <img src="images/${src}" alt="">
+                            </div>
+                            <div class="ann-body">
+                                <div class="ann-category">${category}</div>
+                                <div class="ann-title">${title}</div>
+                                <div class="ann-sale">${price} ₽</div>
+                                <div class="ann-address">${address}</div>
+                            </div>
+                        </div>`;
+                    })
+                }
+                parent.appendChild(profileElement);
             }
-
-            const {username, email, anns} = JSON.parse(responseString);
-            const span = document.createElement('span');
-            span.textContent = `${username}, ${email}`;
-            profileElement.appendChild(span);
-
-            if (anns && Array.isArray(anns)) {
-                const ann_group = document.createElement('div');
-                ann_group.classList.add("ann-group");
-                profileElement.appendChild(ann_group);
-
-                anns.forEach(({src, category, title, price, address}) => {
-                    console.log(src, title);
-                    ann_group.innerHTML += `
-                    <div class="ann">
-                        <div class="ann-img">
-                            <img src="images/${src}" alt="">
-                        </div>
-                        <div class="ann-body">
-                            <div class="ann-category">${category}</div>
-                            <div class="ann-title">${title}</div>
-                            <div class="ann-sale">${price} ₽</div>
-                            <div class="ann-address">${address}</div>
-                        </div>
-                    </div>`;
-                })
-            }
-            parent.appendChild(profileElement);
-        }
-    );
+        );
+    }
+    catch(err) {
+        alert("Server does not respond!");
+    }
 } 
 
 function goToPage(configSection) {
