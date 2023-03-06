@@ -2,7 +2,7 @@ const rootElement = document.getElementById('root');
 const headerElement = document.createElement('header');
 const contentElement = document.createElement('main');
 rootElement.appendChild(headerElement);
-rootElement.appendChild(contentElement)
+rootElement.appendChild(contentElement);
 
 /** configuration options */
 const config = {
@@ -18,7 +18,7 @@ const config = {
         href: '/profile',
         render: renderProfile,
         key: 'profile',
-    }
+    },
 };
 
 /**
@@ -29,12 +29,12 @@ const config = {
  * @param {boolean} body - body flag
  * @param {function} callback - callback function to process data
  */
-function ajax(method, url, body = null, callback) {
+function ajax(method, url, body, callback) {
     const xhr = new XMLHttpRequest();
     xhr.open(method, url, true);
     xhr.withCredentials = true;
 
-    xhr.addEventListener('readystatechange', function () {
+    xhr.addEventListener('readystatechange', () => {
         if (xhr.readyState !== XMLHttpRequest.DONE) return;
 
         callback(xhr.status, xhr.responseText);
@@ -66,33 +66,34 @@ function renderBoard(parent) {
                 const anns = JSON.parse(responseString);
 
                 if (anns && Array.isArray(anns)) {
-                    const ann_group = document.createElement('div');
-                    ann_group.classList.add("ann-group")
-                    boardElement.appendChild(ann_group)
+                    const annGroup = document.createElement('div');
+                    annGroup.classList.add('ann-group');
+                    boardElement.appendChild(annGroup);
 
-                    anns.forEach(({src, category, title, price, address}) => {
-                        console.log(src, title);
-                        ann_group.innerHTML += `
-                        <div class="ann">
-                            <div class="ann-img">
-                                <img src="images/${src}" alt="">
-                            </div>
-                            <div class="ann-body">
-                                <div class="ann-category">${category}</div>
-                                <div class="ann-title">${title}</div>
-                                <div class="ann-sale">${price} ₽</div>
-                                <div class="ann-address">${address}</div>
-                            </div>
-                        </div>`
-                    })
+                    anns.forEach(({
+                        src, category, title, price, address,
+                    }) => {
+                        annGroup.innerHTML += `
+                            <div class="ann">
+                                <div class="ann-img">
+                                    <img src="images/${src}" alt="">
+                                </div>
+                                <div class="ann-body">
+                                    <div class="ann-category">${category}</div>
+                                    <div class="ann-title">${title}</div>
+                                    <div class="ann-sale">${price} ₽</div>
+                                    <div class="ann-address">${address}</div>
+                                </div>
+                            </div>`;
+                    });
                 }
-                parent.appendChild(boardElement);
-            }
+            },
         );
+    } catch (err) {
+        alert('Server does not respond!');
     }
-    catch(err) {
-        alert("Server does not respond!");
-    };
+
+    parent.appendChild(boardElement);
 }
 
 /**
@@ -101,6 +102,8 @@ function renderBoard(parent) {
  * @param {any} parent - parent content element
  */
 function renderModals(parent) {
+    const content = parent;
+
     const modal = `
     <!-- Модальное окно вопроса -->
     <div id="enterModal" class="modal">
@@ -197,168 +200,165 @@ function renderModals(parent) {
             </div>
         </div>
     </div>`;
-    
-    parent.innerHTML += modal;
+
+    content.innerHTML += modal;
 
     /** логика переключений */
-    const enter_backer = document.getElementById("enterBack");
-    const enter_closer = document.getElementById("enterClose");
-    const signin_btn = document.getElementById("signinBtn");
-    const signup_btn = document.getElementById("signupBtn");
-    const accexists_btn = document.getElementById("accexistsBtn")
+    const enterBack = document.getElementById('enterBack');
+    const enterClose = document.getElementById('enterClose');
+    const signinBtn = document.getElementById('signinBtn');
+    const signupBtn = document.getElementById('signupBtn');
+    const accexistsBtn = document.getElementById('accexistsBtn');
 
-    const signin_backer = document.getElementById("signinBack");
-    const signin_closer = document.getElementById("signinClose");
+    const signinBack = document.getElementById('signinBack');
+    const signinClose = document.getElementById('signinClose');
 
-    const signup_backer = document.getElementById("signupBack");
-    const signup_closer = document.getElementById("signupClose");
+    const signupBack = document.getElementById('signupBack');
+    const signupClose = document.getElementById('signupClose');
 
-    const enter_modal = document.getElementById("enterModal");
-    const signin_modal = document.getElementById("signinModal");
-    const signup_modal = document.getElementById("signupModal");
+    const enterModal = document.getElementById('enterModal');
+    const signinModal = document.getElementById('signinModal');
+    const signupModal = document.getElementById('signupModal');
 
-    enter_backer.onclick = () => {
-        enter_modal.style.display = "none";
-    }
-    enter_closer.onclick = () => {
-        enter_modal.style.display = "none";
-    }
-    signin_btn.onclick = () => {
-        enter_modal.style.display = "none";
-        signin_modal.style.display = "block";
-    }
-    signup_btn.onclick = () => {
-        enter_modal.style.display = "none";
-        signup_modal.style.display = "block";
-    }
+    enterBack.onclick = () => {
+        enterModal.style.display = 'none';
+    };
+    enterClose.onclick = () => {
+        enterModal.style.display = 'none';
+    };
+    signinBtn.onclick = () => {
+        enterModal.style.display = 'none';
+        signinModal.style.display = 'block';
+    };
+    signupBtn.onclick = () => {
+        enterModal.style.display = 'none';
+        signupModal.style.display = 'block';
+    };
 
-    signin_backer.onclick = () => {
-        signin_modal.style.display = "none";
-        enter_modal.style.display = "block";
-    }
-    signin_closer.onclick = () => {
-        signin_modal.style.display = "none";
-    }
+    signinBack.onclick = () => {
+        signinModal.style.display = 'none';
+        enterModal.style.display = 'block';
+    };
+    signinClose.onclick = () => {
+        signinModal.style.display = 'none';
+    };
 
-    signup_backer.onclick = () => {
-        signup_modal.style.display = "none";
-        enter_modal.style.display = "block";
-    }
-    signup_closer.onclick = () => {
-        signup_modal.style.display = "none";
-    }
-    accexists_btn.onclick = () => {
-        signup_modal.style.display = "none";
-        signin_modal.style.display = "block";
-    }
+    signupBack.onclick = () => {
+        signupModal.style.display = 'none';
+        enterModal.style.display = 'block';
+    };
+    signupClose.onclick = () => {
+        signupModal.style.display = 'none';
+    };
+    accexistsBtn.onclick = () => {
+        signupModal.style.display = 'none';
+        signinModal.style.display = 'block';
+    };
 
     window.onclick = (e) => {
-        if (e.target == enter_modal ||
-            e.target == signin_modal ||
-            e.target == signup_modal) {
-                enter_modal.style.display = "none";
-                signin_modal.style.display = "none";
-                signup_modal.style.display = "none";
+        if (e.target === enterModal
+            || e.target === signinModal
+            || e.target === signupModal) {
+            enterModal.style.display = 'none';
+            signinModal.style.display = 'none';
+            signupModal.style.display = 'none';
         }
-    } 
+    };
 
     /** логика отправки данных  */
-    signin_form = document.getElementById("signinForm");
-    signup_form = document.getElementById("signupForm");
+    const signinForm = document.getElementById('signinForm');
+    const signupForm = document.getElementById('signupForm');
 
-    signin_form.addEventListener('submit', (e) => {
+    signinForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        const email = signin_form.email.value.trim();
-        const password = signin_form.password.value;
+        const email = signinForm.email.value.trim();
+        const password = signinForm.password.value;
         try {
             ajax(
                 'POST',
                 '/login',
-                {email, password},
+                { email, password },
                 (status, responseString) => {
                     if (status === 200) {
                         goToPage(config.board);
                         return;
                     }
 
-                    const {error} = JSON.parse(responseString);
-                    signin_form.email.classList.add("input-error");
-                    const error_text = document.getElementById("signinEmailError");
-                    error_text.innerText = error;
-                }
+                    const { error } = JSON.parse(responseString);
+                    signinForm.email.classList.add('input-error');
+                    const errorTitle = document.getElementById('signinEmailError');
+                    errorTitle.innerText = error;
+                },
             );
-        }
-        catch(err) {
-            alert("Server does not respond!");
+        } catch (err) {
+            alert('Server does not respond!');
         }
     });
 
-    signup_form.addEventListener('submit', (e) => {
+    signupForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        const username = signup_form.username.value.trim();
-        const email = signup_form.email.value.trim();
-        const password = signup_form.password.value;
-        const repeat_password = signup_form.repeatPassword.value;
+        const username = signupForm.username.value.trim();
+        const email = signupForm.email.value.trim();
+        const password = signupForm.password.value;
+        const repeatPassword = signupForm.repeatPassword.value;
 
         /** сброс стилей */
-        signup_form.username.classList.remove("input-error");
-        signup_form.email.classList.remove("input-error");
-        signup_form.password.classList.remove("input-error");
-        signup_form.repeatPassword.classList.remove("input-error");
-        document.getElementById("signupUsernameError").innerText = "";
-        document.getElementById("signupEmailError").innerText = "";
-        document.getElementById("signupPasswordError").innerText = "";
-        document.getElementById("signupRepeatPasswordError").innerText = "";
+        signupForm.username.classList.remove('input-error');
+        signupForm.email.classList.remove('input-error');
+        signupForm.password.classList.remove('input-error');
+        signupForm.repeatPassword.classList.remove('input-error');
+        document.getElementById('signupUsernameError').innerText = '';
+        document.getElementById('signupEmailError').innerText = '';
+        document.getElementById('signupPasswordError').innerText = '';
+        document.getElementById('signupRepeatPasswordError').innerText = '';
 
-        if (password !== repeat_password) {
-            signup_form.repeatPassword.classList.add("input-error");
-            signup_form.password.classList.add("input-error");
-            const error_title = document.getElementById("signupRepeatPasswordError");
-            error_title.innerText = "Пароли не совпадают";
+        if (password !== repeatPassword) {
+            signupForm.repeatPassword.classList.add('input-error');
+            signupForm.password.classList.add('input-error');
+            const errorTitle = document.getElementById('signupRepeatPasswordError');
+            errorTitle.innerText = 'Пароли не совпадают';
             return;
         }
         try {
             ajax(
                 'POST',
                 '/signup',
-                {email, password, username},
+                { email, password, username },
                 (status, responseString) => {
                     if (status === 201) {
                         goToPage(config.board);
                         return;
                     }
 
-                    const {error, error_fill} = JSON.parse(responseString);
-                    
-                    let error_title;
-                    switch (error_fill) {
-                        case "username":
-                            signup_form.username.classList.add("input-error");
-                            error_title = document.getElementById("signupUsernameError");
-                            break;
-                        case "email":
-                            signup_form.email.classList.add("input-error");
-                            error_title = document.getElementById("signupEmailError");
-                            break;
-                        case "password":
-                            signup_form.password.classList.add("input-error");
-                            error_title = document.getElementById("signupPasswordError");
-                            break;
-                        default:
-                            signup_form.username.classList.add("input-error");
-                            error_title = document.getElementById("signupUsernameError");
-                    }
-                    
-                    error_title.innerText = error;
-                }
-            );
-        }
-        catch(err) {
-            alert("Server does not respond!");
-        }
+                    const { error, errorFill } = JSON.parse(responseString);
 
+                    let errorTitle;
+                    switch (errorFill) {
+                    case 'username':
+                        signupForm.username.classList.add('input-error');
+                        errorTitle = document.getElementById('signupUsernameError');
+                        break;
+                    case 'email':
+                        signupForm.email.classList.add('input-error');
+                        errorTitle = document.getElementById('signupEmailError');
+                        break;
+                    case 'password':
+                        signupForm.password.classList.add('input-error');
+                        errorTitle = document.getElementById('signupPasswordError');
+                        break;
+                    default:
+                        signupForm.username.classList.add('input-error');
+                        errorTitle = document.getElementById('signupUsernameError');
+                    }
+
+                    errorTitle.innerText = error;
+                },
+            );
+        } catch (err) {
+            alert('Server does not respond!');
+        }
     });
 }
 
@@ -368,26 +368,30 @@ function renderModals(parent) {
  * @param {any} parent - parent content element
  */
 function renderHeader(parent) {
-    const nav_brand = document.createElement("div");
-    nav_brand.classList.add("nav-brand");
-    nav_brand.innerText = "AppUniq";
+    const navBrand = document.createElement('div');
+    navBrand.classList.add('nav-brand', 'pointer');
+    navBrand.innerText = 'AppUniq';
 
-    const category_btn = document.createElement("button");
-    category_btn.classList.add("btn", "btn-primary");
-    category_btn.innerHTML = `<span><i class="play-list"></i></span>Категории`; 
+    navBrand.addEventListener('click', () => {
+        goToPage(config.board);
+    });
 
-    const search_input = document.createElement("input");
-    search_input.classList.add("input", "search");
-    search_input.placeholder = "Найти товар";
+    const categoryBtn = document.createElement('button');
+    categoryBtn.classList.add('btn', 'btn-primary');
+    categoryBtn.innerHTML = '<span><i class="play-list"></i></span>Категории';
 
-    const add_ann_btn = document.createElement("button");
-    add_ann_btn.classList.add("btn", "btn-success");
-    add_ann_btn.innerHTML = `<span><i class="play-list"></i></span>Разместить объявление`; 
+    const searchInput = document.createElement('input');
+    searchInput.classList.add('input', 'search');
+    searchInput.placeholder = 'Найти товар';
 
-    parent.appendChild(nav_brand);
-    parent.appendChild(category_btn);
-    parent.appendChild(search_input);
-    parent.appendChild(add_ann_btn);
+    const addAnnBtn = document.createElement('button');
+    addAnnBtn.classList.add('btn', 'btn-success');
+    addAnnBtn.innerHTML = '<span><i class="play-list"></i></span>Разместить объявление';
+
+    parent.appendChild(navBrand);
+    parent.appendChild(categoryBtn);
+    parent.appendChild(searchInput);
+    parent.appendChild(addAnnBtn);
 
     try {
         ajax(
@@ -395,55 +399,54 @@ function renderHeader(parent) {
             '/me',
             null,
             (status, responseString) => {
-                let isAuthorized = status === 200;
+                const isAuthorized = status === 200;
 
                 if (isAuthorized) {
                     const user = JSON.parse(responseString);
                     if (!user.avatar) {
-                        user.avatar = "ava.jpg";
+                        user.avatar = 'ava.jpg';
                     }
 
-                    const profile = document.createElement("a");
+                    const profile = document.createElement('a');
 
-                    const {username, avatar} = user
-                    profile.classList.add("profile", "pointer");
+                    const { username, avatar } = user;
+                    profile.classList.add('profile', 'pointer');
                     profile.innerHTML = `<img src="images/${avatar}" alt="" class="avatar">${username}`;
 
-                    profile.addEventListener("click", () => {
+                    profile.addEventListener('click', () => {
                         goToPage(config.profile);
-                    })
+                    });
 
-                    const logout_btn = document.createElement('button');
-                    logout_btn.classList.add("cell-btn-sm", "grid-center");
-                    logout_btn.innerHTML = `<i class="log-out"></i>`;
+                    const logoutBtn = document.createElement('button');
+                    logoutBtn.classList.add('cell-btn-sm', 'grid-center');
+                    logoutBtn.innerHTML = '<i class="log-out"></i>';
 
-                    logout_btn.addEventListener("click", () => {
-                        ajax("POST", "/logout", null, (req, res) => {
+                    logoutBtn.addEventListener('click', () => {
+                        ajax('POST', '/logout', null, () => {
                             goToPage(config.board);
-                        })
-                    })
+                        });
+                    });
 
                     parent.appendChild(profile);
-                    parent.appendChild(logout_btn);
-
+                    parent.appendChild(logoutBtn);
                 } else {
                     renderModals(contentElement);
 
-                    const enter_btn = document.createElement("button");
-                    enter_btn.classList.add("btn", "btn-primary");
-                    enter_btn.innerHTML = `<span><i class="chevron-right"></i></span>Войти`;
+                    const enterBtn = document.createElement('button');
+                    enterBtn.classList.add('btn', 'btn-primary');
+                    enterBtn.innerHTML = '<span><i class="chevron-right"></i></span>Войти';
 
-                    parent.appendChild(enter_btn);
+                    parent.appendChild(enterBtn);
 
-                    enter_btn.onclick = () => {
-                        const enter_modal = document.getElementById("enterModal");
-                        enter_modal.style.display = "block";
-                    }
+                    enterBtn.onclick = () => {
+                        const enterModal = document.getElementById('enterModal');
+                        enterModal.style.display = 'block';
+                    };
                 }
-            });
-    }
-    catch(err) {
-        alert("Server does not respond!");
+            },
+        );
+    } catch (err) {
+        alert('Server does not respond!');
     }
 }
 
@@ -453,34 +456,41 @@ function renderHeader(parent) {
  * @param {any} parent - parent content element
  */
 function renderProfile(parent) {
-    const profileElement = document.createElement("div");
-    
+    const profileElement = document.createElement('div');
+
     try {
         ajax(
             'GET',
             '/me',
             null,
             (status, responseString) => {
-                let isAuthorized = status === 200;
+                const isAuthorized = status === 200;
 
                 if (!isAuthorized) {
                     goToPage(config.board);
                     return;
                 }
 
-                const {username, email, anns} = JSON.parse(responseString);
-                const span = document.createElement('span');
-                span.textContent = `${username}, ${email}`;
-                profileElement.appendChild(span);
+                const { username, email, anns } = JSON.parse(responseString);
+
+                const data = document.createElement('h1');
+                data.textContent = `${username}, ${email}`;
+                profileElement.appendChild(data);
+
+                const h = document.createElement('h1');
+                profileElement.appendChild(h);
 
                 if (anns && Array.isArray(anns)) {
-                    const ann_group = document.createElement('div');
-                    ann_group.classList.add("ann-group");
-                    profileElement.appendChild(ann_group);
+                    h.textContent = 'Мои объявления';
 
-                    anns.forEach(({src, category, title, price, address}) => {
-                        console.log(src, title);
-                        ann_group.innerHTML += `
+                    const annGroup = document.createElement('div');
+                    annGroup.classList.add('ann-group');
+                    profileElement.appendChild(annGroup);
+
+                    anns.forEach(({
+                        src, category, title, price, address,
+                    }) => {
+                        annGroup.innerHTML += `
                         <div class="ann">
                             <div class="ann-img">
                                 <img src="images/${src}" alt="">
@@ -492,16 +502,18 @@ function renderProfile(parent) {
                                 <div class="ann-address">${address}</div>
                             </div>
                         </div>`;
-                    })
+                    });
+                } else {
+                    h.textContent = 'У вас нет объявлений';
                 }
-                parent.appendChild(profileElement);
-            }
+            },
         );
+    } catch (err) {
+        alert('Server does not respond!');
     }
-    catch(err) {
-        alert("Server does not respond!");
-    }
-} 
+
+    parent.appendChild(profileElement);
+}
 
 /**
  * function to render next page
