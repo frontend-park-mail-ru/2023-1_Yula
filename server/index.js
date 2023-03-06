@@ -22,13 +22,13 @@ const ids = {};
 
 app.post('/signup', (req, res) => {
     const { password, email, username } = req.body;
-    if (!username || !username.match(/^\S{4,}$/)) {
+    if (!username || username.length < 4) {
         return res.status(400).json({ error: 'Имя пользователя не менее 4 символов', errorFill: 'username' });
     }
     if (!password || !password.match(/^\S{4,}$/)) {
         return res.status(400).json({ error: 'Минимальная длина пароля 4 символа', errorFill: 'password' });
     }
-    if (!email || !username.match(/^\S{4,}$/)) {
+    if (!email) {
         return res.status(400).json({ error: 'Невалидные данные пользователя', errorFill: 'email' });
     }
     if (users[email]) {

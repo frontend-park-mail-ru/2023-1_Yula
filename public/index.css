@@ -131,6 +131,10 @@ h1 {
     cursor: pointer;
 }
 
+.btn-success:disabled {
+    background: rgba(75, 179, 75, 0.5);
+}
+
 .cell-btn-sm {
     color: #2688EB;
     font-family: 'Roboto VK';

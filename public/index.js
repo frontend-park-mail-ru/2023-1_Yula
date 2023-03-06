@@ -87,13 +87,13 @@ function renderBoard(parent) {
                             </div>`;
                     });
                 }
+
+                parent.appendChild(boardElement);
             },
         );
     } catch (err) {
         alert('Server does not respond!');
     }
-
-    parent.appendChild(boardElement);
 }
 
 /**
@@ -134,13 +134,13 @@ function renderModals(parent) {
             <div class="modal-body">
                 <form id="signinForm">
                     <section class="input-group">
-                        <label class="modal-text" for="email">Имя пользователя</label>
-                        <input type="text" class="input" name="email">
+                        <label class="modal-text" for="email">Почта</label>
+                        <input type="text" class="input" name="email" required>
                         <span class="error-text" id="signinEmailError"></span>
                     </section>
                     <section class="input-group">
                         <label class="modal-text" for="password">Пароль</label>
-                        <input type="password" class="input" name="password">
+                        <input type="password" class="input" name="password" required>
                         <span class="error-text" id="signinPasswordError"></span>
                     </section>
                 </form>
@@ -167,22 +167,22 @@ function renderModals(parent) {
                 <form id="signupForm">
                     <section class="input-group">
                         <label class="modal-text" for="username">Имя пользователя</label>
-                        <input type="text" class="input" name="username">
+                        <input type="text" class="input" name="username" required>
                         <span class="error-text" id="signupUsernameError"></span>
                     </section>
                     <section class="input-group">
                         <label class="modal-text" for="email">Почта</label>
-                        <input type="email" class="input" name="email">
+                        <input type="email" class="input" name="email" required>
                         <span class="error-text" id="signupEmailError"></span>
                     </section>
                     <section class="input-group">
                         <label class="modal-text" for="password">Пароль</label>
-                        <input type="password" class="input" name="password">
+                        <input type="password" class="input" name="password" required>
                         <span class="error-text" id="signupPasswordError"></span>
                     </section>
                     <section class="input-group">
                         <label class="modal-text" for="repeat-password">Повторите пароль</label>
-                        <input type="password" class="input" name="repeatPassword">
+                        <input type="password" class="input" name="repeatPassword" required>
                         <span class="error-text" id="signupRepeatPasswordError"></span>
                     </section>
                     <section class="input-group">
@@ -196,7 +196,7 @@ function renderModals(parent) {
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary-tertiary grid-left" id="accexistsBtn">Есть аккаунт</button>
-                <button type="submit" form="signupForm" class="btn btn-success grid-right">Регистрация</button>
+                <button type="submit" form="signupForm" class="btn btn-success grid-right" id="signupSubmit" disabled>Регистрация</button>
             </div>
         </div>
     </div>`;
@@ -268,6 +268,11 @@ function renderModals(parent) {
     /** логика отправки данных  */
     const signinForm = document.getElementById('signinForm');
     const signupForm = document.getElementById('signupForm');
+
+    signupForm.accept.addEventListener('change', () => {
+        const btn = document.getElementById('signupSubmit');
+        btn.disabled = !btn.disabled;
+    });
 
     signinForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -478,11 +483,10 @@ function renderProfile(parent) {
                 profileElement.appendChild(data);
 
                 const h = document.createElement('h1');
+                h.textContent = (anns && anns.length) ? 'Мои объявления' : 'У вас нет объявлений';
                 profileElement.appendChild(h);
 
                 if (anns && Array.isArray(anns)) {
-                    h.textContent = 'Мои объявления';
-
                     const annGroup = document.createElement('div');
                     annGroup.classList.add('ann-group');
                     profileElement.appendChild(annGroup);
@@ -503,16 +507,14 @@ function renderProfile(parent) {
                             </div>
                         </div>`;
                     });
-                } else {
-                    h.textContent = 'У вас нет объявлений';
                 }
+
+                parent.appendChild(profileElement);
             },
         );
     } catch (err) {
         alert('Server does not respond!');
     }
-
-    parent.appendChild(profileElement);
 }
 
 /**
