@@ -8,14 +8,16 @@ const uuid = require('uuid').v4;
 const path = require('path');
 const app = express();
 
-const users = require('./static/jsonData/anns.json')
-
 app.use(morgan('dev'));
 app.use(express.static(path.resolve(__dirname, '..', 'public')));
 app.use(express.static(path.resolve(__dirname, 'static')));
 app.use(body.json());
 app.use(cookie());
 
+/** user data */
+const users = require('./static/jsonData/anns.json')
+
+/** session identificators */
 const ids = {};
 
 app.post('/signup', (req, res) => {
@@ -103,6 +105,7 @@ app.get('/me', (req, res) => {
     });
 })
 
+/** port to listen */
 const port = process.env.PORT || 8080;
 
 app.listen(port, function () {

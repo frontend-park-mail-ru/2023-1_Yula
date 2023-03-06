@@ -1,4 +1,32 @@
-const rootElement = document.getElementById('root');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: index.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: index.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const rootElement = document.getElementById('root');
 const headerElement = document.createElement('header');
 const contentElement = document.createElement('main');
 rootElement.appendChild(headerElement);
@@ -65,7 +93,7 @@ function renderBoard(parent) {
             (status, responseString) => {
                 const anns = JSON.parse(responseString);
 
-                if (anns && Array.isArray(anns)) {
+                if (anns &amp;&amp; Array.isArray(anns)) {
                     const ann_group = document.createElement('div');
                     ann_group.classList.add("ann-group")
                     boardElement.appendChild(ann_group)
@@ -73,17 +101,17 @@ function renderBoard(parent) {
                     anns.forEach(({src, category, title, price, address}) => {
                         console.log(src, title);
                         ann_group.innerHTML += `
-                        <div class="ann">
-                            <div class="ann-img">
-                                <img src="images/${src}" alt="">
-                            </div>
-                            <div class="ann-body">
-                                <div class="ann-category">${category}</div>
-                                <div class="ann-title">${title}</div>
-                                <div class="ann-sale">${price} ₽</div>
-                                <div class="ann-address">${address}</div>
-                            </div>
-                        </div>`
+                        &lt;div class="ann">
+                            &lt;div class="ann-img">
+                                &lt;img src="images/${src}" alt="">
+                            &lt;/div>
+                            &lt;div class="ann-body">
+                                &lt;div class="ann-category">${category}&lt;/div>
+                                &lt;div class="ann-title">${title}&lt;/div>
+                                &lt;div class="ann-sale">${price} ₽&lt;/div>
+                                &lt;div class="ann-address">${address}&lt;/div>
+                            &lt;/div>
+                        &lt;/div>`
                     })
                 }
                 parent.appendChild(boardElement);
@@ -102,101 +130,101 @@ function renderBoard(parent) {
  */
 function renderModals(parent) {
     const modal = `
-    <!-- Модальное окно вопроса -->
-    <div id="enterModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="back-btn pointer" id="enterBack"><i class="arrow-left"></i></span>
-                <span class="modal-title">Вход в систему</span>
-                <span class="close-btn pointer" id="enterClose"><i class="close"></i></span>
-            </div>
-            <div class="modal-body">
-              <span class="modal-text text-center">Создайте аккаунт, если ещё не зарегистрированы</span>
-              <button class="btn btn-success grid-center" id="signupBtn">Регистрация</button>
-              <br>
-              <span class="modal-text text-center">Или авторизируйтесь, если уже есть аккаунт</span>
-              <button class="btn btn-primary grid-center" id="signinBtn">Вход</button>
-            </div>
-        </div>
-    </div>
+    &lt;!-- Модальное окно вопроса -->
+    &lt;div id="enterModal" class="modal">
+        &lt;div class="modal-content">
+            &lt;div class="modal-header">
+                &lt;span class="back-btn pointer" id="enterBack">&lt;i class="arrow-left">&lt;/i>&lt;/span>
+                &lt;span class="modal-title">Вход в систему&lt;/span>
+                &lt;span class="close-btn pointer" id="enterClose">&lt;i class="close">&lt;/i>&lt;/span>
+            &lt;/div>
+            &lt;div class="modal-body">
+              &lt;span class="modal-text text-center">Создайте аккаунт, если ещё не зарегистрированы&lt;/span>
+              &lt;button class="btn btn-success grid-center" id="signupBtn">Регистрация&lt;/button>
+              &lt;br>
+              &lt;span class="modal-text text-center">Или авторизируйтесь, если уже есть аккаунт&lt;/span>
+              &lt;button class="btn btn-primary grid-center" id="signinBtn">Вход&lt;/button>
+            &lt;/div>
+        &lt;/div>
+    &lt;/div>
 
-    <!-- Модальное окно входа -->
-    <div id="signinModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="back-btn pointer" id="signinBack"><i class="arrow-left"></i></span>
-                <span class="modal-title">Авторизация</span>
-                <span class="close-btn pointer" id="signinClose"><i class="close"></i></span>
-            </div>
-            <div class="modal-body">
-                <form id="signinForm">
-                    <section class="input-group">
-                        <label class="modal-text" for="email">Имя пользователя</label>
-                        <input type="text" class="input" name="email">
-                        <span class="error-text" id="signinEmailError"></span>
-                    </section>
-                    <section class="input-group">
-                        <label class="modal-text" for="password">Пароль</label>
-                        <input type="password" class="input" name="password">
-                        <span class="error-text" id="signinPasswordError"></span>
-                    </section>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <label class="grid-left modal-text" for="remember">
-                    <input form="signinForm" type="checkbox" name="remember">
+    &lt;!-- Модальное окно входа -->
+    &lt;div id="signinModal" class="modal">
+        &lt;div class="modal-content">
+            &lt;div class="modal-header">
+                &lt;span class="back-btn pointer" id="signinBack">&lt;i class="arrow-left">&lt;/i>&lt;/span>
+                &lt;span class="modal-title">Авторизация&lt;/span>
+                &lt;span class="close-btn pointer" id="signinClose">&lt;i class="close">&lt;/i>&lt;/span>
+            &lt;/div>
+            &lt;div class="modal-body">
+                &lt;form id="signinForm">
+                    &lt;section class="input-group">
+                        &lt;label class="modal-text" for="email">Имя пользователя&lt;/label>
+                        &lt;input type="text" class="input" name="email">
+                        &lt;span class="error-text" id="signinEmailError">&lt;/span>
+                    &lt;/section>
+                    &lt;section class="input-group">
+                        &lt;label class="modal-text" for="password">Пароль&lt;/label>
+                        &lt;input type="password" class="input" name="password">
+                        &lt;span class="error-text" id="signinPasswordError">&lt;/span>
+                    &lt;/section>
+                &lt;/form>
+            &lt;/div>
+            &lt;div class="modal-footer">
+                &lt;label class="grid-left modal-text" for="remember">
+                    &lt;input form="signinForm" type="checkbox" name="remember">
                     Запомнить меня
-                </label>
-                <button type="submit" form="signinForm" class="btn btn-primary grid-right">Вход</button>
-            </div>
-        </div>
-    </div>
+                &lt;/label>
+                &lt;button type="submit" form="signinForm" class="btn btn-primary grid-right">Вход&lt;/button>
+            &lt;/div>
+        &lt;/div>
+    &lt;/div>
 
-    <!-- Модальное окно регистрации -->
-    <div id="signupModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="back-btn pointer" id="signupBack"><i class="arrow-left"></i></span>
-                <span class="modal-title">Регистрация</span>
-                <span class="close-btn pointer" id="signupClose"><i class="close"></i></span>
-            </div>
-            <div class="modal-body">
-                <form id="signupForm">
-                    <section class="input-group">
-                        <label class="modal-text" for="username">Имя пользователя</label>
-                        <input type="text" class="input" name="username">
-                        <span class="error-text" id="signupUsernameError"></span>
-                    </section>
-                    <section class="input-group">
-                        <label class="modal-text" for="email">Почта</label>
-                        <input type="email" class="input" name="email">
-                        <span class="error-text" id="signupEmailError"></span>
-                    </section>
-                    <section class="input-group">
-                        <label class="modal-text" for="password">Пароль</label>
-                        <input type="password" class="input" name="password">
-                        <span class="error-text" id="signupPasswordError"></span>
-                    </section>
-                    <section class="input-group">
-                        <label class="modal-text" for="repeat-password">Повторите пароль</label>
-                        <input type="password" class="input" name="repeatPassword">
-                        <span class="error-text" id="signupRepeatPasswordError"></span>
-                    </section>
-                    <section class="input-group">
-                        <label class="grid-left modal-text" for="accept">
-                            <input type="checkbox" name="accept">
+    &lt;!-- Модальное окно регистрации -->
+    &lt;div id="signupModal" class="modal">
+        &lt;div class="modal-content">
+            &lt;div class="modal-header">
+                &lt;span class="back-btn pointer" id="signupBack">&lt;i class="arrow-left">&lt;/i>&lt;/span>
+                &lt;span class="modal-title">Регистрация&lt;/span>
+                &lt;span class="close-btn pointer" id="signupClose">&lt;i class="close">&lt;/i>&lt;/span>
+            &lt;/div>
+            &lt;div class="modal-body">
+                &lt;form id="signupForm">
+                    &lt;section class="input-group">
+                        &lt;label class="modal-text" for="username">Имя пользователя&lt;/label>
+                        &lt;input type="text" class="input" name="username">
+                        &lt;span class="error-text" id="signupUsernameError">&lt;/span>
+                    &lt;/section>
+                    &lt;section class="input-group">
+                        &lt;label class="modal-text" for="email">Почта&lt;/label>
+                        &lt;input type="email" class="input" name="email">
+                        &lt;span class="error-text" id="signupEmailError">&lt;/span>
+                    &lt;/section>
+                    &lt;section class="input-group">
+                        &lt;label class="modal-text" for="password">Пароль&lt;/label>
+                        &lt;input type="password" class="input" name="password">
+                        &lt;span class="error-text" id="signupPasswordError">&lt;/span>
+                    &lt;/section>
+                    &lt;section class="input-group">
+                        &lt;label class="modal-text" for="repeat-password">Повторите пароль&lt;/label>
+                        &lt;input type="password" class="input" name="repeatPassword">
+                        &lt;span class="error-text" id="signupRepeatPasswordError">&lt;/span>
+                    &lt;/section>
+                    &lt;section class="input-group">
+                        &lt;label class="grid-left modal-text" for="accept">
+                            &lt;input type="checkbox" name="accept">
                             Я принимаю
-                        </label>
-                        <a href="#"><button class="cell-btn-sm">пользовательское соглашение</button></a>
-                    </section>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary-tertiary grid-left" id="accexistsBtn">Есть аккаунт</button>
-                <button type="submit" form="signupForm" class="btn btn-success grid-right">Регистрация</button>
-            </div>
-        </div>
-    </div>`;
+                        &lt;/label>
+                        &lt;a href="#">&lt;button class="cell-btn-sm">пользовательское соглашение&lt;/button>&lt;/a>
+                    &lt;/section>
+                &lt;/form>
+            &lt;/div>
+            &lt;div class="modal-footer">
+                &lt;button class="btn btn-primary-tertiary grid-left" id="accexistsBtn">Есть аккаунт&lt;/button>
+                &lt;button type="submit" form="signupForm" class="btn btn-success grid-right">Регистрация&lt;/button>
+            &lt;/div>
+        &lt;/div>
+    &lt;/div>`;
     
     parent.innerHTML += modal;
 
@@ -374,7 +402,7 @@ function renderHeader(parent) {
 
     const category_btn = document.createElement("button");
     category_btn.classList.add("btn", "btn-primary");
-    category_btn.innerHTML = `<span><i class="play-list"></i></span>Категории`; 
+    category_btn.innerHTML = `&lt;span>&lt;i class="play-list">&lt;/i>&lt;/span>Категории`; 
 
     const search_input = document.createElement("input");
     search_input.classList.add("input", "search");
@@ -382,7 +410,7 @@ function renderHeader(parent) {
 
     const add_ann_btn = document.createElement("button");
     add_ann_btn.classList.add("btn", "btn-success");
-    add_ann_btn.innerHTML = `<span><i class="play-list"></i></span>Разместить объявление`; 
+    add_ann_btn.innerHTML = `&lt;span>&lt;i class="play-list">&lt;/i>&lt;/span>Разместить объявление`; 
 
     parent.appendChild(nav_brand);
     parent.appendChild(category_btn);
@@ -407,7 +435,7 @@ function renderHeader(parent) {
 
                     const {username, avatar} = user
                     profile.classList.add("profile", "pointer");
-                    profile.innerHTML = `<img src="images/${avatar}" alt="" class="avatar">${username}`;
+                    profile.innerHTML = `&lt;img src="images/${avatar}" alt="" class="avatar">${username}`;
 
                     profile.addEventListener("click", () => {
                         goToPage(config.profile);
@@ -415,7 +443,7 @@ function renderHeader(parent) {
 
                     const logout_btn = document.createElement('button');
                     logout_btn.classList.add("cell-btn-sm", "grid-center");
-                    logout_btn.innerHTML = `<i class="log-out"></i>`;
+                    logout_btn.innerHTML = `&lt;i class="log-out">&lt;/i>`;
 
                     logout_btn.addEventListener("click", () => {
                         ajax("POST", "/logout", null, (req, res) => {
@@ -431,7 +459,7 @@ function renderHeader(parent) {
 
                     const enter_btn = document.createElement("button");
                     enter_btn.classList.add("btn", "btn-primary");
-                    enter_btn.innerHTML = `<span><i class="chevron-right"></i></span>Войти`;
+                    enter_btn.innerHTML = `&lt;span>&lt;i class="chevron-right">&lt;/i>&lt;/span>Войти`;
 
                     parent.appendChild(enter_btn);
 
@@ -473,7 +501,7 @@ function renderProfile(parent) {
                 span.textContent = `${username}, ${email}`;
                 profileElement.appendChild(span);
 
-                if (anns && Array.isArray(anns)) {
+                if (anns &amp;&amp; Array.isArray(anns)) {
                     const ann_group = document.createElement('div');
                     ann_group.classList.add("ann-group");
                     profileElement.appendChild(ann_group);
@@ -481,17 +509,17 @@ function renderProfile(parent) {
                     anns.forEach(({src, category, title, price, address}) => {
                         console.log(src, title);
                         ann_group.innerHTML += `
-                        <div class="ann">
-                            <div class="ann-img">
-                                <img src="images/${src}" alt="">
-                            </div>
-                            <div class="ann-body">
-                                <div class="ann-category">${category}</div>
-                                <div class="ann-title">${title}</div>
-                                <div class="ann-sale">${price} ₽</div>
-                                <div class="ann-address">${address}</div>
-                            </div>
-                        </div>`;
+                        &lt;div class="ann">
+                            &lt;div class="ann-img">
+                                &lt;img src="images/${src}" alt="">
+                            &lt;/div>
+                            &lt;div class="ann-body">
+                                &lt;div class="ann-category">${category}&lt;/div>
+                                &lt;div class="ann-title">${title}&lt;/div>
+                                &lt;div class="ann-sale">${price} ₽&lt;/div>
+                                &lt;div class="ann-address">${address}&lt;/div>
+                            &lt;/div>
+                        &lt;/div>`;
                     })
                 }
                 parent.appendChild(profileElement);
@@ -517,3 +545,26 @@ function goToPage(configSection) {
 
 renderHeader(headerElement);
 renderBoard(contentElement);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#ajax">ajax</a></li><li><a href="global.html#config">config</a></li><li><a href="global.html#goToPage">goToPage</a></li><li><a href="global.html#renderBoard">renderBoard</a></li><li><a href="global.html#renderHeader">renderHeader</a></li><li><a href="global.html#renderModals">renderModals</a></li><li><a href="global.html#renderProfile">renderProfile</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Mar 06 2023 05:09:02 GMT+0300 (Москва, стандартное время)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
