@@ -1,3 +1,5 @@
+import CardGroup from './components/card/CardGroup.js';
+
 const rootElement = document.getElementById('root');
 const headerElement = document.createElement('header');
 const contentElement = document.createElement('main');
@@ -22,34 +24,6 @@ const config = {
 };
 
 /**
- * function to send async XMLHttpRequest
- * @function ajax
- * @param {any} method - request method
- * @param {string} url - requested url address
- * @param {boolean} body - body flag
- * @param {function} callback - callback function to process data
- */
-function ajax(method, url, body, callback) {
-    const xhr = new XMLHttpRequest();
-    xhr.open(method, url, true);
-    xhr.withCredentials = true;
-
-    xhr.addEventListener('readystatechange', () => {
-        if (xhr.readyState !== XMLHttpRequest.DONE) return;
-
-        callback(xhr.status, xhr.responseText);
-    });
-
-    if (body) {
-        xhr.setRequestHeader('Content-type', 'application/json; charset=utf8');
-        xhr.send(JSON.stringify(body));
-        return;
-    }
-
-    xhr.send();
-}
-
-/**
  * function to render board of existing products
  * @function renderBoard
  * @param {any} parent - parent content element
@@ -58,11 +32,9 @@ function renderBoard(parent) {
     const boardElement = document.createElement('div');
 
     try {
-        ajax(
-            'GET',
-            '/board',
-            null,
-            (status, responseString) => {
+        Ajax.get({
+            url: '/board',
+            callback: (status, responseString) => {
                 const anns = JSON.parse(responseString);
 
                 if (anns && Array.isArray(anns)) {
@@ -89,8 +61,11 @@ function renderBoard(parent) {
                 }
 
                 parent.appendChild(boardElement);
+
+                const cardGroup = new CardGroup(parent);
+                cardGroup.render();
             },
-        );
+        });
     } catch (err) {
         alert('Server does not respond!');
     }
@@ -280,11 +255,10 @@ function renderModals(parent) {
         const email = signinForm.email.value.trim();
         const password = signinForm.password.value;
         try {
-            ajax(
-                'POST',
-                '/login',
-                { email, password },
-                (status, responseString) => {
+            Ajax.post({
+                url: '/login',
+                body: { email, password },
+                callback: (status, responseString) => {
                     if (status === 200) {
                         goToPage(config.board);
                         return;
@@ -295,7 +269,7 @@ function renderModals(parent) {
                     const errorTitle = document.getElementById('signinEmailError');
                     errorTitle.innerText = error;
                 },
-            );
+            });
         } catch (err) {
             alert('Server does not respond!');
         }
@@ -327,11 +301,10 @@ function renderModals(parent) {
             return;
         }
         try {
-            ajax(
-                'POST',
-                '/signup',
-                { email, password, username },
-                (status, responseString) => {
+            Ajax.post({
+                url: '/signup',
+                body: { email, password, username },
+                callback: (status, responseString) => {
                     if (status === 201) {
                         goToPage(config.board);
                         return;
@@ -360,7 +333,7 @@ function renderModals(parent) {
 
                     errorTitle.innerText = error;
                 },
-            );
+            });
         } catch (err) {
             alert('Server does not respond!');
         }
@@ -399,11 +372,9 @@ function renderHeader(parent) {
     parent.appendChild(addAnnBtn);
 
     try {
-        ajax(
-            'GET',
-            '/me',
-            null,
-            (status, responseString) => {
+        Ajax.get({
+            url: '/me',
+            callback: (status, responseString) => {
                 const isAuthorized = status === 200;
 
                 if (isAuthorized) {
@@ -427,8 +398,11 @@ function renderHeader(parent) {
                     logoutBtn.innerHTML = '<i class="log-out"></i>';
 
                     logoutBtn.addEventListener('click', () => {
-                        ajax('POST', '/logout', null, () => {
-                            goToPage(config.board);
+                        Ajax.post({
+                            url: '/logout',
+                            callback: () => {
+                                goToPage(config.board);
+                            },
                         });
                     });
 
@@ -449,7 +423,7 @@ function renderHeader(parent) {
                     };
                 }
             },
-        );
+        });
     } catch (err) {
         alert('Server does not respond!');
     }
@@ -464,11 +438,9 @@ function renderProfile(parent) {
     const profileElement = document.createElement('div');
 
     try {
-        ajax(
-            'GET',
-            '/me',
-            null,
-            (status, responseString) => {
+        Ajax.get({
+            url: '/me',
+            callback: (status, responseString) => {
                 const isAuthorized = status === 200;
 
                 if (!isAuthorized) {
@@ -511,7 +483,7 @@ function renderProfile(parent) {
 
                 parent.appendChild(profileElement);
             },
-        );
+        });
     } catch (err) {
         alert('Server does not respond!');
     }

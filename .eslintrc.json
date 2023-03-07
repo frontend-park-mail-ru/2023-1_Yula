@@ -18,6 +18,9 @@
             "classes": false,
             "variables": true,
             "allowNamedExports": false
-        }]
+        }],
+        "import/extensions": {
+            "js": "ignorePackages"
+        }
     }
 }
