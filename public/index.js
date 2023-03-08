@@ -29,46 +29,46 @@ const config = {
  * @param {any} parent - parent content element
  */
 function renderBoard(parent) {
-    const boardElement = document.createElement('div');
+    // const boardElement = document.createElement('div');
 
-    try {
-        Ajax.get({
-            url: '/board',
-            callback: (status, responseString) => {
-                const anns = JSON.parse(responseString);
+    // try {
+    //     Ajax.get({
+    //         url: '/board',
+    //         callback: (status, responseString) => {
+    //             const anns = JSON.parse(responseString);
 
-                if (anns && Array.isArray(anns)) {
-                    const annGroup = document.createElement('div');
-                    annGroup.classList.add('ann-group');
-                    boardElement.appendChild(annGroup);
+    //             if (anns && Array.isArray(anns)) {
+    //                 const annGroup = document.createElement('div');
+    //                 annGroup.classList.add('ann-group');
+    //                 boardElement.appendChild(annGroup);
 
-                    anns.forEach(({
-                        src, category, title, price, address,
-                    }) => {
-                        annGroup.innerHTML += `
-                            <div class="ann">
-                                <div class="ann-img">
-                                    <img src="images/${src}" alt="">
-                                </div>
-                                <div class="ann-body">
-                                    <div class="ann-category">${category}</div>
-                                    <div class="ann-title">${title}</div>
-                                    <div class="ann-sale">${price} ₽</div>
-                                    <div class="ann-address">${address}</div>
-                                </div>
-                            </div>`;
-                    });
-                }
+    //                 anns.forEach(({
+    //                     src, category, title, price, address,
+    //                 }) => {
+    //                     annGroup.innerHTML += `
+    //                         <div class="ann">
+    //                             <div class="ann-img">
+    //                                 <img src="images/${src}" alt="">
+    //                             </div>
+    //                             <div class="ann-body">
+    //                                 <div class="ann-category">${category}</div>
+    //                                 <div class="ann-title">${title}</div>
+    //                                 <div class="ann-sale">${price} ₽</div>
+    //                                 <div class="ann-address">${address}</div>
+    //                             </div>
+    //                         </div>`;
+    //                 });
+    //             }
 
-                parent.appendChild(boardElement);
+    //             parent.appendChild(boardElement);
+    //         },
+    //     });
+    // } catch (err) {
+    //     alert('Server does not respond!');
+    // }
 
-                const cardGroup = new CardGroup(parent);
-                cardGroup.render();
-            },
-        });
-    } catch (err) {
-        alert('Server does not respond!');
-    }
+    const cardGroup = new CardGroup(parent);
+    cardGroup.render();
 }
 
 /**

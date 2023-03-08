@@ -1,6 +1,3 @@
-// import * as Eta from "eta";
-const Eta = require("eta");
-
 export default class Card {
     #parent;
 
@@ -9,17 +6,14 @@ export default class Card {
     }
 
     render() {
-        const source = document.getElementById('ann-group-template').innerHTML;
+        Ajax.get({
+            url: '/board',
+            callback: (status, responseString) => {
+                const anns = JSON.parse(responseString);
 
-        const context = {
-            anns: [
-                {
-                    src: '/ann6.jpeg', category: 'Спорт', title: 'Мяч', desc: 'Удобный мяч', price: '500', address: 'Москва, ул. Красная 28',
-                },
-            ],
-        };
-
-        const html = Eta.renderFile('./CardGroup', context);
-        this.#parent.innerHTML = html;
+                const template = Handlebars.templates["components/card/CardGroup"];
+                this.#parent.innerHTML += template({anns: anns});
+            }
+        });
     }
 }

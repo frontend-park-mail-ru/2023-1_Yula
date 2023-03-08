@@ -1,10 +1,10 @@
 {
   "name": "appuniq",
-  "type": "module",
   "version": "1.0.0",
   "description": "Ad service for buying and selling unique products",
   "main": "index.js",
   "scripts": {
+    "prestart": "handlebars public -f public/template.js",
     "start": "npx cross-env SERVER=debug node server"
   },
   "repository": {
