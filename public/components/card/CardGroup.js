@@ -1,4 +1,4 @@
-export default class Card {
+export default class CardGroup {
     #parent;
 
     constructor(parent) {
@@ -6,13 +6,18 @@ export default class Card {
     }
 
     render() {
+        const cardGroupElement = document.createElement('div');
+
         Ajax.get({
             url: '/board',
             callback: (status, responseString) => {
                 const anns = JSON.parse(responseString);
 
                 const template = Handlebars.templates["components/card/CardGroup"];
-                this.#parent.innerHTML += template({anns: anns});
+                cardGroupElement.innerHTML += template({anns: anns});
+
+                // this.#parent.appendChild(cardGroupElement);
+                this.#parent.insertAdjacentHTML("beforeEnd", template({anns: anns}));
             }
         });
     }

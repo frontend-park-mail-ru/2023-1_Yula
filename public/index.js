@@ -1,4 +1,7 @@
 import CardGroup from './components/card/CardGroup.js';
+import { Button, Modal } from './shared/ui/index.js';
+import { Card } from './entities/announcement/ui/card/Card.js'
+import { boardPage } from './pages/board/index.js';
 
 const rootElement = document.getElementById('root');
 const headerElement = document.createElement('header');
@@ -29,46 +32,23 @@ const config = {
  * @param {any} parent - parent content element
  */
 function renderBoard(parent) {
-    // const boardElement = document.createElement('div');
+    // boardPage(parent);
+    
+    // const cardGroup = new CardGroup(parent);
+    // cardGroup.render();
 
-    // try {
-    //     Ajax.get({
-    //         url: '/board',
-    //         callback: (status, responseString) => {
-    //             const anns = JSON.parse(responseString);
+    const modal = new Modal(parent);
+    modal.config = {title: "privet"};
+    modal.render();
 
-    //             if (anns && Array.isArray(anns)) {
-    //                 const annGroup = document.createElement('div');
-    //                 annGroup.classList.add('ann-group');
-    //                 boardElement.appendChild(annGroup);
-
-    //                 anns.forEach(({
-    //                     src, category, title, price, address,
-    //                 }) => {
-    //                     annGroup.innerHTML += `
-    //                         <div class="ann">
-    //                             <div class="ann-img">
-    //                                 <img src="images/${src}" alt="">
-    //                             </div>
-    //                             <div class="ann-body">
-    //                                 <div class="ann-category">${category}</div>
-    //                                 <div class="ann-title">${title}</div>
-    //                                 <div class="ann-sale">${price} ₽</div>
-    //                                 <div class="ann-address">${address}</div>
-    //                             </div>
-    //                         </div>`;
-    //                 });
-    //             }
-
-    //             parent.appendChild(boardElement);
-    //         },
-    //     });
-    // } catch (err) {
-    //     alert('Server does not respond!');
-    // }
-
-    const cardGroup = new CardGroup(parent);
-    cardGroup.render();
+    const btn = new Button(modal.footer());
+    btn.config = {class: "btn btn-primary grid-left"}
+    btn.render();
+    debugger;
+    btn.self().addEventListener('click', (e) => console.log(e), false)
+    
+    modal.open();
+    // modal.close();
 }
 
 /**
