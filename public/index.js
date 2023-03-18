@@ -1,6 +1,5 @@
-import CardGroup from './components/card/CardGroup.js';
-import { Button, Modal } from './shared/ui/index.js';
-import { Card } from './entities/announcement/ui/card/Card.js'
+import { loginModal } from './features/auth/by-email/index.js';
+import { signupModal } from './features/auth/signup/index.js';
 import { boardPage } from './pages/board/index.js';
 
 const rootElement = document.getElementById('root');
@@ -37,18 +36,8 @@ function renderBoard(parent) {
     // const cardGroup = new CardGroup(parent);
     // cardGroup.render();
 
-    const modal = new Modal(parent);
-    modal.config = {title: "privet"};
-    modal.render();
-
-    const btn = new Button(modal.footer());
-    btn.config = {class: "btn btn-primary grid-left"}
-    btn.render();
-    debugger;
-    btn.self().addEventListener('click', (e) => console.log(e), false)
-    
+    const modal = signupModal(parent);
     modal.open();
-    // modal.close();
 }
 
 /**
@@ -156,7 +145,7 @@ function renderModals(parent) {
         </div>
     </div>`;
 
-    content.innerHTML += modal;
+    content.insertAdjacentHTML("beforeEnd", modal);
 
     /** логика переключений */
     const enterBack = document.getElementById('enterBack');
@@ -352,58 +341,112 @@ function renderHeader(parent) {
     parent.appendChild(addAnnBtn);
 
     try {
-        Ajax.get({
-            url: '/me',
-            callback: (status, responseString) => {
-                const isAuthorized = status === 200;
+        // Ajax.get({
+        //     url: '/me',
+        //     callback: (status, responseString) => {
+        //         const isAuthorized = status === 200;
 
-                if (isAuthorized) {
-                    const user = JSON.parse(responseString);
-                    if (!user.avatar) {
-                        user.avatar = 'ava.jpg';
-                    }
+        //         if (isAuthorized) {
+        //             const user = JSON.parse(responseString);
+        //             if (!user.avatar) {
+        //                 user.avatar = 'ava.jpg';
+        //             }
 
-                    const profile = document.createElement('a');
+        //             const profile = document.createElement('a');
 
-                    const { username, avatar } = user;
-                    profile.classList.add('profile', 'pointer');
-                    profile.innerHTML = `<img src="images/${avatar}" alt="" class="avatar">${username}`;
+        //             const { username, avatar } = user;
+        //             profile.classList.add('profile', 'pointer');
+        //             profile.innerHTML = `<img src="images/${avatar}" alt="" class="avatar">${username}`;
 
-                    profile.addEventListener('click', () => {
-                        goToPage(config.profile);
-                    });
+        //             profile.addEventListener('click', () => {
+        //                 goToPage(config.profile);
+        //             });
 
-                    const logoutBtn = document.createElement('button');
-                    logoutBtn.classList.add('cell-btn-sm', 'grid-center');
-                    logoutBtn.innerHTML = '<i class="log-out"></i>';
+        //             const logoutBtn = document.createElement('button');
+        //             logoutBtn.classList.add('cell-btn-sm', 'grid-center');
+        //             logoutBtn.innerHTML = '<i class="log-out"></i>';
 
-                    logoutBtn.addEventListener('click', () => {
-                        Ajax.post({
-                            url: '/logout',
-                            callback: () => {
-                                goToPage(config.board);
-                            },
-                        });
-                    });
+        //             logoutBtn.addEventListener('click', () => {
+        //                 Ajax.post({
+        //                     url: '/logout',
+        //                     callback: () => {
+        //                         goToPage(config.board);
+        //                     },
+        //                 });
+        //             });
 
-                    parent.appendChild(profile);
-                    parent.appendChild(logoutBtn);
-                } else {
-                    renderModals(contentElement);
+        //             parent.appendChild(profile);
+        //             parent.appendChild(logoutBtn);
+        //         } else {
+        //             renderModals(contentElement);
 
-                    const enterBtn = document.createElement('button');
-                    enterBtn.classList.add('btn', 'btn-primary');
-                    enterBtn.innerHTML = '<span><i class="chevron-right"></i></span>Войти';
+        //             const enterBtn = document.createElement('button');
+        //             enterBtn.classList.add('btn', 'btn-primary');
+        //             enterBtn.innerHTML = '<span><i class="chevron-right"></i></span>Войти';
 
-                    parent.appendChild(enterBtn);
+        //             parent.appendChild(enterBtn);
 
-                    enterBtn.onclick = () => {
-                        const enterModal = document.getElementById('enterModal');
-                        enterModal.style.display = 'block';
-                    };
+        //             enterBtn.onclick = () => {
+        //                 const enterModal = document.getElementById('enterModal');
+        //                 enterModal.style.display = 'block';
+        //             };
+        //         }
+        //     },
+        // });
+
+        let isAuthorized;
+        let user;
+        fetch('/me').then(request => {
+            isAuthorized = request.status === 200;
+            return request.json();
+        }).then(u => {
+            user = u;
+        }).finally(() => {
+            if (isAuthorized) {
+                if (!user.avatar) {
+                    user.avatar = 'ava.jpg';
                 }
-            },
-        });
+
+                const profile = document.createElement('a');
+
+                const { username, avatar } = user;
+                profile.classList.add('profile', 'pointer');
+                profile.innerHTML = `<img src="images/${avatar}" alt="" class="avatar">${username}`;
+
+                profile.addEventListener('click', () => {
+                    goToPage(config.profile);
+                });
+
+                const logoutBtn = document.createElement('button');
+                logoutBtn.classList.add('cell-btn-sm', 'grid-center');
+                logoutBtn.innerHTML = '<i class="log-out"></i>';
+
+                logoutBtn.addEventListener('click', () => {
+                    Ajax.post({
+                        url: '/logout',
+                        callback: () => {
+                            goToPage(config.board);
+                        },
+                    });
+                });
+
+                parent.appendChild(profile);
+                parent.appendChild(logoutBtn);
+            } else {
+                renderModals(contentElement);
+
+                const enterBtn = document.createElement('button');
+                enterBtn.classList.add('btn', 'btn-primary');
+                enterBtn.innerHTML = '<span><i class="chevron-right"></i></span>Войти';
+
+                parent.appendChild(enterBtn);
+
+                enterBtn.onclick = () => {
+                    const enterModal = document.getElementById('enterModal');
+                    enterModal.style.display = 'block';
+                };
+            }
+        })
     } catch (err) {
         alert('Server does not respond!');
     }

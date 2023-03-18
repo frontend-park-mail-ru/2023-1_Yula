@@ -3,7 +3,7 @@ const body = require('body-parser');
 const cookie = require('cookie-parser');
 const morgan = require('morgan');
 const uuid = require('uuid').v4;
-
+// const mime = require('mime-types')
 const path = require('path');
 
 const app = express();
@@ -13,6 +13,8 @@ app.use(express.static(path.resolve(__dirname, '..', 'public')));
 app.use(express.static(path.resolve(__dirname, 'static')));
 app.use(body.json());
 app.use(cookie());
+
+// mime.contentType('text/html');
 
 /** user data */
 const users = require('./static/jsonData/anns.json');
@@ -92,7 +94,7 @@ app.get('/me', (req, res) => {
     const emailSession = ids[id];
 
     if (!emailSession || !users[emailSession]) {
-        return res.status(401).end();
+        return res.status(401).json({error: 'Пользователь не найден'});
     }
 
     const user = users[emailSession];

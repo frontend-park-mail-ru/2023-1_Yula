@@ -11,7 +11,7 @@ export class Button extends Base {
             id: "button",
             class: "btn btn-primary",
             text: "Submit",
-            type: "button"
+            type: "button",
         }
     }
 }

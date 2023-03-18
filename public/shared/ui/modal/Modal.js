@@ -1,37 +1,14 @@
-import {Base, notElementInDOM} from "../base/Base.js"
+import {Base} from "../base/Base.js"
 
 export class Modal extends Base {
-    set body(value) {
+    body() {
         let id = this.config.id + this.name;
-        if (!this.self())
-            notElementInDOM(id);
-
-        const body = document.getElementById(id + 'Body');
-        body.innerHTML = value;
-    }
-
-    get body() {
-        let id = this.config.id + this.name;
-        if (!this.self())
-            notElementInDOM(id);
-
         return document.getElementById(id + 'Body');
     }
 
     footer() {
         let id = this.config.id + this.name;
-        if (!this.self())
-            notElementInDOM(id);
-
         return document.getElementById(id + 'Footer');
-    }
-
-    getBackButton() {
-        let id = this.config.id + this.name;
-        if (!this.self())
-            notElementInDOM(id);
-
-        return document.getElementById(id + 'Back');
     }
 
     open() {
@@ -44,19 +21,14 @@ export class Modal extends Base {
         modal.style.display = "none";
     }
 
-    didMount() {
-        let closeButtonId = this.config.id + this.name + 'Close';
-        const closeButton = document.getElementById(closeButtonId);
-
-        closeButton.addEventListener('click', () => {
-            const modal = this.self();
-            modal.style.display = "none";
-        })
-        closeButton.onclick = () => console.log("test");
-    }
-
+    /**
+     * function to render Header of site page
+     * @function renderHeader
+     * @param {any} parent - parent content element
+     * @config { back - event 'click' of backButton }
+     */
     constructor(parent) {
-        super(parent)
+        super(parent);
         this.name = 'Modal';
         this.pathTemplate = "shared/ui/modal/Modal";
 
@@ -64,7 +36,19 @@ export class Modal extends Base {
             title: "Poput",
             body: "",
             footer: "",
-            // actions: 
+            actions: {
+                // back: () => this.close(),
+            }
         }
+    }
+
+    render() {
+        super.render();
+        
+        let id = this.config.id + this.name;
+
+        document.getElementById(id + 'Close').addEventListener('click', () => this.close());
+
+        document.getElementById(id + 'Back').addEventListener('click', () => this.config.actions.back());
     }
 }

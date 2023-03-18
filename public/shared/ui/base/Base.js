@@ -1,7 +1,3 @@
-export function notElementInDOM(id) {
-    throw new Error(`Объекта с id="${id}" нет в DOM-дереве`);
-}
-
 export class Base {
     name;
     pathTemplate;
@@ -11,7 +7,7 @@ export class Base {
 
     constructor(parent) {
         this.#parent = parent;
-        this.#config = {id: "base"};
+        this.#config = {id: "base", actions: {}};
     }
 
     get config() {
@@ -19,39 +15,35 @@ export class Base {
     }
 
     /**
-     * @param {any} value
+     * @param {Object} value
      */
     set config(value) {
         this.#config = {...this.#config, ...value};
         this.#config.name = this.name;
     }
 
-    // возвращает экземпляр элемента
     self() {
-        return document.getElementById(
-            this.#config.id + this.#config.name
-            )
+        let id = this.config.id + this.name;
+        return document.getElementById(id);
     }
 
-    // возвращает html элемента
-    html() {
-        let id = this.#config.id + this.#config.name;
+    #addEvents() {
+        const self = this.self();
+        const actions = this.config.actions;
 
-        if (!id)
-            throw new Error(`При создании объекта id обязателен`);
-        if (this.self())
-            throw new Error(`Объект с id="${id}" уже есть на странице`);
-
-        const template = Handlebars.templates[this.pathTemplate];
-        return template(this.#config);
+        for (let action in actions) {
+            self.addEventListener(action, actions[action]);
+        }
     }
 
     render() {
-        this.#parent.insertAdjacentHTML("beforeEnd", this.html());
-        // this.#parent.innerHTML += this.html()
-        this.didMount();
-    }
+        if (this.self()) {
+            throw new Error(`Объект с id="${id}" уже есть на странице`);
+        }
 
-    // запускается после "монтажа" элемента
-    didMount() {}
+        const template = Handlebars.templates[this.pathTemplate];
+        this.#parent.insertAdjacentHTML("beforeEnd", template(this.#config));
+
+        this.#addEvents();
+    }
 }
