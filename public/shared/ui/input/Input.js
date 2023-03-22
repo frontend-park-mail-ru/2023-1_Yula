@@ -1,35 +1,67 @@
-export default class Input {
-    defaultConfig = {
-        id: "",
-        style: "btn btn-primary",
-        label: "",
-        value: "",
+/**
+ * @param {HTMLElement} parent
+ * @param {Object} config
+ * @param {string} config.id
+ * @param {string} config.text
+ * @param {string} config.placeholder
+ * @param {string} config.type
+ * @param {string} config.leftIcon
+ * @param {string} config.rightIcon
+ */
+export const Input = (parent, config = {id: ""}) => {
+    config.id += "Input";
+    const actions = {};
 
-        type: "text",
-        callback: () => {}
+    const self = () => {
+        return document.getElementById(config.id);
     }
 
-    #parent;
-    #config = this.defaultConfig;
-
-    constructor(parent) {
-        this.#parent = parent;
+    const field = () => {
+        if (!self()) {
+            throw new Error(`Объект с id="${config.id}" не найден на странице`);
+        }
+        return self().querySelector(".input__field");
     }
 
-    get config() {
-        return this.#config;
+    const destroy = () => {
+        if (self()) {
+            self().remove();
+        }
     }
 
-    /**
-     * @param {any} value
-     */
-    set config(value) {
-        this.#config = {...this.#config, ...value};
+    const setActions = (newActions) => {
+        for (let action in newActions) {
+            actions[action] = newActions[action];
+        }
     }
 
-    render() {
-        const template = Handlebars.templates["shared/button/Button"];
-        console.log(template(this.#config), this.#parent)
-        this.#parent.insertAdjacentHTML("beforeEnd", template(this.#config));
+    const applyActions = () => {
+        if (actions.leftIcon) {
+            const leftIcon = self().querySelectorAll(".input__icon")[0];
+            leftIcon.addEventListener("click", actions.leftIcon);
+        }
+        if (actions.rightIcon) {
+            const rightIcon = self().querySelectorAll(".input__icon")[1];
+            rightIcon.addEventListener("click", actions.rightIcon);
+        }
+    }
+
+    const render = () => {
+        if (self()) {
+            throw new Error(`Объект с id="${config.id}" уже есть на странице`);
+        }
+
+        const template = Handlebars.templates["shared/ui/input/Input"];
+        parent.insertAdjacentHTML("beforeEnd", template(config));
+
+        applyActions();
+    }
+
+    return {
+        self,
+        field,
+        render,
+        setActions,
+        destroy,
     }
 }

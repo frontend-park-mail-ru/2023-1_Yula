@@ -1,4 +1,5 @@
-export const validation = (email, password) => {
+export const validation = (fields) => {
+    let { email, password } = fields;
     const errors = {};
 
     if (email.trim() === '') {

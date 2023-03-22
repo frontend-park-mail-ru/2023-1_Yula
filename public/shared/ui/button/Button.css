@@ -70,3 +70,9 @@
     flex-direction: row;
     gap: 10px;
 }
+
+.button__icon {
+    align-self: center;
+    justify-content: center;
+    height: 16px;
+}

@@ -1,6 +1,5 @@
-import { loginModal } from './features/auth/by-email/index.js';
-import { signupModal } from './features/auth/signup/index.js';
-import { boardPage } from './pages/board/index.js';
+import { AuthWidget } from "./widgets/auth/index.js";
+import { Navbar } from "./widgets/navbar/index.js";
 
 const rootElement = document.getElementById('root');
 const headerElement = document.createElement('header');
@@ -36,8 +35,17 @@ function renderBoard(parent) {
     // const cardGroup = new CardGroup(parent);
     // cardGroup.render();
 
-    const modal = signupModal(parent);
-    modal.open();
+    const content = parent;
+
+    const navbar = Navbar(content);
+    const authWidget = AuthWidget(content);
+
+    navbar.setActions({
+        auth: () => {
+            authWidget.render();
+        }
+    });
+    navbar.render();
 }
 
 /**
@@ -433,7 +441,7 @@ function renderHeader(parent) {
                 parent.appendChild(profile);
                 parent.appendChild(logoutBtn);
             } else {
-                renderModals(contentElement);
+                // renderModals(contentElement);
 
                 const enterBtn = document.createElement('button');
                 enterBtn.classList.add('btn', 'btn-primary');

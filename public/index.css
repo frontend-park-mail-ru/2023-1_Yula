@@ -11,6 +11,10 @@ body {
     margin: 10px 20px;
 }
 
+a {
+    text-decoration: none;
+}
+
 /* ТИПОГРАФИКА И РАЗМЕТКА */
 
 h1 {
@@ -76,8 +80,28 @@ h1 {
     border: 0.5px solid #E64646;
 }
 
+.input__field { 
+    background-color: rgba(0, 0, 0, 0); 
+    border: none;
+    width: 100%;
+}
+
+.input__field:focus {
+    outline: none;
+}
+
+.input__icon {
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    padding: 0;
+    height: 24px;
+    display: flex;
+    align-self: center;
+    justify-content: center;
+}
+
 /* КНОПКИ */
-.btn {
+/* .btn {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -133,6 +157,7 @@ h1 {
 
 .btn-success:disabled {
     background: rgba(75, 179, 75, 0.5);
+    cursor: default;
 }
 
 .cell-btn-sm {
@@ -149,6 +174,12 @@ h1 {
     flex-direction: row;
     gap: 10px;
 }
+
+.button__icon {
+    align-self: center;
+    justify-content: center;
+    height: 16px;
+} */
 
 /* НAВИГАЦИОННАЯ ПАНЕЛЬ */
 header {
@@ -266,7 +297,7 @@ img.avatar {
 
 /* МОДАЛЬНЫЕ ОКНА  */
 .modal {
-    display: none;
+    /* display: none; */
     position: fixed;
     z-index: 1; 
     left: 0;

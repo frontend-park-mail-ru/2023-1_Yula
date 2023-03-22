@@ -1,4 +1,5 @@
-export const validation = (username, email, password, repeatPassword) => {
+export const validation = (fields) => {
+    let {username, email, password, repeatPassword} = fields;
     const errors = {};
 
     if (username.trim() === '') {

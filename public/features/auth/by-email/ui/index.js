@@ -1,62 +1,67 @@
-import {  Button, Modal } from '../../../../shared/ui/index.js';
-import { Form } from '../ui/Form/Form.js';
+import { fButton, fModal, Form } from '../../../../shared/ui/index.js';
+// import { Form } from '../ui/Form/Form.js';
 import { validation } from '../lib/validation.js';
 
-export const loginModal = (parent, actions = {}) => {
-    // инициализируем модальное окно
-    const modal = new Modal(parent);
-    modal.config = {
+export const loginModal = (parent) => {
+    const modal = fModal(parent, {
         id: 'login',
         title: 'Авторизация'
-    }
-
-    // рендерим модалку
-    modal.render();
-
-    // заполняем тело
-    const form = Form(modal.body());
-    form.render();
-    
-    // заполняем футер
-    const noAccountBtn = new Button(modal.footer());
-    noAccountBtn.config = {
-        id: "noAccount",
-        type: "button",
-        actions: {
-            click: actions.noAccount,
-        },
-        text: "Нет аккаунта?",
-        class: "btn btn-primary-tertiary grid-left"
-    };
-    noAccountBtn.render();
-
-    const submitBtn = new Button(modal.footer());
-    submitBtn.config = {
-        id: "auth",
-        type: "submit",
-        form: "loginFormByEmail"
-    };
-    submitBtn.render();
-
-    // событие отправки данных
-    form.self().addEventListener('submit', (e) => {
-        e.preventDefault();
-        form.resetErrors();
-
-        let {email, password} = form.getFields();
-        const errors = validation(email, password);
-
-        if (!Object.keys(errors).length) {
-            console.log('Api!');
-        } else {
-            form.showError(errors);
-        }
     });
+    const actions = {};
 
-    // добавляем события
-    if (actions.back) {
-        modal.config.actions.back = actions.back;
-    }
+    return {
+        render: () => {
+            // рендерим модалку
+            modal.render();
 
-    return modal;
+            // заполняем тело
+            const form = Form(modal.body(), {
+                id: "login",
+                template: 'features/auth/by-email/ui/Form/Form',
+            });
+
+            form.setActions({
+                submit: () => console.log('Api!'),
+                validation: validation,
+            });
+
+            form.render();
+            
+            // заполняем футер
+            const noAccountBtn = fButton(modal.footer(), {
+                id: "noAccount",
+                type: "button",
+                text: "Нет аккаунта?",
+                class: "btn btn-primary-tertiary grid-left"
+            });
+            noAccountBtn.setActions({
+                click: actions.noAccount,
+            });
+            noAccountBtn.render();
+
+            const submitBtn = fButton(modal.footer(), {
+                id: "auth",
+                type: "submit",
+                class: "btn btn-primary grid-right",
+                text: "Войти",
+                form: "loginForm",
+                icon: "/icons/favicon.ico"
+            });
+            submitBtn.render();
+
+            // добавляем события
+            if (actions.back) {
+                modal.setActions({back: actions.back});
+            }
+        },
+
+        setActions: (newActions) => {
+            actions.back = newActions.back;
+            actions.noAccount = newActions.noAccount;
+        },
+
+        self: () => modal.self(),
+
+        destroy: () => modal.destroy(),
+    };
 }

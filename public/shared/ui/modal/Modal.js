@@ -11,16 +11,6 @@ export class Modal extends Base {
         return document.getElementById(id + 'Footer');
     }
 
-    open() {
-        const modal = this.self();
-        modal.style.display = "block";
-    }
-
-    close() {
-        const modal = this.self();
-        modal.style.display = "none";
-    }
-
     /**
      * function to render Header of site page
      * @function renderHeader
@@ -37,7 +27,7 @@ export class Modal extends Base {
             body: "",
             footer: "",
             actions: {
-                // back: () => this.close(),
+                back: () => this.destroy(),
             }
         }
     }
@@ -47,8 +37,70 @@ export class Modal extends Base {
         
         let id = this.config.id + this.name;
 
-        document.getElementById(id + 'Close').addEventListener('click', () => this.close());
+        document.getElementById(id + 'Close').addEventListener('click', () => this.destroy());
 
         document.getElementById(id + 'Back').addEventListener('click', () => this.config.actions.back());
     }
+}
+
+//  в виде функции:
+export const fModal = (parent, config = {id: ""}) => {
+    config.id += "Modal";
+
+    const actions = {
+        back: () => destroy(),
+        close: () => destroy(),
+    };
+
+    const self = () => {
+        return document.getElementById(config.id);
+    }
+
+    const body = () => {
+        return document.getElementById(config.id + 'Body');
+    }
+
+    const footer = () => {
+        return document.getElementById(config.id + 'Footer');
+    }
+
+    const destroy = () => {
+        if (self()) {
+            self().remove();
+        }
+    }
+
+    const setActions = (newActions) => {
+        for (let action in newActions) {
+            actions[action] = newActions[action];
+        }
+    }
+
+    const applyActions = () => {
+        const backButton = document.getElementById(config.id + 'Back');
+        backButton.addEventListener('click', () => actions.back());
+
+        const closeButton = document.getElementById(config.id + 'Close');
+        closeButton.addEventListener('click', () => actions.close());
+    }
+
+    const render = () => {
+        if (self()) {
+            throw new Error(`Объект с id="${config.id}" уже есть на странице`);
+        }
+
+        const template = Handlebars.templates["shared/ui/modal/Modal"];
+        parent.insertAdjacentHTML("beforeEnd", template(config));
+
+        applyActions();
+    }
+
+    return {
+        self,
+        body,
+        footer,
+        destroy,
+        setActions,
+        render,
+    };
 }

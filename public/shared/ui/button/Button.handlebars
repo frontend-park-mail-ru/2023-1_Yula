@@ -1,7 +1,13 @@
+<link rel="stylesheet" href="shared/ui/button/Button.css">
+
 <button
     id="{{id}}{{name}}"
-    type="{{type}}"
     class="{{class}}"
-    {{#if form}} form="{{form}}" {{/if}}>
+    {{#if disabled}} disabled {{/if}}
+    {{#if type}} type="{{type}}" {{/if}}
+    {{#if form}} form="{{form}}" name="submit" type="submit" {{/if}}>
+        {{#if icon}}
+            <img class="button__icon" src="{{icon}}" alt="icon">
+        {{/if}}
         {{text}}
 </button>
