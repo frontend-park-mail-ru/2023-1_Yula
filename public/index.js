@@ -23,53 +23,51 @@ const config = {
     },
 };
 
+// REFACTORED VERSION
+
 /**
- * function to render board of existing products
+ * Renders the board of existing products.
  * @function renderBoard
- * @param {any} parent - parent content element
+ * @param {HTMLElement} parent - The parent element to append the board content to.
  */
-function renderBoard(parent) {
-    const boardElement = document.createElement('div');
-
+async function renderBoard(parent) {
     try {
-        Ajax.get({
-            url: '/board',
-            callback: (status, responseString) => {
-                const anns = JSON.parse(responseString);
-
-                if (anns && Array.isArray(anns)) {
-                    const annGroup = document.createElement('div');
-                    annGroup.classList.add('ann-group');
-                    boardElement.appendChild(annGroup);
-
-                    anns.forEach(({
-                        src, category, title, price, address,
-                    }) => {
-                        annGroup.innerHTML += `
-                            <div class="ann">
-                                <div class="ann-img">
-                                    <img src="images/${src}" alt="">
-                                </div>
-                                <div class="ann-body">
-                                    <div class="ann-category">${category}</div>
-                                    <div class="ann-title">${title}</div>
-                                    <div class="ann-sale">${price} ₽</div>
-                                    <div class="ann-address">${address}</div>
-                                </div>
-                            </div>`;
-                    });
-                }
-
-                parent.appendChild(boardElement);
-
-                const cardGroup = new CardGroup(parent);
-                cardGroup.render();
-            },
+      const anns = await Ajax.get('/board');
+  
+      const boardElement = document.createElement('div');
+      parent.appendChild(boardElement);
+  
+      if (anns && Array.isArray(anns)) {
+        const annGroup = document.createElement('div');
+        annGroup.classList.add('ann-group');
+        boardElement.appendChild(annGroup);
+  
+        anns.forEach(({ src, category, title, price, address }) => {
+          const ann = document.createElement('div');
+          ann.classList.add('ann');
+          ann.innerHTML = `
+            <div class="ann-img">
+              <img src="images/${src}" alt="">
+            </div>
+            <div class="ann-body">
+              <div class="ann-category">${category}</div>
+              <div class="ann-title">${title}</div>
+              <div class="ann-sale">${price} ₽</div>
+              <div class="ann-address">${address}</div>
+            </div>
+          `;
+          annGroup.appendChild(ann);
         });
+      }
+  
+      const cardGroup = new CardGroup(boardElement);
+      await cardGroup.render();
     } catch (err) {
-        alert('Server does not respond!');
+      alert('Server does not respond!');
     }
-}
+  }
+
+// NON Refactored  
 
 /**
  * function to render modal window of authorization and authentication
@@ -77,8 +75,6 @@ function renderBoard(parent) {
  * @param {any} parent - parent content element
  */
 function renderModals(parent) {
-    const content = parent;
-
     const modal = `
     <!-- Модальное окно вопроса -->
     <div id="enterModal" class="modal">
@@ -175,6 +171,7 @@ function renderModals(parent) {
             </div>
         </div>
     </div>`;
+    const content = parent;
 
     content.innerHTML += modal;
 
@@ -340,155 +337,129 @@ function renderModals(parent) {
     });
 }
 
+// REFACTORED VERSION
+
 /**
  * function to render Header of site page
  * @function renderHeader
  * @param {any} parent - parent content element
  */
-function renderHeader(parent) {
-    const navBrand = document.createElement('div');
-    navBrand.classList.add('nav-brand', 'pointer');
-    navBrand.innerText = 'AppUniq';
-
-    navBrand.addEventListener('click', () => {
-        goToPage(config.board);
+async function renderHeader(parent) {
+    const navBrand = createElement('div', {
+      className: 'nav-brand pointer',
+      innerText: 'AppUniq',
+      onClick: () => goToPage(config.board)
     });
-
-    const categoryBtn = document.createElement('button');
-    categoryBtn.classList.add('btn', 'btn-primary');
-    categoryBtn.innerHTML = '<span><i class="play-list"></i></span>Категории';
-
-    const searchInput = document.createElement('input');
-    searchInput.classList.add('input', 'search');
-    searchInput.placeholder = 'Найти товар';
-
-    const addAnnBtn = document.createElement('button');
-    addAnnBtn.classList.add('btn', 'btn-success');
-    addAnnBtn.innerHTML = '<span><i class="play-list"></i></span>Разместить объявление';
-
-    parent.appendChild(navBrand);
-    parent.appendChild(categoryBtn);
-    parent.appendChild(searchInput);
-    parent.appendChild(addAnnBtn);
-
+  
+    const categoryBtn = createElement('button', {
+      className: 'btn btn-primary',
+      innerHTML: '<span><i class="play-list"></i></span>Категории'
+    });
+  
+    const searchInput = createElement('input', {
+      className: 'input search',
+      placeholder: 'Найти товар'
+    });
+  
+    const addAnnBtn = createElement('button', {
+      className: 'btn btn-success',
+      innerHTML: '<span><i class="play-list"></i></span>Разместить объявление'
+    });
+  
+    parent.append(navBrand, categoryBtn, searchInput, addAnnBtn);
+  
     try {
-        Ajax.get({
-            url: '/me',
-            callback: (status, responseString) => {
-                const isAuthorized = status === 200;
-
-                if (isAuthorized) {
-                    const user = JSON.parse(responseString);
-                    if (!user.avatar) {
-                        user.avatar = 'ava.jpg';
-                    }
-
-                    const profile = document.createElement('a');
-
-                    const { username, avatar } = user;
-                    profile.classList.add('profile', 'pointer');
-                    profile.innerHTML = `<img src="images/${avatar}" alt="" class="avatar">${username}`;
-
-                    profile.addEventListener('click', () => {
-                        goToPage(config.profile);
-                    });
-
-                    const logoutBtn = document.createElement('button');
-                    logoutBtn.classList.add('cell-btn-sm', 'grid-center');
-                    logoutBtn.innerHTML = '<i class="log-out"></i>';
-
-                    logoutBtn.addEventListener('click', () => {
-                        Ajax.post({
-                            url: '/logout',
-                            callback: () => {
-                                goToPage(config.board);
-                            },
-                        });
-                    });
-
-                    parent.appendChild(profile);
-                    parent.appendChild(logoutBtn);
-                } else {
-                    renderModals(contentElement);
-
-                    const enterBtn = document.createElement('button');
-                    enterBtn.classList.add('btn', 'btn-primary');
-                    enterBtn.innerHTML = '<span><i class="chevron-right"></i></span>Войти';
-
-                    parent.appendChild(enterBtn);
-
-                    enterBtn.onclick = () => {
-                        const enterModal = document.getElementById('enterModal');
-                        enterModal.style.display = 'block';
-                    };
-                }
-            },
+      const { status, responseString } = await Ajax.get('/me');
+      const isAuthorized = status === 200;
+  
+      if (isAuthorized) {
+        const { username, avatar } = JSON.parse(responseString);
+        const profile = createElement('a', {
+          className: 'profile pointer',
+          innerHTML: `<img src="images/${avatar || 'ava.jpg'}" alt="" class="avatar">${username}`,
+          onClick: () => goToPage(config.profile)
         });
+  
+        const logoutBtn = createElement('button', {
+          className: 'cell-btn-sm grid-center',
+          innerHTML: '<i class="log-out"></i>',
+          onClick: () => {
+            Ajax.post({
+              url: '/logout',
+              callback: () => goToPage(config.board)
+            });
+          }
+        });
+  
+        parent.append(profile, logoutBtn);
+      } else {
+        renderModals(contentElement);
+  
+        const enterBtn = createElement('button', {
+          className: 'btn btn-primary',
+          innerHTML: '<span><i class="chevron-right"></i></span>Войти',
+          onClick: () => {
+            const enterModal = document.getElementById('enterModal');
+            enterModal.style.display = 'block';
+          }
+        });
+  
+        parent.appendChild(enterBtn);
+      }
     } catch (err) {
-        alert('Server does not respond!');
+      alert('Server does not respond!');
     }
-}
+  }
+  
+
+// REFACTORED VERSION
 
 /**
- * function to render profile site page
+ * Renders the profile site page.
  * @function renderProfile
- * @param {any} parent - parent content element
+ * @param {HTMLElement} parent - The parent element to append the profile content to.
  */
-function renderProfile(parent) {
-    const profileElement = document.createElement('div');
-
+async function renderProfile(parent) {
     try {
-        Ajax.get({
-            url: '/me',
-            callback: (status, responseString) => {
-                const isAuthorized = status === 200;
-
-                if (!isAuthorized) {
-                    goToPage(config.board);
-                    return;
-                }
-
-                const { username, email, anns } = JSON.parse(responseString);
-
-                const data = document.createElement('h1');
-                data.textContent = `${username}, ${email}`;
-                profileElement.appendChild(data);
-
-                const h = document.createElement('h1');
-                h.textContent = (anns && anns.length) ? 'Мои объявления' : 'У вас нет объявлений';
-                profileElement.appendChild(h);
-
-                if (anns && Array.isArray(anns)) {
-                    const annGroup = document.createElement('div');
-                    annGroup.classList.add('ann-group');
-                    profileElement.appendChild(annGroup);
-
-                    anns.forEach(({
-                        src, category, title, price, address,
-                    }) => {
-                        annGroup.innerHTML += `
-                        <div class="ann">
-                            <div class="ann-img">
-                                <img src="images/${src}" alt="">
-                            </div>
-                            <div class="ann-body">
-                                <div class="ann-category">${category}</div>
-                                <div class="ann-title">${title}</div>
-                                <div class="ann-sale">${price} ₽</div>
-                                <div class="ann-address">${address}</div>
-                            </div>
-                        </div>`;
-                    });
-                }
-
-                parent.appendChild(profileElement);
-            },
+      const { username, email, anns } = await Ajax.get('/me');
+  
+      const profileElement = document.createElement('div');
+      const header = document.createElement('h1');
+      header.textContent = `${username}, ${email}`;
+      profileElement.appendChild(header);
+  
+      const annsHeader = document.createElement('h1');
+      annsHeader.textContent = anns && anns.length ? 'Мои объявления' : 'У вас нет объявлений';
+      profileElement.appendChild(annsHeader);
+  
+      if (anns && Array.isArray(anns)) {
+        const annGroup = document.createElement('div');
+        annGroup.classList.add('ann-group');
+        profileElement.appendChild(annGroup);
+  
+        anns.forEach(({ src, category, title, price, address }) => {
+          const ann = document.createElement('div');
+          ann.classList.add('ann');
+          ann.innerHTML = `
+            <div class="ann-img">
+              <img src="images/${src}" alt="">
+            </div>
+            <div class="ann-body">
+              <div class="ann-category">${category}</div>
+              <div class="ann-title">${title}</div>
+              <div class="ann-sale">${price} ₽</div>
+              <div class="ann-address">${address}</div>
+            </div>
+          `;
+          annGroup.appendChild(ann);
         });
+      }
+  
+      parent.appendChild(profileElement);
     } catch (err) {
-        alert('Server does not respond!');
+      alert('Server does not respond!');
     }
-}
-
+  }
 /**
  * function to render next page
  * @function goToPage
