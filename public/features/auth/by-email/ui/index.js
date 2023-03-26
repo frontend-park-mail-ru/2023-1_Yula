@@ -1,6 +1,6 @@
 import { fButton, fModal, Form } from '../../../../shared/ui/index.js';
-// import { Form } from '../ui/Form/Form.js';
 import { validation } from '../lib/validation.js';
+import { userApi } from '../../../../shared/api/users.js';
 
 export const loginModal = (parent) => {
     const modal = fModal(parent, {
@@ -21,7 +21,20 @@ export const loginModal = (parent) => {
             });
 
             form.setActions({
-                submit: () => console.log('Api!'),
+                submit: async (fields) => {
+                    let res = await userApi.loginByEmail(fields);
+                    
+                    if (res.ok) {
+                        console.log('Вошёл!');
+                        modal.destroy();
+                    } else {
+                        let message = await res.json(); 
+                        const error = {};
+                        console.log(message);
+                        error['email'] = message.error;
+                        form.showError(error);
+                    }
+                },
                 validation: validation,
             });
 

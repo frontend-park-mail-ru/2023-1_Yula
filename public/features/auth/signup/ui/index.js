@@ -1,6 +1,6 @@
 import { fButton, fModal, Form } from '../../../../shared/ui/index.js';
-// import { Form } from '../ui/Form/Form.js';
 import { validation } from '../lib/validation.js';
+import { userApi } from '../../../../shared/api/users.js';
 
 export const signupModal = (parent) => {
     const modal = fModal(parent, {
@@ -21,8 +21,18 @@ export const signupModal = (parent) => {
             });
 
             form.setActions({
-                submit: (fields) => {
-                    console.log('Api!');
+                submit: async (fields) => {
+                    let res = await userApi.signup(fields);
+                    
+                    if (res.ok) {
+                        console.log('Зареган!');
+                        modal.destroy();
+                    } else {
+                        let message = await res.json(); 
+                        const error = {};
+                        error[message.errorFill] = message.error;
+                        form.showError(error);
+                    }
                 },
                 validation: validation,
                 accept: (checked) => {

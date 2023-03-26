@@ -8,16 +8,27 @@ export const Form = (parent, config = {id: ""}) => {
     config.id += "Form";
     const actions = {};
 
+    /**
+     * Возвращает форму из DOM-дерева
+     * @returns {HTMLElement|null}
+     */
     const self = () => {
         return document.getElementById(config.id);
     }
 
+    /**
+     * Удаление формы из DOM-дерева
+     */
     const destroy = () => {
         if (self()) {
             self().remove();
         }
     }
 
+    /**
+     * Возвращает объект со всеми полями формы
+     * @returns {Object}
+     */
     const getFields = () => {
         const formData = new FormData(self());
         const fields = {};
@@ -27,15 +38,26 @@ export const Form = (parent, config = {id: ""}) => {
         return fields;
     }
 
+    /**
+     * Отобразить ошибки формы
+     * @param {Object} errors - объект ошибок, где ключ - имя поля, значение - текст ошибки.
+     */
     const showError = (errors) => {
         for (let key in errors) {
-            if (errors.hasOwnProperty(key)) {
-                document.getElementById(key + 'Message').innerText = errors[key];
-                self()[key].classList.add('input-error');
+            if (!self()[key]) {
+                throw new Error(`Поле формы с именем ${key} не существует`)
             }
+
+            self()[key].classList.add('input-error');
+            let messageText = document.getElementById(key + 'Message');
+            messageText.innerText = errors[key];
         }
     }
 
+    /**
+     * Сбросить ошибки формы 
+     * @description Сброс всех ошибок формы.
+     */
     const resetErrors = () => {
         const errorFields = self().querySelectorAll('.input-error');
         for (let i = 0; i < errorFields.length; i++) {
@@ -49,6 +71,7 @@ export const Form = (parent, config = {id: ""}) => {
     }
 
     /**
+     * Установка событий на форму
      * @param {Object} newActions
      * @param {Function} newActions.submit - функция, которая будет вызвана при успешной валидации
      * @param {Function} newActions.validation - функция, которая будет вызвана для валидации полей
@@ -60,6 +83,9 @@ export const Form = (parent, config = {id: ""}) => {
         actions.accept = newActions.accept;
     }
 
+    /**
+     * Добавление событий на форму, после её рендеринга.
+     */
     const applyActions = () => {
         self().addEventListener('submit', (event) => {
             event.preventDefault();
@@ -82,6 +108,9 @@ export const Form = (parent, config = {id: ""}) => {
         }
     }
 
+    /**
+     * Функция рендеринга формы.
+     */
     const render = () => {
         if (self()) {
             throw new Error(`Объект с id="${id}" уже есть на странице`);
@@ -98,5 +127,6 @@ export const Form = (parent, config = {id: ""}) => {
         destroy,
         render,
         setActions,
+        showError,
     }
 }
