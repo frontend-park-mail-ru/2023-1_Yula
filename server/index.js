@@ -105,7 +105,7 @@ app.get('/me', (req, res) => {
 });
 
 /** port to listen */
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
     console.log(`Server listening port ${port}`);
