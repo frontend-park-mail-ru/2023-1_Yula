@@ -6,11 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="index.css">
     <link rel="shortcut icon" href="icons/favicon.ico" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
     <title>AppUniq</title>
 </head>
 <body>
     <div id="root"></div>
-    <script src="https://cdn.jsdelivr.net/npm/eta"></script>
+
+    <script src="template.js"></script>
+
+    <script src="modules/event-bus.js" type="module"></script>
     <script src="modules/ajax.js"></script>
     <script src="index.js" type="module"></script>
 </body>

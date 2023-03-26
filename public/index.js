@@ -1,4 +1,5 @@
-import CardGroup from './components/card/CardGroup.js';
+import { AuthWidget } from "./widgets/auth/index.js";
+import { Navbar } from "./widgets/navbar/index.js";
 
 const rootElement = document.getElementById('root');
 const headerElement = document.createElement('header');
@@ -173,7 +174,7 @@ function renderModals(parent) {
     </div>`;
     const content = parent;
 
-    content.innerHTML += modal;
+    content.insertAdjacentHTML("beforeEnd", modal);
 
     /** логика переключений */
     const enterBack = document.getElementById('enterBack');
