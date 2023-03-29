@@ -29,7 +29,19 @@ export class Button extends Base {
     }
 }
 
-//  в виде функции:
+/**
+ * Обычная кнопка
+ * @param {HTMLElement} parent - родительский элемент
+ * @param {Object} config - конфигурация
+ * @param {string} config.id
+ * @param {string} config.class
+ * @param {boolean} config.disabled
+ * @param {string} config.form - форма, которая отправляется при нажатии кнопки.
+ * Кнопка автоматически становится типа submit
+ * @param {string} config.srcIcon - путь до иконки, которая будет внутри кнопки
+ * @param {string} config.cssIcon - имя класса css-иконки, которая будет внутри кнопки
+ * @returns 
+ */
 export const fButton = (parent, config = {id: ""}) => {
     config.id += "Button";
     const actions = {};

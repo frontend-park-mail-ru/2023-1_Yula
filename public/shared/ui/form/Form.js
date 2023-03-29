@@ -39,22 +39,6 @@ export const Form = (parent, config = {id: ""}) => {
     }
 
     /**
-     * Отобразить ошибки формы
-     * @param {Object} errors - объект ошибок, где ключ - имя поля, значение - текст ошибки.
-     */
-    const showError = (errors) => {
-        for (let key in errors) {
-            if (!self()[key]) {
-                throw new Error(`Поле формы с именем ${key} не существует`)
-            }
-
-            self()[key].classList.add('input-error');
-            let messageText = document.getElementById(key + 'Message');
-            messageText.innerText = errors[key];
-        }
-    }
-
-    /**
      * Сбросить ошибки формы 
      * @description Сброс всех ошибок формы.
      */
@@ -67,6 +51,24 @@ export const Form = (parent, config = {id: ""}) => {
         const errorMessages = self().querySelectorAll('.error-text');
         for (let i = 0; i < errorMessages.length; i++) {
             errorMessages[i].innerText = '';
+        }
+    }
+
+    /**
+     * Отобразить ошибки формы
+     * @param {Object} errors - объект ошибок, где ключ - имя поля, значение - текст ошибки.
+     */
+    const showError = (errors) => {
+        resetErrors();
+
+        for (let key in errors) {
+            if (!self()[key]) {
+                throw new Error(`Поле формы с именем ${key} не существует`)
+            }
+
+            self()[key].classList.add('input-error');
+            let messageText = document.getElementById(key + 'Message');
+            messageText.innerText = errors[key];
         }
     }
 
@@ -89,7 +91,6 @@ export const Form = (parent, config = {id: ""}) => {
     const applyActions = () => {
         self().addEventListener('submit', (event) => {
             event.preventDefault();
-            resetErrors();
 
             const fields = getFields();
             const errors = actions.validation(fields);
@@ -128,5 +129,6 @@ export const Form = (parent, config = {id: ""}) => {
         render,
         setActions,
         showError,
+        resetErrors,
     }
 }

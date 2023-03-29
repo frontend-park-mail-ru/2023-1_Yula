@@ -4,8 +4,11 @@ export class userApi {
     }
 
     /**
-     * 
-     * @param {object} data - {username, email, password}
+     * Регистрация
+     * @param {object} data
+     * @param {string} data.username
+     * @param {string} data.email
+     * @param {string} data.password
      */
     static async signup(data) {
        return await fetch('/signup', {
@@ -18,8 +21,10 @@ export class userApi {
     }
 
     /**
-     * 
-     * @param {object} data - {email, password}
+     * Авторизация
+     * @param {object} data
+     * @param {string} data.email
+     * @param {string} data.password
      */
     static async loginByEmail(data) {
         return await fetch('/login', {
@@ -29,5 +34,12 @@ export class userApi {
             },
             body: JSON.stringify(data)
         });
+    }
+
+    /**
+     * Выход из аккаунта
+     */
+    static async logout() {
+        return await fetch('/logout', {method: 'POST'});
     }
 }

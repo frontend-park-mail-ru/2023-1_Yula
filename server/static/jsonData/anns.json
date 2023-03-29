@@ -2,7 +2,7 @@
     "az.bilalov@mail.ru": {
         "username": "Азат Билалов",
         "email": "az.bilalov@mail.ru",
-        "password": "1234",
+        "password": "123456",
         "avatar": "/ava1.jpeg",
         "anns": [
             {"src": "/ann1.jpeg", "category": "В быту", "title": "Корзина", "desc": "Удобная корзина", "price": "500", "address": "Москва, ул. Лобавческого 88"},
@@ -15,7 +15,7 @@
     "test@mail.ru": {
         "username": "Тестер",
         "email": "test@mail.ru",
-        "password": "000",
+        "password": "000000",
         "anns": [
             {"src": "/ann6.jpeg", "category": "Спорт", "title": "Мяч", "desc": "Удобный мяч", "price": "500", "address": "Москва, ул. Красная 28"}
         ]

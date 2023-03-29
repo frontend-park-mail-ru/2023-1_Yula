@@ -1,9 +1,9 @@
-import { AnnCard } from "../../entities/announcement/ui/index.js";
-import { annApi } from "../../shared/api/anns.js";
+import { AnnCard } from "../../entities/announcement/ui/card/AnnCard.js";
 import { Navbar } from "../../widgets/navbar/index.js";
 import { AuthWidget } from "../../widgets/auth/index.js";
+import { userApi } from "../../shared/api/users.js";
 
-export const boardPage = (parent) => {
+export const profilePage = (parent) => {
     const header = document.createElement('header');
     const content = document.createElement('main');
 
@@ -25,13 +25,15 @@ export const boardPage = (parent) => {
     }
 
     const renderContent = async () => {
+        const user = await (await userApi.getMe()).json();
+
+        const info = document.createElement('h3');
+        info.innerText = `Имя: ${user.username} \n Адрес: ${user.email}`;
+
         const annGroup = document.createElement('div');
         annGroup.classList.add('ann-group');
-        content.appendChild(annGroup);
 
-        const anns = await annApi.getAll();
-
-        anns.forEach(ann => {
+        user.anns.forEach(ann => {
             const annCard = AnnCard(annGroup, {
                 id: ann.name,
                 category: ann.category,
@@ -43,6 +45,9 @@ export const boardPage = (parent) => {
             annCard.render();
         });
 
+        content.appendChild(info);
+        content.appendChild(annGroup);
+
         // если контент есть, заменяем его новым
         if (!parent.querySelector('main')) {
             parent.appendChild(content);
@@ -51,10 +56,12 @@ export const boardPage = (parent) => {
         }
     }
 
+    
+
     const render = () => {
         renderHeader();
         renderContent();
-    } 
+    }
 
     return {
         render,

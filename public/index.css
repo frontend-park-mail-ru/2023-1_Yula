@@ -44,6 +44,12 @@ h1 {
     justify-self: start; 
 }
 
+.flex {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
 .pointer {
     cursor: pointer;
 }
@@ -182,7 +188,7 @@ h1 {
 } */
 
 /* НAВИГАЦИОННАЯ ПАНЕЛЬ */
-header {
+nav {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -521,4 +527,30 @@ img.avatar {
     left: 5px;
     bottom: 5px
    } 
+
+/* search */
+
+.gg-search {
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    transform: scale(var(--ggs,1));
+    width: 14px;
+    height: 14px;
+    border: 2px solid;
+    border-radius: 100%;
+}
+.gg-search::after {
+    content: "";
+    display: block;
+    box-sizing: border-box;
+    position: absolute;
+    border-radius: 3px;
+    width: 2px;
+    height: 8px;
+    background: currentColor;
+    transform: rotate(-45deg);
+    top: 8px;
+    left: 10px
+}
 

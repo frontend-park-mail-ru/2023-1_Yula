@@ -106,6 +106,10 @@ app.get('/me', (req, res) => {
     });
 });
 
+app.get('/*', (_,res) => {
+    res.sendFile(path.resolve("public/index.html"));
+});
+
 /** port to listen */
 const port = process.env.PORT || 8080;
 

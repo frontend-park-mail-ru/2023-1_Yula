@@ -3,4 +3,8 @@ export class annApi {
         let anns = await fetch('/board');
         return anns.json();
     }
+
+    static async getFromUser() {
+        
+    }
 }

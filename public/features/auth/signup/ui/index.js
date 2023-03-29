@@ -1,6 +1,7 @@
 import { fButton, fModal, Form } from '../../../../shared/ui/index.js';
 import { validation } from '../lib/validation.js';
 import { userApi } from '../../../../shared/api/users.js';
+import bus from '../../../../modules/event-bus.js';
 
 export const signupModal = (parent) => {
     const modal = fModal(parent, {
@@ -25,12 +26,12 @@ export const signupModal = (parent) => {
                     let res = await userApi.signup(fields);
                     
                     if (res.ok) {
-                        console.log('Зареган!');
+                        bus.emit('user:logged-in', fields);
                         modal.destroy();
                     } else {
                         let message = await res.json(); 
                         const error = {};
-                        error[message.errorFill] = message.error;
+                        error['email'] = message.error;
                         form.showError(error);
                     }
                 },

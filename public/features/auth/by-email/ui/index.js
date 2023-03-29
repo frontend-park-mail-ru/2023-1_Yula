@@ -1,13 +1,16 @@
 import { fButton, fModal, Form } from '../../../../shared/ui/index.js';
 import { validation } from '../lib/validation.js';
 import { userApi } from '../../../../shared/api/users.js';
+import bus from '../../../../modules/event-bus.js';
 
 export const loginModal = (parent) => {
     const modal = fModal(parent, {
         id: 'login',
         title: 'Авторизация'
     });
-    const actions = {};
+    const actions = {
+        noAccount: () => {}
+    };
 
     return {
         render: () => {
@@ -25,8 +28,12 @@ export const loginModal = (parent) => {
                     let res = await userApi.loginByEmail(fields);
                     
                     if (res.ok) {
-                        console.log('Вошёл!');
+                        res = await userApi.getMe(); // под вопросом
+                        const user = await res.json();
+
+                        bus.emit('user:logged-in', user);
                         modal.destroy();
+                        
                     } else {
                         let message = await res.json(); 
                         const error = {};
@@ -68,9 +75,16 @@ export const loginModal = (parent) => {
             }
         },
 
+        /**
+         * Установка действий на модалку входа
+         * @param {Object} newActions
+         * @param {Function} newActions.back - событие при клике на стрелку возвращения
+         * @param {Function} newActions.noAccount - событие при клике на кнопку "Нет аккаунта"
+         */
         setActions: (newActions) => {
-            actions.back = newActions.back;
-            actions.noAccount = newActions.noAccount;
+            for (let action in newActions) {
+                actions[action] = newActions[action];
+            }
         },
 
         self: () => modal.self(),
