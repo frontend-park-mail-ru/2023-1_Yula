@@ -1,0 +1,32 @@
+:root {
+    --primary-color: #2688EB;
+    --primary-color-hover: #2C7CDE;
+    --primary-color-disabled: #2688EBb80;
+    --success-color: #4BB34B;
+    --success-color-hover: #3CA03E;
+    --success-color-disabled: #4bb34b80;
+
+    --grey-color: #EDEDED;
+    --white-color: #FFFFFF;
+}
+
+body.dark {
+    --primary-color: #082643;
+    --primary-color-hover: #082f5f;
+    --primary-color-disabled: #2688EBb80;
+    --success-color: #075207;
+    --success-color-hover: #1f6720;
+    --success-color-disabled: #4bb34b80;
+
+    --grey-color: #6e6a6a;
+    --white-color: #ffffff;
+}
+
+@font-face {
+    font-family: "Roboto VK";
+    src: url("assets/fonts/Roboto-Regular.ttf");
+}
+@font-face {
+    font-family: "Roboto VK Bold";
+    src: url("assets/fonts/Roboto-Bold.ttf");
+}

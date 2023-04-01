@@ -1,0 +1,51 @@
+.input {
+    box-sizing: border-box;
+    display: flex;
+    flex: auto;
+    width: 100%;
+    height: 32px;
+    border-radius: 8px;
+    border: none;
+    font-family: "Roboto VK";
+    background: #EBEDF0;
+    padding-left: 5px;
+
+    &:focus {
+        outline: none;
+        background: #DCE0E5;
+    }
+
+    &:disabled {
+        background: #EBEDF0;
+    }
+
+    &::placeholder {
+        color: #818C99;
+        font-family: "Roboto VK";
+    }
+}
+
+.input_error {
+    background: #FAEBEB;
+    border: 0.5px solid #E64646;
+}
+
+.input__field { 
+    background-color: rgba(0, 0, 0, 0); 
+    border: none;
+    width: 100%;
+}
+
+.input__field:focus {
+    outline: none;
+}
+
+.input__icon {
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    padding: 0;
+    height: 24px;
+    display: flex;
+    align-self: center;
+    justify-content: center;
+}

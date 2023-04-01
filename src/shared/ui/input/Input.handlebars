@@ -1,0 +1,15 @@
+<div class="input" id="{{id}}">
+    {{#if leftIcon}}
+        <button class="input__icon">
+            <img src="{{leftIcon}}" alt="">
+        </button>
+    {{/if}}
+
+    <input class="input__field" placeholder="{{placeholder}}" type="{{type}}" value="{{text}}">
+    
+    {{#if rightIcon}}
+        <button class="input__icon">
+            <img src="{{rightIcon}}" alt="">
+        </button>
+    {{/if}}
+</div>
