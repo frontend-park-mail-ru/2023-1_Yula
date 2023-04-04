@@ -1,0 +1,59 @@
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.2s ease-in-out;
+    &:hover {
+        background-color: var(--grey-color);
+    }
+}
+
+.icon_direction_row {
+    flex-direction: row;
+
+    & > .icon__text {
+        margin-left: 4px;
+    }
+}
+
+.icon_direction_column {
+    flex-direction: column;
+
+    & > .icon__text {
+        margin-top: 4px;
+    }
+}
+
+.icon__img {
+    width: 24px;
+    height: 24px;
+}
+
+.icon__text {
+    font-family: 'Roboto VK';
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    text-align: center;
+    color: var(--grey-color);
+}
+
+.icon_text_color_primary {
+    color: var(--primary-color);
+}
+
+.icon_text_color_secondary {
+    color: var(--secondary-color);
+}
+
+.icon_text_color_success {
+    color: var(--success-color);
+}
+
+.icon_text_color_grey {
+    color: var(--grey-color);
+}
