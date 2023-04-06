@@ -1,7 +1,8 @@
-import { Button, Modal, Form } from '../../../../shared/ui/index.js';
+import { Button, Modal, Form } from '@shared/ui/index.js';
 import { validation } from '../lib/validation.js';
-import { userApi } from '../../../../shared/api/users.js';
-import store from '../../../../modules/state-manager.js';
+import { userApi } from '@shared/api/users.js';
+import template from './Form/Form.handlebars';
+import store from '@modules/state-manager.js';
 
 export const loginModal = (parent) => {
     const modal = Modal(parent, {
@@ -20,7 +21,7 @@ export const loginModal = (parent) => {
             // заполняем тело
             const form = Form(modal.body(), {
                 id: "login",
-                template: 'features/auth/by-email/ui/Form/Form',
+                template,
             });
 
             form.setActions({
@@ -28,9 +29,7 @@ export const loginModal = (parent) => {
                     let res = await userApi.loginByEmail(fields);
                     
                     if (res.ok) {
-                        res = await userApi.getMe(); // под вопросом
-                        const user = await res.json();
-
+                        const user = await userApi.getMe();
                         store.setState('user', user);
                         modal.destroy();
 

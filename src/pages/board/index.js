@@ -1,7 +1,8 @@
-import { AnnCard } from "../../entities/announcement/ui/index.js";
-import { annApi } from "../../shared/api/anns.js";
-import { Navbar } from "../../widgets/navbar/index.js";
-import { AuthWidget } from "../../widgets/auth/index.js";
+import { AnnCard } from "@entities/announcement/ui/index";
+import { annApi } from "@shared/api/anns";
+import { Navbar } from "@widgets/navbar/index";
+import { AuthWidget } from "@widgets/auth/index";
+import store from "@modules/state-manager";
 
 export const boardPage = (parent) => {
     const header = document.createElement('header');
@@ -20,11 +21,14 @@ export const boardPage = (parent) => {
     }
 
     const contentFilling = async () => {
+        content.innerHTML = '';
+
         const annGroup = document.createElement('div');
         annGroup.classList.add('announcement-group');
         content.appendChild(annGroup);
 
         const anns = await annApi.getAll();
+        console.log(anns);
 
         anns.forEach(ann => {
             const annCard = AnnCard(annGroup, {
@@ -55,6 +59,12 @@ export const boardPage = (parent) => {
             parent.querySelector('main').replaceWith(content);
         }
     } 
+
+    // подписываемся на изменения в сторе (вынести в роутер)
+    store.subscribe('user', () => {
+        contentFilling();
+        render();
+    });
 
     return {
         render,

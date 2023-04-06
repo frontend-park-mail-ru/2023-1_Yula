@@ -1,7 +1,10 @@
-import { AnnCard } from "../../entities/announcement/ui/card/AnnCard.js";
-import { Navbar } from "../../widgets/navbar/index.js";
-import { AuthWidget } from "../../widgets/auth/index.js";
-import { userApi } from "../../shared/api/users.js";
+import { AnnCard } from "@entities/announcement/ui/card/AnnCard.js";
+import { Navbar } from "@widgets/navbar/index.js";
+import { AuthWidget } from "@widgets/auth/index.js";
+import { Button } from "@shared/ui/index.js";
+import { userApi } from "@shared/api/users.js";
+import store from "@modules/state-manager.js";
+import { goTo } from "@shared/lib/history";
 
 export const profilePage = (parent) => {
     const header = document.createElement('header');
@@ -20,10 +23,25 @@ export const profilePage = (parent) => {
     }
 
     const contentFilling = async () => {
-        const user = await (await userApi.getMe()).json();
+        const user = store.getState('user');
 
         const info = document.createElement('h3');
         info.innerText = `Имя: ${user.username} \n Адрес: ${user.email}`;
+        info.style.color = 'var(--fg-color)';
+
+        const logoutBtn = Button(content, {
+            text: 'Выйти',
+            type: 'button',
+            color: 'primary',
+            size: 'small',
+        });
+        logoutBtn.setActions({
+            click: async () => {
+                await userApi.logout();
+                store.setState('user', null);
+                goTo('/');
+            }
+        });
 
         const annGroup = document.createElement('div');
         annGroup.classList.add('announcement-group');
@@ -41,6 +59,7 @@ export const profilePage = (parent) => {
         });
 
         content.appendChild(info);
+        logoutBtn.render();
         content.appendChild(annGroup);
     }
 

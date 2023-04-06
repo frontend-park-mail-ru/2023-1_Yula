@@ -1,5 +1,4 @@
-import { signupModal } from "../../features/auth/signup/index.js";
-import { loginModal } from "../../features/auth/by-email/index.js";
+import { signupModal, loginModal } from "@features/auth";
 
 export const AuthWidget = (parent) => {
 

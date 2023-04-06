@@ -1,4 +1,5 @@
 import './Modal.scss';
+import template from './Modal.handlebars';
 
 export const Modal = (parent, config = {id: ""}) => {
     config.id += "Modal";
@@ -6,6 +7,7 @@ export const Modal = (parent, config = {id: ""}) => {
     const actions = {
         back: () => destroy(),
         close: () => destroy(),
+        outside: () => destroy()
     };
 
     const self = () => {
@@ -13,7 +15,6 @@ export const Modal = (parent, config = {id: ""}) => {
     }
 
     const body = () => {
-        // return parent.querySelector(`#${config.id}Body`);
         if (!self()) {
             throw new Error(`Объект с id="${config.id}" не найден на странице`);
         }
@@ -22,7 +23,6 @@ export const Modal = (parent, config = {id: ""}) => {
     }
 
     const footer = () => {
-        // return parent.querySelector(`#${config.id}Footer`);
         if (!self()) {
             throw new Error(`Объект с id="${config.id}" не найден на странице`);
         }
@@ -36,6 +36,13 @@ export const Modal = (parent, config = {id: ""}) => {
         }
     }
 
+    /**
+     * Добавить действия для элементов модального окна
+     * @param {Object} newActions 
+     * @param {Function} newActions.back - действие при нажатии на кнопку "Назад"
+     * @param {Function} newActions.close - действие при нажатии на кнопку "Закрыть"
+     * @param {Function} newActions.outside - действие при нажатии вне модального окна
+     */
     const setActions = (newActions) => {
         for (let action in newActions) {
             actions[action] = newActions[action];
@@ -43,13 +50,17 @@ export const Modal = (parent, config = {id: ""}) => {
     }
 
     const applyActions = () => {
-        // const backButton = parent.querySelector(`#${config.id}Back`);
         const backButton = self().querySelector(`.modal__btn-back`);
         backButton.addEventListener('click', () => actions.back());
 
-        // const closeButton = parent.querySelector(`#${config.id}Close`);
         const closeButton = self().querySelector(`.modal__btn-close`);
         closeButton.addEventListener('click', () => actions.close());
+
+        self().addEventListener('click', (e) => {
+            if (e.target === self()) {
+                actions.outside();
+            }
+        });
     }
 
     const render = () => {
@@ -57,7 +68,6 @@ export const Modal = (parent, config = {id: ""}) => {
             throw new Error(`Объект с id="${config.id}" уже есть на странице`);
         }
 
-        const template = Handlebars.templates["shared/ui/modal/Modal"];
         parent.insertAdjacentHTML("beforeEnd", template(config));
 
         applyActions();

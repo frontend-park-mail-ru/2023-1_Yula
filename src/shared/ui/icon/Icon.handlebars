@@ -1,4 +1,14 @@
-<div class="icon icon_direction_{{direction}}">
-    <img class="icon__img" src="{{src}}" alt="">
-    <span class="icon__text">{{text}}</span>
-</div>
+{{#if id}}
+    <div id="{{id}}" class="icon icon_direction_{{direction}} icon_size_{{size}} {{#if invert}}icon_invert{{/if}} {{#if circular}}icon_circular{{/if}}">
+{{/if}}
+{{#if link}}
+    <a href="{{link}}">
+{{/if}}
+        <img class="icon__img" src="{{src}}" alt="">
+        <span class="icon__text icon__text_color_{{color}}">{{text}}</span>
+{{#if link}}
+    </a>
+{{/if}}
+{{#if id}}
+    </div>
+{{/if}}

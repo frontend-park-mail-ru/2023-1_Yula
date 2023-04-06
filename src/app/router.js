@@ -40,15 +40,15 @@ export const Router = (parent) => {
         const route = findRoute(path);
         const { page, params, redirect, name } = route;
 
-        if (route.isPrivate) {
-            if (store.getState('user')) {
-                
-            } else {
-                goTo(redirect);
-            }
-        } else {
-            route.page(parent, route.params).render();
-        }
+        // if (route.isPrivate) {
+        //     if (store.getState('user')) {
+        //         alert('Вы уже авторизованы');
+        //     } else {
+        //         goTo(redirect);
+        //     }
+        // } else {
+        //     route.page(parent, route.params).render();
+        // }
 
         if (!route.isPrivate ||
             route.isPrivate && store.getState('user')) {
@@ -64,10 +64,8 @@ export const Router = (parent) => {
      */
     const start = async () => {
         // проверяем авторизацию пользователя
-        const res = await userApi.getMe();
-        if (res.ok) {
-            store.setState('user', (await res.json()));
-        }
+        const user = await userApi.getMe();
+        store.setState('user', user);
 
         // изменяем историю браузера при клике по ссылке
         parent.addEventListener('click', (event) => {
@@ -82,18 +80,15 @@ export const Router = (parent) => {
         });
 
         // изменяем содержимое страницы при переходе по истории (назад/вперед)
-        window.addEventListener('popstate', function() {
-            // const page = getPage(window.location.pathname);
-            // page.render();
-
-            // находим страницу по url-адресу
+        window.addEventListener('popstate', function(e) {
+            console.log(e);
             const pageObj = findRoute(window.location.pathname);
             if (pageObj) {
                 if (pageObj.isPrivate) {
                     if (store.getState('user')) {
                         pageObj.page(parent).render(); 
                     } else {
-                        const redirectPage = findPage(pageObj.redirect);
+                        const redirectPage = findRoute(pageObj.redirect);
                         redirectPage.page(parent).render();
                     }
                 } else {
@@ -103,10 +98,6 @@ export const Router = (parent) => {
         });
 
         // начальная страница
-        // const startPage = getPage(window.location.pathname);
-
-        // startPage.render();
-
         goTo(window.location.pathname);        
     }
 

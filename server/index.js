@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const uuid = require('uuid').v4;
 // const mime = require('mime-types')
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 
@@ -19,10 +20,34 @@ app.use(cookie());
 /** user data */
 const users = require('./static/jsonData/anns.json');
 
+/** base64 user avatars */
+Object.values(users).map(user => {
+    if (user.avatar) {
+        const imagePath = path.join(__dirname, 'static', 'images', user.avatar);
+        const imageBuffer = fs.readFileSync(imagePath);
+        user.avatar = Buffer.from(imageBuffer).toString('base64');
+    }
+
+    return user.avatar;
+}).filter(Boolean);
+
+/** base64 ann images */
+Object.values(users).map(user => {
+    if (user.anns) {
+        user.anns.map(ann => {
+            const imagePath = path.join(__dirname, 'static', 'images', ann.src);
+            const imageBuffer = fs.readFileSync(imagePath);
+            ann.img = Buffer.from(imageBuffer).toString('base64');
+        });
+    }
+    
+    return user.anns;
+}).filter(Boolean);
+
 /** session identificators */
 const ids = {};
 
-app.post('/signup', (req, res) => {
+app.post('/api/signup', (req, res) => {
     const { password, email, username } = req.body;
     if (!username || username.length < 4) {
         return res.status(400).json({ error: 'Имя пользователя не менее 4 символов', errorFill: 'username' });
@@ -48,7 +73,7 @@ app.post('/signup', (req, res) => {
     return res.status(201).json({ id });
 });
 
-app.post('/login', (req, res) => {
+app.post('/api/login', (req, res) => {
     const { password, email } = req.body;
     if (!password || !email) {
         return res.status(400).json({ error: 'Не указан E-Mail или пароль' });
@@ -64,7 +89,7 @@ app.post('/login', (req, res) => {
     return res.status(200).json({ id });
 });
 
-app.post('/logout', (req, res) => {
+app.post('/api/logout', (req, res) => {
     const id = req.cookies.appuniq;
     const emailSession = ids[id];
 
@@ -76,7 +101,7 @@ app.post('/logout', (req, res) => {
     return res.end();
 });
 
-app.get('/board', (req, res) => {
+app.get('/api/board', (req, res) => {
     const id = req.cookies.appuniq;
     const emailSession = ids[id];
 
@@ -89,7 +114,7 @@ app.get('/board', (req, res) => {
     res.json(result.flat());
 });
 
-app.get('/me', (req, res) => {
+app.get('/api/me', (req, res) => {
     const id = req.cookies.appuniq;
     const emailSession = ids[id];
 
@@ -106,12 +131,12 @@ app.get('/me', (req, res) => {
     });
 });
 
-app.get('/*', (_,res) => {
-    res.sendFile(path.resolve("public/index.html"));
-});
+// app.get('/*', (_,res) => {
+//     res.sendFile(path.resolve("dist/index.html"));
+// });
 
 /** port to listen */
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
     console.log(`Server listening port ${port}`);

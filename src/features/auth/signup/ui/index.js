@@ -1,8 +1,8 @@
-import { Button, Modal, Form } from '../../../../shared/ui/index.js';
+import { Button, Modal, Form } from '@shared/ui/index.js';
 import { validation } from '../lib/validation.js';
-import { userApi } from '../../../../shared/api/users.js';
-// import bus from '../../../../modules/event-bus.js';
-import store from '../../../../modules/state-manager.js';
+import { userApi } from '@shared/api/users.js';
+import template from './Form/Form.handlebars';
+import store from '@modules/state-manager.js';
 
 export const signupModal = (parent) => {
     const modal = Modal(parent, {
@@ -19,7 +19,7 @@ export const signupModal = (parent) => {
             // заполняем тело
             const form = Form(modal.body(), {
                 id: "signup",
-                template: 'features/auth/signup/ui/Form/Form',
+                template,
             });
 
             form.setActions({
@@ -27,7 +27,6 @@ export const signupModal = (parent) => {
                     let res = await userApi.signup(fields);
                     
                     if (res.ok) {
-                        // bus.emit('user:logged-in', fields);
                         store.setState('user', fields);
                         modal.destroy();
                     } else {

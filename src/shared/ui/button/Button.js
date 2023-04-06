@@ -1,5 +1,6 @@
 // добавить стиль кнопки
 import './Button.scss';
+import template from './Button.handlebars';
 
 /**
  * Обычная кнопка
@@ -57,7 +58,7 @@ export const Button = (parent, config) => {
             throw new Error(`Объект с id="${config.id}" уже есть на странице`);
         }
 
-        const template = Handlebars.templates["shared/ui/button/Button"];
+        // const template = Handlebars.templates["shared/ui/button/Button"];
         parent.insertAdjacentHTML("beforeEnd", template(config));
 
         applyActions();

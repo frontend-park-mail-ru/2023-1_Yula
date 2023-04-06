@@ -1,32 +1,82 @@
 :root {
     --primary-color: #2688EB;
     --primary-color-hover: #2C7CDE;
-    --primary-color-disabled: #2688EBb80;
+    --primary-color-disabled: #2689ebcb;
+
     --success-color: #4BB34B;
     --success-color-hover: #3CA03E;
     --success-color-disabled: #4bb34b80;
 
+    --danger-color: #E64646;
+    --danger-color-hover: #d72727;
+    --danger-color-disabled: #E64646b80;
+
+    --secondary-color: #6D7885;
+    --secondary-color-strong: #5c6978;
+    --secondary-color-lite: #6d7885b3;
+
+    --light-color: #f5f6f7;
+    --light-color-strong: #DCE0E5;
+    --light-color-lite: #ebedf0da;
+
     --grey-color: #EDEDED;
     --white-color: #FFFFFF;
+
+    /* --bg-color: #AEC5CE; */
+    --bg-color: #dcddff;;
+    --bg-color-lite: #EDEDED;
+    --bg-color-strong: #f9f9f9;
+
+    --fg-color: #141a32;
+    --fg-color-lite: #212b4e;
+    --fg-color-strong: #1e2745;
+
+    --logo-color: #620760;
 }
 
 body.dark {
-    --primary-color: #082643;
-    --primary-color-hover: #082f5f;
-    --primary-color-disabled: #2688EBb80;
+    --primary-color: #3e65fb;
+    --primary-color-hover: #4d70fc;
+    --primary-color-disabled: #3e64fbc5;
+
     --success-color: #075207;
     --success-color-hover: #1f6720;
     --success-color-disabled: #4bb34b80;
 
+    --secondary-color: #d2d2d7;
+    --secondary-color-strong: #5c6978;
+    --secondary-color-lite: #6d7885b3;
+
+    --upper-color: #f5f6f7;
+
+    --light-color: #141a32;
+    --light-color-strong: #DCE0E5;
+    --light-color-lite: #ebedf0da;
+
     --grey-color: #6e6a6a;
     --white-color: #ffffff;
+
+    --bg-color: #182039;
+    --bg-color-lite: #373e5d;
+    --bg-color-strong: #1e2745;
+
+    --fg-color: #edfaff;
+    --fg-color-lite: #f1f1f1;
+    --fg-color-strong: #EDEDED;
+
+    --logo-color: #3263de;
 }
 
 @font-face {
     font-family: "Roboto VK";
     src: url("assets/fonts/Roboto-Regular.ttf");
 }
+
 @font-face {
     font-family: "Roboto VK Bold";
     src: url("assets/fonts/Roboto-Bold.ttf");
+}
+
+body {
+    background-color: var(--bg-color);
 }

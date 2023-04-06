@@ -1,8 +1,14 @@
-import { Button, Input, Icon } from "../../shared/ui/index.js";
-import { UserBar } from "../../entities/user/ui/index.js";
-import store from "../../modules/state-manager.js";
-import { userApi } from "../../shared/api/users.js";
+import { Button, Input, Icon } from "@shared/ui/index.js";
+import { UserBar } from "@entities/user/ui/index.js";
+import store from "@modules/state-manager.js";
+import { userApi } from "@shared/api/users.js";
+import { MenuPanel } from "./ui/menu-panel/MenuPanel.js";
+
 import './index.scss';
+
+import searchSvg from 'assets/icons/search.svg';
+import accountSvg from 'assets/icons/account.svg';
+import basketSvg from 'assets/icons/basket.svg';
 
 export const Navbar = (parent) => {
     const actions = {
@@ -47,64 +53,13 @@ export const Navbar = (parent) => {
             id: "search",
             placeholder: "Я ищу...",
             type: "text",
-            leftIcon: "icons/search.svg",
+            leftIcon: searchSvg,
         });
         input.render();
-
-        // кнопка входа
-        const authButton = Button(nav, {
-            id: "login",
-            type: "button",
-            text: "Войти",
-            color: "primary"
-        });
-        authButton.setActions({
-            click: actions.auth
-        });
-
-        // account bar
-        const testIcon = Icon(nav, {
-            id: "test",
-            src: "icons/search.svg",
-        });
-
-        // пользовательская панель
-        const userbar = UserBar(nav, {
-            href: "/profile",
-        });
-        userbar.setActions({
-            logout: () => {
-                userApi.logout();
-                store.setState('user', null);
-            }
-        });
-
-        // событие входа в аккаунт
-        store.subscribe('user', (user) => {
-            if (!user) {
-                userbar.destroy();
-                authButton.render();
-                return;
-            } else {
-                userbar.config.username = user.username; // исправить обращение к конфигу напрямую
-                userbar.config.avatar = user.avatar;
-                userbar.render();
-                authButton.destroy();
-            }
-        });
-
-
-        // проверка авторизирован ли пользователь
-        if (store.getState('user')) {
-            userbar.config.username = store.getState('user').username; // исправить обращение к конфигу напрямую
-            userbar.config.avatar = store.getState('user').avatar;
-            userbar.render();
-            authButton.destroy();
-        } else {
-            userbar.destroy();
-            authButton.render();
-        }
-
+        
+        const menu = MenuPanel(nav);
+        menu.setActions({ 'login': actions.auth });
+        menu.render();
     }
 
     return {
