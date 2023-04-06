@@ -71,7 +71,8 @@ export const MenuPanel = (parent) => {
                 src: user ? user.avatar : userSvg,
                 size: "large",
                 invert: user ? false : invert,
-                link: (store.getState('user')) ? '/profile' : null,
+                link: user ? '/profile' : null,
+                circular: user ? true : false,
                 actions: {
                     'click': () => {
                         if (!store.getState('user')) {
@@ -99,62 +100,6 @@ export const MenuPanel = (parent) => {
                 invert: invert,
             }),
         }
-
-        // const createAnnIcon = Icon(menu, {
-        //     id: "createAnn",
-        //     src: createAnnSvg,
-        //     size: "large",
-        //     direction: "row",
-        //     text: "Создать объявление",
-        //     color: "fg",
-        // });
-        // createAnnIcon.setActions({
-        //     'click': () => {
-        //         if (store.getState('user')) {
-        //             console.log("перенаправление...");
-        //         } else {
-        //             actions.login();
-        //         }
-        //     }
-        // })
-        // createAnnIcon.render();
-
-        // const user = store.getState('user');
-        // const userIcon = Icon(menu, {
-        //     id: "user",
-        //     src: (user) ? user.avatar : userSvg,
-        //     circular: (user) ? true : false,
-        //     link: (user) ? `/profile` : null,
-        //     size: "large",
-        // });
-        // userIcon.setActions({
-        //     'click': () => {
-        //         if (!store.getState('user')) {
-        //             actions.login();
-        //         }
-        //     }
-        // });
-        // userIcon.render();
-        
-        // const basketIcon = Icon(menu, {
-        //     id: "basket",
-        //     src: basketSvg,
-        //     size: "large",
-        // });
-        // basketIcon.render()
-
-        // const orderIcon = Icon(menu, {
-        //     id: "order",
-        //     src: orderSvg,
-        //     size: "large",
-        // });
-        // orderIcon.render();
-
-        // const themeIcon = Icon(menu, {
-        //     id: "theme",
-        //     src: (store.getState('theme') === 'light') ? sunSvg : moonSvg,
-        //     size: "large",
-        // });
 
         Icons.theme.setActions({
             "click": () => {
@@ -185,7 +130,6 @@ export const MenuPanel = (parent) => {
                     invert: false,
                 });
             } else {
-                console.log("user is null", store.getState('theme'));
                 Icons.user.changeConfig({
                     circular: false,
                     src: userSvg,

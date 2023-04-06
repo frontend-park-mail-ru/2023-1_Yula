@@ -57,6 +57,9 @@ module.exports = {
             {
                 test: /\.(png|svg|jpg|jpeg|gif)$/,
                 type: 'asset/resource',
+                generator: {
+                    filename: 'assets/images/[name][ext]'
+                }
             },
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
@@ -70,7 +73,7 @@ module.exports = {
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: 'styles.css', // имя результирующего css файла
+            filename: 'styles.css',
         }),
         new HtmlWebpackPlugin({
             template: './public/index.html',

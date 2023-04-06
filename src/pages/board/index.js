@@ -1,7 +1,7 @@
-import { AnnCard } from "@entities/announcement/ui/index";
+import { AnnCard } from "@entities/announcement/ui";
 import { annApi } from "@shared/api/anns";
-import { Navbar } from "@widgets/navbar/index";
-import { AuthWidget } from "@widgets/auth/index";
+import { Navbar } from "@widgets/navbar";
+import { AuthWidget } from "@widgets/auth";
 import store from "@modules/state-manager";
 
 export const boardPage = (parent) => {
