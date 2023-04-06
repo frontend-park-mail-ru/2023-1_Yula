@@ -202,4 +202,4 @@ export const MenuPanel = (parent) => {
         setActions,
         render,
     }
-} 
+}
