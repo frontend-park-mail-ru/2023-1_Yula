@@ -27,7 +27,8 @@ export const signupModal = (parent) => {
                     let res = await userApi.signup(fields);
                     
                     if (res.ok) {
-                        store.setState('user', fields);
+                        let user = await userApi.getMe();
+                        store.setState('user', user);
                         modal.destroy();
                     } else {
                         let message = await res.json(); 

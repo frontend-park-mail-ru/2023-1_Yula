@@ -46,17 +46,19 @@ export const profilePage = (parent) => {
         const annGroup = document.createElement('div');
         annGroup.classList.add('announcement-group');
 
-        user.anns.forEach(ann => {
-            const annCard = AnnCard(annGroup, {
-                id: ann.name,
-                category: ann.category,
-                title: ann.title,
-                price: ann.price,
-                address: ann.address,
-                src: ann.src,
+        if (user.anns) {
+            user.anns.forEach(ann => {
+                const annCard = AnnCard(annGroup, {
+                    id: ann.name,
+                    category: ann.category,
+                    title: ann.title,
+                    price: ann.price,
+                    address: ann.address,
+                    src: ann.src,
+                });
+                annCard.render();
             });
-            annCard.render();
-        });
+        }
 
         content.appendChild(info);
         logoutBtn.render();

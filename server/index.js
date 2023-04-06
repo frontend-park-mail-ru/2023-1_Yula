@@ -64,8 +64,12 @@ app.post('/api/signup', (req, res) => {
 
     const id = uuid();
     const user = {
-        password, email, username, anns: [],
+        password, email, username, anns: [], avatar: '/ava.jpg',
     };
+    const imagePath = path.join(__dirname, 'static', 'images', user.avatar);
+    const imageBuffer = fs.readFileSync(imagePath);
+    user.avatar = Buffer.from(imageBuffer).toString('base64');
+
     ids[id] = email;
     users[email] = user;
 
