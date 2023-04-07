@@ -3,6 +3,7 @@ import { UserBar } from "@entities/user/ui/index.js";
 import store from "@modules/state-manager.js";
 import { userApi } from "@shared/api/users.js";
 import { MenuPanel } from "./ui/menu-panel/MenuPanel.js";
+import { MenuPanelMobile } from "./ui/menu-panel/MenuPanel.js";
 
 import './index.scss';
 
@@ -56,10 +57,16 @@ export const Navbar = (parent) => {
             leftIcon: searchSvg,
         });
         input.render();
-        
-        const menu = MenuPanel(nav);
-        menu.setActions({ 'login': actions.auth });
-        menu.render();
+        if (window.innerWidth >= 900) {
+            const menu = MenuPanel(nav);
+            menu.setActions({ 'login': actions.auth });
+            menu.render();
+        }
+        else {
+            const menu = MenuPanelMobile(nav);
+            menu.setActions({ 'login': actions.auth });
+            menu.render();
+        }
     }
 
     return {

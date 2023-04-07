@@ -12,6 +12,7 @@
     &:hover {
         background-color: var(--bg-color-lite);
     }
+    transition: 0.5s;
 }
 
 .icon_direction_row {
@@ -93,4 +94,16 @@
 
 .icon__text_color_fg {
     color: var(--fg-color)
+}
+
+.icon_active {
+    color: var(--primary-color);
+    transition: 0.5s;
+    transform: translateY(-10px);
+}
+
+@media screen and (max-width: 900px) {
+    .icon {
+        margin: 0 3.5% 0 3.5%;
+    }
 }
