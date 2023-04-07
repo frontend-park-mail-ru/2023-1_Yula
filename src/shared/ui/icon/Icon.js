@@ -103,8 +103,14 @@ export const Icon = (parent, config) => {
     const render = () => {
         const wrapper = document.createElement('div');
         wrapper.innerHTML = template(config).trim();
-        const newIcon = wrapper.firstChild;
 
+        // делаем активной иконку homePage
+        if (config.id == 'homePageIcon') {
+            wrapper.firstChild.classList.add('icon_active');
+        };
+
+        const newIcon = wrapper.firstChild;
+        
         if (self()) {
             self().replaceWith(newIcon);
         } else {
