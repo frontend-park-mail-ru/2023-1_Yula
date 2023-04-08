@@ -137,7 +137,7 @@ app.get('/api/bucket', (req, res) => {
 
     const result = Object
         .values(users)
-        .filter(({email}) => email !== emailSession)
+        .filter(({email}) => email === emailSession)
         .map((user) => user.purchs)
         .filter(Boolean);
     

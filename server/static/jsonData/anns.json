@@ -19,7 +19,8 @@
         "email": "tayushiev@gmail.com",
         "password": "1234578",
         "anns": [],
-        "purch": [
+        "avatar": "/ava.jpg",
+        "purchs": [
             {"src": "/ann5.jpeg", "category": "Электроника", "title": "Монитор", "desc": "Удобный монитор", "price": "5000", "address": "Москва, ул. Лобавческого 88"}
         ]
     },
@@ -27,8 +28,10 @@
         "username": "Тестер",
         "email": "test@mail.ru",
         "password": "000000",
+        "avatar": "/ava.jpg",
         "anns": [
             {"src": "/ann6.jpeg", "category": "Спорт", "title": "Мяч", "desc": "Удобный мяч", "price": "500", "address": "Москва, ул. Красная 28"}
-        ]
+        ],
+        "purchs": []
     }
 }
