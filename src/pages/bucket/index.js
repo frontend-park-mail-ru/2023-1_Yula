@@ -1,8 +1,8 @@
 import { Navbar } from "@widgets/navbar";
 import { AuthWidget } from "@widgets/auth";
-import { annApi } from "@shared/api/anns";
 import { PurchCard } from "@entities/announcement/ui";
 import store from "@modules/state-manager";
+import { purchApi } from "@shared/api/purch.js";
 
 export const bucketPage = (parent) => {
     const header = document.createElement('header')
@@ -27,7 +27,7 @@ export const bucketPage = (parent) => {
         purchGroup.classList.add('purchase-group');
         content.appendChild(purchGroup);
 
-        const purchases = await annApi.getAll();
+        const purchases = await purchApi.getPurchases();
         console.log(purchases)
 
         purchases.forEach(purch => {
