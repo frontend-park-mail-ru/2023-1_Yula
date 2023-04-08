@@ -151,8 +151,9 @@ export const MenuPanel = (parent) => {
 }
 
 //////////////////////////////////////////////////////////////////////////////
+// функция выделения вкладки для мобилок
 function activeIcon(iconClassName) {
-    const list = document.querySelectorAll('.icon')
+    const list = document.querySelector('.menu-panel').querySelectorAll('.icon')
     list.forEach((icon) => icon.classList.remove('icon_active'))
     iconClassName.classList.add('icon_active')
 }
@@ -201,12 +202,13 @@ export const MenuPanelMobile = (parent) => {
                 size: "large",
                 invert: invert,
                 link: "/",
-                actions: {
-                    'click': () => {
-                        const iconClassName = document.getElementById('homePageIcon')
-                        activeIcon(iconClassName)
-                    }
-                }
+                // actions: {
+                //     'click': () => {
+                //         const iconClassName = document.getElementById('homePageIcon')
+
+                //         activeIcon(iconClassName)
+                //     }
+                // }
             }),
 
             basket: Icon(menu, {
@@ -214,12 +216,12 @@ export const MenuPanelMobile = (parent) => {
                 src: basketSvg,
                 size: "large",
                 invert: invert,
-                actions: {
-                    'click': () => {
-                        const iconClassName = document.getElementById('basketIcon')
-                        activeIcon(iconClassName)
-                    }
-                }
+                // actions: {
+                //     'click': () => {
+                //         const iconClassName = document.getElementById('basketIcon')
+                //         activeIcon(iconClassName)
+                //     }
+                // }
             }),
 
             createAnn: Icon(menu, {
@@ -236,8 +238,8 @@ export const MenuPanelMobile = (parent) => {
                         } else {
                             actions.login();
                         }
-                        const iconClassName = document.getElementById('createAnnIcon')
-                        activeIcon(iconClassName)
+                        // const iconClassName = document.getElementById('createAnnIcon')
+                        // activeIcon(iconClassName)
                     }
                 }
             }),
@@ -247,12 +249,12 @@ export const MenuPanelMobile = (parent) => {
                 src: orderSvg,
                 size: "large",
                 invert: invert,
-                actions: {
-                    'click': () => {
-                        const iconClassName = document.getElementById('orderIcon')
-                        activeIcon(iconClassName)
-                    }
-                }
+                // actions: {
+                //     'click': () => {
+                //         const iconClassName = document.getElementById('orderIcon')
+                //         activeIcon(iconClassName)
+                //     }
+                // }
             }),
 
             user: Icon(menu, {
@@ -267,8 +269,8 @@ export const MenuPanelMobile = (parent) => {
                         if (!store.getState('user')) {
                             actions.login();
                         }
-                        const iconClassName = document.getElementById('userIcon')
-                        activeIcon(iconClassName)
+                        // const iconClassName = document.getElementById('userIcon')
+                        // activeIcon(iconClassName)
                     }
                 }
             }),
@@ -317,7 +319,18 @@ export const MenuPanelMobile = (parent) => {
                     invert: (store.getState('theme') === 'dark') ? true : false,
                 });
             }
-        });        
+        });
+
+        menu.addEventListener('click', (e) => {
+            let targt = e.target;
+            if (targt != e.currentTarget) {
+                while (!targt.classList.contains('icon')) {
+                    targt = targt.parentElement;
+                };
+                activeIcon(targt);
+            }
+        });
+
     }
 
     return {
