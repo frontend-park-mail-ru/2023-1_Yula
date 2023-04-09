@@ -1,0 +1,11 @@
+.menu-panel-desktop {
+    display: none;
+    // padding: 10px 0px 10px 0px;
+}
+@media screen and (min-width: 900px) {
+    .menu-panel-desktop {
+        display: flex;
+        flex-direction: row;
+        gap: 3px;
+    }
+}

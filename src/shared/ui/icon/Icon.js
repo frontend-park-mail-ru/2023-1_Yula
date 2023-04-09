@@ -8,7 +8,8 @@ import template from './Icon.handlebars';
  * @param {string} config.id - id иконки
  * @param {string} config.src - путь до иконки
  * @param {string} config.text - текст иконки
- * @param {string} config.color - цвет текста иконки
+ * @param {string} config.textColor - цвет текста иконки
+ * @param {string} config.bgColor - размер иконки
  * @param {string} config.size - размер иконки
  * @param {string} config.link - ссылка на страницу
  * @param {string} config.direction - направление иконки
@@ -20,7 +21,7 @@ import template from './Icon.handlebars';
  * const icon = Icon(document.body, {
  *    src: 'logo.svg',
  *    text: 'Иконка',
- *    color: 'primary',
+ *    textColor: 'primary',
  *    size: 'small',
  *    direction: 'row',
  *    invert: true,
@@ -33,7 +34,8 @@ export const Icon = (parent, config) => {
 
     config.srcIcon = config.src || "";
     config.text = config.text || "";
-    config.color = config.color || "secondary";
+    config.textColor = config.textColor || "secondary";
+    config.bgColor = config.bgColor || "none";
     config.size = config.size || "medium";
     config.direction = config.direction || "column";
     config.invert = config.invert || false;
@@ -66,13 +68,14 @@ export const Icon = (parent, config) => {
     }
 
     /**
-     * Измение конфигурации иконки
+     * Измение конфигурации иконки и перерисовка, если иконка уже отрисована
      * @param {HTMLElement} parent - родительский элемент
      * @param {Object} config - конфигурация
      * @param {string} config.id - id иконки
      * @param {string} config.src - путь до иконки
      * @param {string} config.text - текст иконки
-     * @param {string} config.color - цвет текста иконки
+     * @param {string} config.textColor - цвет текста иконки
+     * @param {string} config.bgColor - размер иконки
      * @param {string} config.size - размер иконки
      * @param {string} config.link - ссылка на страницу
      * @param {string} config.direction - направление иконки
@@ -84,7 +87,7 @@ export const Icon = (parent, config) => {
      * icon.changeConfig({
      *    src: 'path/to/icon',
      *    text: 'text',
-     *    color: 'primary',
+     *    textColor: 'primary',
      * });
      */
     const changeConfig = (newConfig) => {
@@ -93,7 +96,9 @@ export const Icon = (parent, config) => {
             ...newConfig,
         };
 
-        render();
+        if (self()) {
+            render();
+        }
     }
 
     /**
@@ -104,17 +109,12 @@ export const Icon = (parent, config) => {
         const wrapper = document.createElement('div');
         wrapper.innerHTML = template(config).trim();
 
-        // делаем активной иконку homePage
-        if (config.id == 'homePageIcon') {
-            wrapper.firstChild.classList.add('icon_active');
-        };
-
-        const newIcon = wrapper.firstChild;
+        const icon = wrapper.firstChild;
         
         if (self()) {
-            self().replaceWith(newIcon);
+            self().replaceWith(icon);
         } else {
-            parent.insertAdjacentElement("beforeEnd", newIcon);
+            parent.insertAdjacentElement("beforeEnd", icon);
         }
 
         applyActions();

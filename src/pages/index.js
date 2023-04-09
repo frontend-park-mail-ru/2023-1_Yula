@@ -1,3 +1,4 @@
-export { boardPage } from './board/index.js';
-export { profilePage } from './profile/index.js';
-export { bucketPage } from './bucket/index.js';
+export { boardPage } from './board';
+export { profilePage } from './profile';
+export { bucketPage } from './bucket';
+export { announcementPage } from './announcement';

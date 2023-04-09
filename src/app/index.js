@@ -1,4 +1,4 @@
-import { boardPage, profilePage, bucketPage } from "@pages/index";
+import { boardPage, profilePage, bucketPage, announcementPage } from "@pages/index";
 import { Router } from "./router";
 import { setTheme } from "@features/theme";
 import { defaultTheme } from "@shared/config";
@@ -11,7 +11,8 @@ export const App = (parent) => {
 
     router.register('/', boardPage, 'board');
     router.register('/profile', profilePage, 'profile', true);
-    router.register('/bucket', bucketPage, 'bucket', true)
+    router.register('/bucket', bucketPage, 'bucket', true);
+    router.register('/ann', announcementPage, 'announcement');
 
     return {
         render: () => {

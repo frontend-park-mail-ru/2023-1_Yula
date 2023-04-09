@@ -1,10 +1,9 @@
-import { AnnCard } from "@entities/announcement/ui";
-import { annApi } from "@shared/api/anns";
+import { Carousel } from "@shared/ui";
 import { Navbar } from "@widgets/navbar";
 import { AuthWidget } from "@widgets/auth";
 import store from "@modules/state-manager";
 
-export const boardPage = (parent) => {
+export const announcementPage = (parent) => {
     const header = document.createElement('header');
     const content = document.createElement('main');
 
@@ -22,25 +21,21 @@ export const boardPage = (parent) => {
 
     const contentFilling = async () => {
         content.innerHTML = '';
+        content.style.width = '400px';
+        content.style.height = '300px';
 
-        const annGroup = document.createElement('div');
-        annGroup.classList.add('announcement-group');
-        content.appendChild(annGroup);
-
-        const anns = await annApi.getAll();
-        console.log(anns);
-
-        anns.forEach(ann => {
-            const annCard = AnnCard(annGroup, {
-                id: ann.name,
-                category: ann.category,
-                title: ann.title,
-                price: ann.price,
-                address: ann.address,
-                src: ann.src,
-            });
-            annCard.render();
+        const carousel = Carousel(content, {
+            images: [
+                'https://media.istockphoto.com/id/517188688/photo/mountain-landscape.jpg?s=612x612&w=0&k=20&c=A63koPKaCyIwQWOTFBRWXj_PwCrR4cEoOw2S9Q7yVl8=',
+                'https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg',
+                'https://media.istockphoto.com/id/517188688/photo/mountain-landscape.jpg?s=612x612&w=0&k=20&c=A63koPKaCyIwQWOTFBRWXj_PwCrR4cEoOw2S9Q7yVl8=',
+                'https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg'
+            ],
+            visibleCount: 4,
+            current: 1,
         });
+
+        carousel.render();
     }
 
     headerFilling();

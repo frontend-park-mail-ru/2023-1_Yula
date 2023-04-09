@@ -1,28 +1,20 @@
 :root {
     --primary-color: #2688EB;
-    --primary-color-hover: #2C7CDE;
-    --primary-color-disabled: #2689ebcb;
+    --primary-color-strong: #2C7CDE;
+    --primary-color-lite: #2689ebcb;
 
     --success-color: #4BB34B;
-    --success-color-hover: #3CA03E;
-    --success-color-disabled: #4bb34b80;
+    --success-color-strong: #3CA03E;
+    --success-color-lite: #4bb34b80;
 
     --danger-color: #E64646;
-    --danger-color-hover: #d72727;
-    --danger-color-disabled: #E64646b80;
+    --danger-color-strong: #d72727;
+    --danger-color-lite: #E64646b80;
 
     --secondary-color: #6D7885;
     --secondary-color-strong: #5c6978;
     --secondary-color-lite: #6d7885b3;
 
-    --light-color: #f5f6f7;
-    --light-color-strong: #DCE0E5;
-    --light-color-lite: #ebedf0da;
-
-    --grey-color: #EDEDED;
-    --white-color: #FFFFFF;
-
-    /* --bg-color: #AEC5CE; */
     --bg-color: #dcddff;;
     --bg-color-lite: #EDEDED;
     --bg-color-strong: #f9f9f9;
@@ -36,25 +28,16 @@
 
 body.dark {
     --primary-color: #3e65fb;
-    --primary-color-hover: #4d70fc;
-    --primary-color-disabled: #3e64fbc5;
+    --primary-color-strong: #4d70fc;
+    --primary-color-lite: #3e64fbc5;
 
-    --success-color: #075207;
-    --success-color-hover: #1f6720;
-    --success-color-disabled: #4bb34b80;
+    --success-color: #43b443;
+    --success-color-strong: #2dad30;
+    --success-color-lite: #2ab42a80;
 
     --secondary-color: #d2d2d7;
     --secondary-color-strong: #5c6978;
     --secondary-color-lite: #6d7885b3;
-
-    --upper-color: #f5f6f7;
-
-    --light-color: #141a32;
-    --light-color-strong: #DCE0E5;
-    --light-color-lite: #ebedf0da;
-
-    --grey-color: #6e6a6a;
-    --white-color: #ffffff;
 
     --bg-color: #182039;
     --bg-color-lite: #373e5d;
