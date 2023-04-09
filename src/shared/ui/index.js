@@ -1,5 +1,6 @@
-export { Button } from "./button/Button.js";
-export { Modal } from "./modal/Modal.js";
-export { Form } from "./form/Form.js";
-export { Input } from "./input/Input.js";
-export { Icon } from "./icon/Icon.js";
+export { Button } from "./button/Button";
+export { Modal } from "./modal/Modal";
+export { Form } from "./form/Form";
+export { Input } from "./input/Input";
+export { Icon } from "./icon/Icon";
+export { Carousel } from "./carousel/Carousel";
