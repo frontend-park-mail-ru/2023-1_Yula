@@ -50,6 +50,8 @@ export const bucketPage = (parent) => {
         // рендерим, если только нет на странице
         if (!parent.querySelector('header')) {
             parent.appendChild(header);
+        } else {
+            parent.querySelector('header').replaceWith(header);
         }
 
         // если контент есть, заменяем его новым

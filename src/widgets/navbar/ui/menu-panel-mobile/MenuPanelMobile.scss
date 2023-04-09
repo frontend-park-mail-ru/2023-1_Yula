@@ -1,13 +1,13 @@
-.menu-panel {
-    display: flex;
-    flex-direction: row;
-    gap: 3px;
-    padding: 10px 0px 10px 0px;
+.menu-panel-mobile {
+    display: none;
 }
+
 @media screen and (max-width: 900px) {
-    .menu-panel {
+    .menu-panel-mobile {
+        display: flex;
+        flex-direction: row;
         align-items: center;
-        justify-content: space-between;
+        justify-content: space-around;
         align-items: center;
 
         position: fixed;

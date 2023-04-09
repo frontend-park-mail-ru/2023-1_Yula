@@ -17,11 +17,11 @@
     background: var(--primary-color);
 
     &:hover {
-        background: var(--primary-color-hover);
+        background: var(--primary-color-strong);
     }
 
     &:disabled {
-        background: var(--primary-color-disabled);
+        background: var(--primary-color-lite);
     }
 }
 
@@ -29,7 +29,7 @@
     background-color: rgba(0, 0, 0, 0);
 
     &:hover {
-        background-color: var(--grey-color);
+        background-color: var(--bg-color-lite);
     }
 }
 
@@ -37,11 +37,11 @@
     background: var(--success-color);
 
     &:hover {
-        background: var(--success-color-hover);
+        background: var(--success-color-strong);
     }
 
     &:disabled {
-        background: var(--success-color-disabled);
+        background: var(--success-color-lite);
     }
 }
 
@@ -60,12 +60,8 @@
     color: var(--primary-color);
 }
 
-.button__text_color_grey {
-    color: var(--grey-color);
-}
-
 .button__text_color_success {
-    color: var(--succes-color);
+    color: var(--success-color);
 }
 
 .button__icon {
