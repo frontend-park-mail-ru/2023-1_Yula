@@ -1,15 +1,13 @@
-import { Button, Input, Icon } from "@shared/ui/index.js";
-import { UserBar } from "@entities/user/ui/index.js";
-import store from "@modules/state-manager.js";
-import { userApi } from "@shared/api/users.js";
-import { MenuPanel } from "./ui/menu-panel/MenuPanel.js";
-import { MenuPanelMobile } from "./ui/menu-panel/MenuPanel.js";
+import { MenuPanelDesktop, MenuPanelMobile } from "./ui";
+import { Input, Icon } from "@shared/ui/index.js";
+import { toggleTheme } from "@features/theme";
+import store from "@modules/state-manager";
 
 import './index.scss';
 
 import searchSvg from 'assets/icons/search.svg';
-import accountSvg from 'assets/icons/account.svg';
-import basketSvg from 'assets/icons/basket.svg';
+import sunSVG from 'assets/icons/sun.svg';
+import moonSVG from 'assets/icons/moon.svg';
 
 export const Navbar = (parent) => {
     const actions = {
@@ -57,16 +55,49 @@ export const Navbar = (parent) => {
             leftIcon: searchSvg,
         });
         input.render();
+
+        const menuPanelDesktop = MenuPanelDesktop(nav);
+        menuPanelDesktop.setActions({ 'login': actions.auth });
+        
+        const menuPanelMobile = MenuPanelMobile(nav);
+        menuPanelMobile.setActions({ 'login': actions.auth });
+
         if (window.innerWidth >= 900) {
-            const menu = MenuPanel(nav);
-            menu.setActions({ 'login': actions.auth });
-            menu.render();
+            menuPanelDesktop.render();
+        } else {
+            menuPanelMobile.render();
         }
-        else {
-            const menu = MenuPanelMobile(nav);
-            menu.setActions({ 'login': actions.auth });
-            menu.render();
-        }
+
+        const theme = store.getState('theme');
+        const themeIcon = Icon(nav, {
+            id: "theme",
+            src: (theme === 'light') ? sunSVG : moonSVG,
+            invert: (theme === 'light') ? false : true,
+            size: "large",
+            actions: {
+                'click': () => {
+                    const newTheme = toggleTheme();
+                    store.setState('theme', newTheme);
+                    themeIcon.changeConfig({
+                        src: (newTheme === 'light') ? sunSVG : moonSVG,
+                        invert: (newTheme === 'light') ? false : true,
+                    });
+                },
+            }
+        });
+        themeIcon.render();
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 900 && !menuPanelDesktop.self()) {
+                menuPanelDesktop.render();
+                menuPanelMobile.destroy();
+                themeIcon.destroy();
+                themeIcon.render();
+            } else if (window.innerWidth < 900 && !menuPanelMobile.self()) {
+                menuPanelMobile.render();
+                menuPanelDesktop.destroy();
+            }
+        });
     }
 
     return {

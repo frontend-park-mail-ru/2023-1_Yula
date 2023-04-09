@@ -1,8 +1,10 @@
 import { Navbar } from "@widgets/navbar";
 import { AuthWidget } from "@widgets/auth";
-import { annApi } from "@shared/api/anns";
 import { PurchCard } from "@entities/announcement/ui";
 import store from "@modules/state-manager";
+import { purchApi } from "@shared/api/purch.js";
+import { Button } from "../../shared/ui";
+import { Price } from "@widgets/price";
 
 export const bucketPage = (parent) => {
     const header = document.createElement('header')
@@ -21,14 +23,14 @@ export const bucketPage = (parent) => {
     }
 
     const contentFilling = async () => {
+        const priceWidget = Price(content);
         content.innerHTML = '';
 
         const purchGroup = document.createElement('div');
         purchGroup.classList.add('purchase-group');
         content.appendChild(purchGroup);
 
-        const purchases = await annApi.getAll();
-        console.log(purchases)
+        const purchases = await purchApi.getPurchases();
 
         purchases.forEach(purch => {
             const purchCard = PurchCard(purchGroup, {
@@ -41,6 +43,8 @@ export const bucketPage = (parent) => {
             });
             purchCard.render();
         });
+
+        priceWidget.render();
     }
 
     headerFilling();
@@ -50,6 +54,8 @@ export const bucketPage = (parent) => {
         // рендерим, если только нет на странице
         if (!parent.querySelector('header')) {
             parent.appendChild(header);
+        } else {
+            parent.querySelector('header').replaceWith(header);
         }
 
         // если контент есть, заменяем его новым

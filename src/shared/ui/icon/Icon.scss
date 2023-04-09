@@ -9,9 +9,6 @@
     outline: none;
     padding: 2px;
     transition: background-color 0.2s ease-in-out;
-    &:hover {
-        background-color: var(--bg-color-lite);
-    }
     transition: 0.5s;
 }
 
@@ -21,6 +18,38 @@
 
 .icon_direction_column {
     flex-direction: column;
+}
+
+.icon_color_none {
+    background-color: rgba(0, 0, 0, 0);
+
+    &:hover {
+        background-color: var(--bg-color-lite);
+    }
+}
+
+.icon_color_primary {
+    background-color: var(--primary-color);
+
+    &:hover {
+        background-color: var(--primary-color-strong);
+    }
+}
+
+.icon_color_secondary {
+    background-color: var(--secondary-color);
+
+    &:hover {
+        background-color: var(--secondary-color-strong);
+    }
+}
+
+.icon_color_success {
+    background-color: var(--success-color);
+
+    &:hover {
+        background-color: var(--success-color-strong);
+    }
 }
 
 .icon_size_small {
@@ -94,16 +123,4 @@
 
 .icon__text_color_fg {
     color: var(--fg-color)
-}
-
-.icon_active {
-    color: var(--primary-color);
-    transition: 0.5s;
-    transform: translateY(-10px);
-}
-
-@media screen and (max-width: 900px) {
-    .icon {
-        margin: 0 3.5% 0 3.5%;
-    }
 }

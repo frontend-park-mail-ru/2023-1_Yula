@@ -44,6 +44,19 @@ Object.values(users).map(user => {
     return user.anns;
 }).filter(Boolean);
 
+/** base64 ann images */
+Object.values(users).map(user => {
+    if (user.purchs) {
+        user.purchs.map(purch => {
+            const imagePath = path.join(__dirname, 'static', 'images', purch.src);
+            const imageBuffer = fs.readFileSync(imagePath);
+            purch.img = Buffer.from(imageBuffer).toString('base64');
+        });
+    }
+    
+    return user.purchs;
+}).filter(Boolean);
+
 /** session identificators */
 const ids = {};
 
@@ -117,6 +130,19 @@ app.get('/api/board', (req, res) => {
 
     res.json(result.flat());
 });
+
+app.get('/api/bucket', (req, res) => {
+    const id = req.cookies.appuniq;
+    const emailSession = ids[id];
+
+    const result = Object
+        .values(users)
+        .filter(({email}) => email === emailSession)
+        .map((user) => user.purchs)
+        .filter(Boolean);
+    
+    res.json(result.flat());
+})
 
 app.get('/api/me', (req, res) => {
     const id = req.cookies.appuniq;
