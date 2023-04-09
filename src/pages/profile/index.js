@@ -50,12 +50,12 @@ export const profilePage = (parent) => {
     contentFilling();
 
     const render = () => {
-        // рендерим, если только нет на странице
         if (!parent.querySelector('header')) {
             parent.appendChild(header);
+        } else {
+            parent.querySelector('header').replaceWith(header);
         }
 
-        // если контент есть, заменяем его новым
         if (!parent.querySelector('main')) {
             parent.appendChild(content);
         } else {
