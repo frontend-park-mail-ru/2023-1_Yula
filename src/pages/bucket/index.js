@@ -3,6 +3,8 @@ import { AuthWidget } from "@widgets/auth";
 import { PurchCard } from "@entities/announcement/ui";
 import store from "@modules/state-manager";
 import { purchApi } from "@shared/api/purch.js";
+import { Button } from "../../shared/ui";
+import { Price } from "@widgets/price";
 
 export const bucketPage = (parent) => {
     const header = document.createElement('header')
@@ -11,6 +13,7 @@ export const bucketPage = (parent) => {
     const headerFilling = () => {
         const navbar = Navbar(header);
         const authWidget = AuthWidget(parent);
+        const priceWidget = Price(parent);
 
         navbar.setActions({
             auth: () => {
@@ -18,6 +21,7 @@ export const bucketPage = (parent) => {
             }
         });
         navbar.render();
+        priceWidget.render();
     }
 
     const contentFilling = async () => {
@@ -41,6 +45,9 @@ export const bucketPage = (parent) => {
             });
             purchCard.render();
         });
+        // const priceWidget = Price(parent);
+
+        // priceWidget.render();
     }
 
     headerFilling();
