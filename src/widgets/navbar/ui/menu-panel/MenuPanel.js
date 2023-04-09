@@ -9,7 +9,6 @@ import orderSvg from 'assets/icons/order.svg';
 import moonSvg from 'assets/icons/moon.svg';
 import sunSvg from 'assets/icons/sun.svg';
 import homeSVG from 'assets/icons/home.svg'
-import plusSVG from 'assets/icons/plus.svg'
 
 import './MenuPanel.scss'
 
@@ -202,13 +201,6 @@ export const MenuPanelMobile = (parent) => {
                 size: "large",
                 invert: invert,
                 link: "/",
-                // actions: {
-                //     'click': () => {
-                //         const iconClassName = document.getElementById('homePageIcon')
-
-                //         activeIcon(iconClassName)
-                //     }
-                // }
             }),
 
             basket: Icon(menu, {
@@ -216,12 +208,6 @@ export const MenuPanelMobile = (parent) => {
                 src: basketSvg,
                 size: "large",
                 invert: invert,
-                // actions: {
-                //     'click': () => {
-                //         const iconClassName = document.getElementById('basketIcon')
-                //         activeIcon(iconClassName)
-                //     }
-                // }
             }),
 
             createAnn: Icon(menu, {
@@ -238,8 +224,6 @@ export const MenuPanelMobile = (parent) => {
                         } else {
                             actions.login();
                         }
-                        // const iconClassName = document.getElementById('createAnnIcon')
-                        // activeIcon(iconClassName)
                     }
                 }
             }),
@@ -249,12 +233,6 @@ export const MenuPanelMobile = (parent) => {
                 src: orderSvg,
                 size: "large",
                 invert: invert,
-                // actions: {
-                //     'click': () => {
-                //         const iconClassName = document.getElementById('orderIcon')
-                //         activeIcon(iconClassName)
-                //     }
-                // }
             }),
 
             user: Icon(menu, {
@@ -269,8 +247,6 @@ export const MenuPanelMobile = (parent) => {
                         if (!store.getState('user')) {
                             actions.login();
                         }
-                        // const iconClassName = document.getElementById('userIcon')
-                        // activeIcon(iconClassName)
                     }
                 }
             }),
