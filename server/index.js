@@ -19,6 +19,7 @@ app.use(cookie());
 
 /** user data */
 const users = require('./static/jsonData/anns.json');
+const announcements = [];
 
 /** base64 user avatars */
 Object.values(users).map(user => {
@@ -38,13 +39,22 @@ Object.values(users).map(user => {
             const imagePath = path.join(__dirname, 'static', 'images', ann.src);
             const imageBuffer = fs.readFileSync(imagePath);
             ann.img = Buffer.from(imageBuffer).toString('base64');
+
+            ann.images = ann.images.map(image => {
+                const imagePath = path.join(__dirname, 'static', 'images', image);
+                const imageBuffer = fs.readFileSync(imagePath);
+                image = Buffer.from(imageBuffer).toString('base64');
+                return image;
+            });
+
+            announcements.push(ann);
         });
     }
-    
+
     return user.anns;
 }).filter(Boolean);
 
-/** base64 ann images */
+/** base64 purch images */
 Object.values(users).map(user => {
     if (user.purchs) {
         user.purchs.map(purch => {
@@ -129,6 +139,11 @@ app.get('/api/board', (req, res) => {
         .filter(Boolean);
 
     res.json(result.flat());
+});
+
+app.get('/api/board/:id', (req, res) => {
+    const annId = req.params.id;
+    res.json(announcements[annId]);
 });
 
 app.get('/api/bucket', (req, res) => {

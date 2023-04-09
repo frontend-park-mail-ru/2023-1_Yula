@@ -6,7 +6,6 @@
     .menu-panel-mobile {
         display: flex;
         flex-direction: row;
-        align-items: center;
         justify-content: space-around;
         align-items: center;
 
@@ -15,5 +14,6 @@
         left: 0;
         width: 100%;
         background-color: var(--bg-color-strong);
+        z-index: 1;
     }
 }

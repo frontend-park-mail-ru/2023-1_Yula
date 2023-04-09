@@ -40,16 +40,6 @@ export const Router = (parent) => {
         const route = findRoute(path);
         const { page, params, redirect, name } = route;
 
-        // if (route.isPrivate) {
-        //     if (store.getState('user')) {
-        //         alert('Вы уже авторизованы');
-        //     } else {
-        //         goTo(redirect);
-        //     }
-        // } else {
-        //     route.page(parent, route.params).render();
-        // }
-
         if (!route.isPrivate ||
             route.isPrivate && store.getState('user')) {
             const instancePage = page(parent, params);
