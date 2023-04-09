@@ -11,6 +11,7 @@ export const Router = (parent) => {
      */
     const register = (route, page, name, isPrivate = false, redirect = '/') => {
         const routeRegex = new RegExp(`^${route.replace(/{\w+}/g, '(.*)')}$`);
+
         routes.push({ regex: routeRegex, page, isPrivate, redirect, name });
     }
 
@@ -36,9 +37,9 @@ export const Router = (parent) => {
      * @param {string} path - url-адрес
      */
     const goTo = (path) => {
-        window.history.pushState({}, 'newUrl', path);
         const route = findRoute(path);
         const { page, params, redirect, name } = route;
+        window.history.pushState({ params }, name, path);
 
         if (!route.isPrivate ||
             route.isPrivate && store.getState('user')) {
@@ -71,18 +72,19 @@ export const Router = (parent) => {
 
         // изменяем содержимое страницы при переходе по истории (назад/вперед)
         window.addEventListener('popstate', function(e) {
-            console.log(e);
             const pageObj = findRoute(window.location.pathname);
+            const params = e.state ? e.state.params : null;
+
             if (pageObj) {
                 if (pageObj.isPrivate) {
                     if (store.getState('user')) {
-                        pageObj.page(parent).render(); 
+                        pageObj.page(parent, params).render(); 
                     } else {
                         const redirectPage = findRoute(pageObj.redirect);
-                        redirectPage.page(parent).render();
+                        redirectPage.page(parent, params).render();
                     }
                 } else {
-                    pageObj.page(parent).render(); 
+                    pageObj.page(parent, params).render(); 
                 }
             }
         });

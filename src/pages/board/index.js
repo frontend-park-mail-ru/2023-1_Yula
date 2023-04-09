@@ -30,14 +30,14 @@ export const boardPage = (parent) => {
         const anns = await annApi.getAll();
         console.log(anns);
 
-        anns.forEach(ann => {
+        anns.forEach((ann, i) => {
             const annCard = AnnCard(annGroup, {
-                id: ann.name,
                 category: ann.category,
                 title: ann.title,
                 price: ann.price,
                 address: ann.address,
                 src: ann.src,
+                link: `/ann/${i}`,
             });
             annCard.render();
         });

@@ -19,7 +19,7 @@ export class annApi {
     }
 
     static async getById(id) {
-        let ann = await fetch(`api/board/${id}`);
+        let ann = await fetch(`http://localhost:8080/api/board/${id}`);
         ann = await ann.json();
     
         const imageUrls = await Promise.all(

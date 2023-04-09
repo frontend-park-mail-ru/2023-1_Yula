@@ -33,12 +33,9 @@ export const announcementPage = (parent, params) => {
         annCarousel.classList.add('announcement-carousel');
         content.appendChild(annCarousel);
 
-        const ann = await annApi.getById(2);
+        const ann = await annApi.getById(params[0]);
 
-        const carousel = Carousel(annCarousel, {
-            images: ann.images,
-            current: 1,
-        });
+        const carousel = Carousel(annCarousel, { images: ann.images });
         carousel.render();
 
         const annCharacteristics = document.createElement('div');
@@ -46,6 +43,7 @@ export const announcementPage = (parent, params) => {
 
         annCharacteristics.innerHTML = charackteristics(ann);
         content.appendChild(annCharacteristics);
+        annCharacteristics.style.justifySelf = 'flex-start';
 
         const buyIcon = Icon(annCharacteristics, {
             src: basketSVG,

@@ -9,6 +9,7 @@ module.exports = {
     output: {
         filename: 'main.js',
         path: path.resolve(__dirname, 'dist'),
+        publicPath: '/',
     },
     devtool: 'inline-source-map',
     devServer: {
@@ -20,9 +21,7 @@ module.exports = {
         proxy: {
             '/api': 'http://localhost:3000'
         },
-        historyApiFallback: {
-            index: 'index.html'
-        }
+        historyApiFallback: true
     },
     resolve: {
         alias: {

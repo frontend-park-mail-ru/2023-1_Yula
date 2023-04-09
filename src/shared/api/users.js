@@ -1,6 +1,6 @@
 export class userApi {
     static async getMe() {
-        let user = await fetch('api/me');
+        let user = await fetch('http://localhost:8080/api/me');
 
         if (user.ok) {
             user = await user.json();
