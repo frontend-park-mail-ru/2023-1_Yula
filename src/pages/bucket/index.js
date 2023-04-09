@@ -13,7 +13,6 @@ export const bucketPage = (parent) => {
     const headerFilling = () => {
         const navbar = Navbar(header);
         const authWidget = AuthWidget(parent);
-        const priceWidget = Price(parent);
 
         navbar.setActions({
             auth: () => {
@@ -21,10 +20,10 @@ export const bucketPage = (parent) => {
             }
         });
         navbar.render();
-        priceWidget.render();
     }
 
     const contentFilling = async () => {
+        const priceWidget = Price(content);
         content.innerHTML = '';
 
         const purchGroup = document.createElement('div');
@@ -32,7 +31,6 @@ export const bucketPage = (parent) => {
         content.appendChild(purchGroup);
 
         const purchases = await purchApi.getPurchases();
-        console.log(purchases)
 
         purchases.forEach(purch => {
             const purchCard = PurchCard(purchGroup, {
@@ -45,9 +43,8 @@ export const bucketPage = (parent) => {
             });
             purchCard.render();
         });
-        // const priceWidget = Price(parent);
 
-        // priceWidget.render();
+        priceWidget.render();
     }
 
     headerFilling();

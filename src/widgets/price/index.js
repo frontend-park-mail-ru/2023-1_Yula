@@ -1,5 +1,6 @@
 import { PricePanel } from "./ui/price-panel/PricePanel";
 import { purchApi } from "../../shared/api/purch.js"
+import "./index.scss";
 
 export const Price = (parent) => {
     const actions = {};
@@ -14,26 +15,26 @@ export const Price = (parent) => {
         }
     }
 
-    const contentFilling = async () => {
-        const prc = document.createElement('div');
-        prc.classList.add('prc');
+    // const contentFilling = async () => {
+    //     const prc = document.createElement('div');
+    //     prc.classList.add('prc');
 
-        const purchaseCounter = document.createElement('p');
-        purchaseCounter.classList.add('prc-cnt');
+    //     const purchaseCounter = document.createElement('p');
+    //     purchaseCounter.classList.add('prc-cnt');
 
-        const money = document.createElement('h3');
-        money.classList.add('money');
+    //     const money = document.createElement('h3');
+    //     money.classList.add('money');
 
-        const purchases = await purchApi.getPurchases();
-        const cnt = purchases.length;
+    //     const purchases = await purchApi.getPurchases();
+    //     const cnt = purchases.length;
 
-        purchaseCounter.innerHTML = cnt != 0 ? cnt + ' товаров' : 'Корзина пуста.';
-        const totalPrice = purchases.reduce((acc, curr) => acc + parseInt(curr.price), 0);
-        money.innerHTML = 'Итого: ' + totalPrice + ' руб.';
+    //     purchaseCounter.innerHTML = cnt != 0 ? cnt + ' товаров' : 'Корзина пуста.';
+    //     const totalPrice = purchases.reduce((acc, curr) => acc + parseInt(curr.price), 0);
+    //     money.innerHTML = 'Итого: ' + totalPrice + ' руб.';
 
-        prc.appendChild(purchaseCounter);
-        prc.appendChild(money);
-    }
+    //     prc.appendChild(purchaseCounter);
+    //     prc.appendChild(money);
+    // }
 
     // contentFilling();
 
@@ -50,20 +51,23 @@ export const Price = (parent) => {
         // parentElem.appendChild(self());
         const prc = document.createElement('div');
         prc.classList.add('prc');
+        parent.appendChild(prc);
 
         const purchaseCounter = document.createElement('p');
         purchaseCounter.classList.add('prc-cnt');
 
         const money = document.createElement('h3');
-        money.classList.add('money');
+        money.classList.add('prc-money');
 
         const purchases = await purchApi.getPurchases();
         const cnt = purchases.length;
 
         purchaseCounter.innerHTML = cnt != 0 ? cnt + ' товаров' : 'Корзина пуста.';
+        
         const totalPrice = purchases.reduce((acc, curr) => acc + parseInt(curr.price), 0);
-        money.innerHTML = 'Итого: ' + totalPrice + ' руб.';
-
+        
+        money.innerHTML = 'Итого: ' + totalPrice + ' ₽';
+        
         prc.appendChild(purchaseCounter);
         prc.appendChild(money);
     }    
