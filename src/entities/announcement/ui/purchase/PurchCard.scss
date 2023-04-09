@@ -13,8 +13,10 @@
 .purchase-card__img {
     height: 50px;
     border-radius: inherit;
+    margin-left: auto;
+    margin-right: auto;
 
-    & > img {
+    &>img {
         height: 100%;
         width: 100%;
         object-fit: contain;
@@ -26,6 +28,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     padding: 8px 12px 12px 12px;
+    text-align: center;
     align-items: center;
     background-color: var(--bg-color-strong);
     border-radius: 10px;
@@ -49,6 +52,8 @@
     font-style: normal;
     font-weight: 400;
     font-size: 15px;
+    margin-left: auto;
+    margin-right: auto;
     color: var(--fg-color);
 }
 
@@ -63,7 +68,7 @@
 
     display: -webkit-box;
     -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;  
+    -webkit-box-orient: vertical;
     overflow: hidden;
 }
 

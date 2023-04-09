@@ -4,6 +4,7 @@
         "email": "az.bilalov@mail.ru",
         "password": "123456",
         "avatar": "/ava1.jpeg",
+        "phone" : "+7XXXXXXXXXX",
         "anns": [
             {"src": "/ann1.jpeg", "category": "В быту", "title": "Корзина", "desc": "Удобная корзина", "price": "500", "address": "Москва, ул. Лобавческого 88", "images": ["/ann1.jpeg", "/ann1.jpeg", "/ann1.jpeg"]},
             {"src": "/ann2.jpeg", "category": "Электроника", "title": "Планшет", "desc": "Удобный планшет", "price": "15000", "address": "Москва, ул. Институтская 43", "images": ["/ann2.jpeg", "/ann3.jpeg", "/ann4.jpeg"]},
