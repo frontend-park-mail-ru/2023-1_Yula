@@ -1,12 +1,9 @@
 import { Icon } from "@shared/ui/index.js";
 import store from "@modules/state-manager.js";
-import { toggleTheme } from "@features/theme";
 
 import userSvg from 'assets/icons/user.svg';
 import basketSvg from 'assets/icons/basket.svg';
 import sellerSvg from 'assets/icons/seller.svg';
-import moonSvg from 'assets/icons/moon.svg';
-import sunSvg from 'assets/icons/sun.svg';
 import homeSVG from 'assets/icons/home.svg'
 import plusSVG from 'assets/icons/plus.svg'
 
@@ -139,7 +136,6 @@ export const MenuPanelMobile = (parent) => {
         }
 
         for (let icon in Icons) {
-            console.log(Icons[icon].self());
             Icons[icon].render();
         }
 

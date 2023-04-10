@@ -17,4 +17,23 @@ export class annApi {
     static async getFromUser() {
         
     }
+
+    static async getById(id) {
+        let ann = await fetch(`http://localhost:8080/api/board/${id}`);
+        ann = await ann.json();
+    
+        const imageUrls = await Promise.all(
+            ann.images.map(async img => {
+                const response = await fetch("data:image/jpeg;base64," + img);
+                const imageBlob = await response.blob();
+                const imageUrl = URL.createObjectURL(imageBlob);
+                return imageUrl;
+            })
+        );
+        
+        ann.images = imageUrls;
+    
+        return ann;
+    }
+    
 }

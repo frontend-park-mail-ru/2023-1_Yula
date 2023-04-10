@@ -1,0 +1,45 @@
+{{!-- {"src": "/ann6.jpeg", "category": "Спорт", "title": "Мяч", "desc": "Удобный мяч", "price": "500", "address": "Москва, ул. Красная 28"} --}}
+
+{{!-- <div>
+    <h3>{{title}}</h3>
+    <p>{{desc}}</p>
+    <h4>{{price}}</h4>
+    <p>{{address}}</p>
+</div> --}}
+
+<h3 class="announcement-characteristics__title">{{title}}</h3>
+
+<table style="border-spacing: 2vw;">
+    <tr>
+        <td class="announcement-characteristics__key">
+            Категория
+        </td>
+        <td class="announcement-characteristics__value">
+            {{category}}
+        </td>
+    </tr>
+    <tr>
+        <td class="announcement-characteristics__key">
+            Описание
+        </td>
+        <td class="announcement-characteristics__value">
+            {{desc}}
+        </td>
+    </tr>
+    <tr>
+        <td class="announcement-characteristics__key">
+            Цена
+        </td>
+        <td class="announcement-characteristics__value">
+            {{price}}
+        </td>
+    </tr>
+    <tr>
+        <td class="announcement-characteristics__key">
+            Адрес
+        </td>
+        <td class="announcement-characteristics__value">
+            {{address}}
+        </td>
+    </tr>
+</table>

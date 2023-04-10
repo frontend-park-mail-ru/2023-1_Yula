@@ -3,6 +3,8 @@ import template from './AnnCard.handlebars';
 
 export const AnnCard = (parent, config = {id: ""}) => {
     config.id += "AnnCard";
+    config.link = config.link || "#";
+
     const actions = {};
 
     const self = () => {

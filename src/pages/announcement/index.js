@@ -1,9 +1,15 @@
-import { Carousel } from "@shared/ui";
+import { Carousel, Icon } from "@shared/ui";
 import { Navbar } from "@widgets/navbar";
 import { AuthWidget } from "@widgets/auth";
+import { annApi } from "@shared/api/anns";
 import store from "@modules/state-manager";
 
-export const announcementPage = (parent) => {
+import './layout.scss';
+import charackteristics from "./ann-characteristics.handlebars";
+
+import basketSVG from "assets/icons/basket.svg";
+
+export const announcementPage = (parent, params) => {
     const header = document.createElement('header');
     const content = document.createElement('main');
 
@@ -21,21 +27,40 @@ export const announcementPage = (parent) => {
 
     const contentFilling = async () => {
         content.innerHTML = '';
-        content.style.width = '400px';
-        content.style.height = '300px';
+        content.classList.add('announcement-content');
 
-        const carousel = Carousel(content, {
-            images: [
-                'https://media.istockphoto.com/id/517188688/photo/mountain-landscape.jpg?s=612x612&w=0&k=20&c=A63koPKaCyIwQWOTFBRWXj_PwCrR4cEoOw2S9Q7yVl8=',
-                'https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg',
-                'https://media.istockphoto.com/id/517188688/photo/mountain-landscape.jpg?s=612x612&w=0&k=20&c=A63koPKaCyIwQWOTFBRWXj_PwCrR4cEoOw2S9Q7yVl8=',
-                'https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg'
-            ],
-            visibleCount: 4,
-            current: 1,
-        });
+        const annCarousel = document.createElement('div');
+        annCarousel.classList.add('announcement-carousel');
+        content.appendChild(annCarousel);
 
+        const ann = await annApi.getById(params[0]);
+
+        const carousel = Carousel(annCarousel, { images: ann.images });
         carousel.render();
+
+        const annCharacteristics = document.createElement('div');
+        annCharacteristics.classList.add('announcement-characteristics');
+
+        annCharacteristics.innerHTML = charackteristics(ann);
+        content.appendChild(annCharacteristics);
+        annCharacteristics.style.justifySelf = 'flex-start';
+
+        const buyIcon = Icon(annCharacteristics, {
+            src: basketSVG,
+            text: 'Купить',
+            textColor: 'fg',
+            size: 'large',
+            direction: 'row',
+        });
+        buyIcon.render();
+        buyIcon.self().style.alignSelf = 'flex-end';
+
+        store.subscribe('theme', (theme) => {
+            buyIcon.changeConfig({
+                invert: theme === 'dark',
+            });
+            buyIcon.self().style.alignSelf = 'flex-end';
+        });
     }
 
     headerFilling();
