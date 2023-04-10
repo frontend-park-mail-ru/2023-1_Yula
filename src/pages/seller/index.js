@@ -1,10 +1,13 @@
 import { AnnCard } from "@entities/announcement/ui/card/AnnCard.js";
 import { Navbar } from "@widgets/navbar/index.js";
 import { AuthWidget } from "@widgets/auth/index.js";
-import { UserPanel } from "@widgets/userpanel/UserPanel.js";
+import { PurchCard } from "@entities/announcement/ui";
+import { purchApi } from "@shared/api/purch.js";
 import store from "@modules/state-manager.js";
 
-export const profilePage = (parent) => {
+import { SellerPanel } from "@/widgets/sellerpanel/SellerPanel";
+
+export const sellerPage = (parent) => {
     const header = document.createElement('header');
     const content = document.createElement('main');
 
@@ -23,25 +26,25 @@ export const profilePage = (parent) => {
     const contentFilling = async () => {
         const user = store.getState('user');
         
-        const userPanel = UserPanel(content);
+        const userPanel = SellerPanel(content);
         userPanel.render();
 
         const annGroup = document.createElement('div');
-        annGroup.classList.add('announcement-group');
+        annGroup.classList.add('purchase-group');
 
-        if (user.anns) {
-            user.anns.forEach(ann => {
-                const annCard = AnnCard(annGroup, {
-                    id: ann.name,
-                    category: ann.category,
-                    title: ann.title,
-                    price: ann.price,
-                    address: ann.address,
-                    src: ann.src,
-                });
-                annCard.render();
+        const purchases = await purchApi.getPurchases();
+
+        purchases.forEach(purch => {
+            const purchCard = PurchCard(annGroup, {
+                id: purch.name,
+                category: purch.category,
+                title: purch.title,
+                price: purch.price,
+                address: purch.address,
+                src: purch.src,
             });
-        }
+            purchCard.render();
+        });
 
         content.appendChild(annGroup);
     }

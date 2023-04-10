@@ -1,8 +1,7 @@
 {{#if id}}
-<div id="{{id}}" class="user_panel_element">
+<div id="{{id}}" class="user_panel_element {{#if invert}}user_panel_element_invert{{/if}}">
 {{/if}}
 
-{{!-- <object type="image/svg+xml" data="{{imgSource}}" class="user_panel_element_image"></object> --}}
 <img class="user_panel_element_image" src="{{imgSource}}" alt="&">
 <div class="user_panel_element_text">{{text}}</div>
 

@@ -1,5 +1,5 @@
-import './UserPanelElement.scss'
-import template from './UserPanelElement.handlebars'
+import './PanelElement.scss'
+import template from './PanelElement.handlebars'
 
 /**
  * элемент панели пользователя
@@ -8,19 +8,19 @@ import template from './UserPanelElement.handlebars'
  * @param {string} config.id - id элемента
  * @param {string} config.imgSource - путь до изображения
  * @param {string} config.text - текст элемента
+ * @param {boolean} config.invert - инвертировать цвет
+ * @param {Object} config.actions - события иконки
  * @returns 
  * @example
- * const elem = UserPanelElement(document.body, {
+ * const elem = PanelElement(document.body, {
  *    id: 'username',
  *    imgSource: "./img.jpg",
  *    text: 'имя пользователя',
  * });
  */
 
-export const UserPanelElement = (parent, config) => {
-    const actions = {
-        click: () => {},
-    };
+export const PanelElement = (parent, config) => {
+    const actions = config.actions || {};
 
     const setActions = (newActions) => {
         for (let action in actions) {
@@ -35,6 +35,17 @@ export const UserPanelElement = (parent, config) => {
             }
         }
     };
+
+    const changeConfig = (newConfig) => {
+        config = {
+            ...config,
+            ...newConfig,
+        };
+
+        if (self()) {
+            render();
+        }
+    }
 
     const self = () => {
         return parent.querySelector('#' + config.id);
@@ -63,6 +74,7 @@ export const UserPanelElement = (parent, config) => {
     return {
         self,
         destroy,
+        changeConfig,
         setActions,
         render,
     }

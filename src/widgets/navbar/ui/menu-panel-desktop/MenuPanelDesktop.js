@@ -5,7 +5,7 @@ import { toggleTheme } from "@features/theme";
 import createAnnSvg from 'assets/icons/create-ann.svg';
 import userSvg from 'assets/icons/user.svg';
 import basketSvg from 'assets/icons/basket.svg';
-import orderSvg from 'assets/icons/order.svg';
+import sellerSvg from 'assets/icons/seller.svg';
 import moonSvg from 'assets/icons/moon.svg';
 import sunSvg from 'assets/icons/sun.svg';
 
@@ -86,12 +86,23 @@ export const MenuPanelDesktop = (parent) => {
                 src: basketSvg,
                 size: "large",
                 invert: invert,
+                link: '/bucket',
+                actions: {
+                    'click': () => {
+                        if (store.getState('user')) {
+                            console.log("перенаправление...");
+                        } else {
+                            actions.login();
+                        }
+                    }
+                }
             }),
-            order: Icon(menu, {
-                id: "order",
-                src: orderSvg,
+            seller: Icon(menu, {
+                id: "seller",
+                src: sellerSvg,
                 size: "large",
                 invert: invert,
+                link: '/seller',
             }),
         }
         

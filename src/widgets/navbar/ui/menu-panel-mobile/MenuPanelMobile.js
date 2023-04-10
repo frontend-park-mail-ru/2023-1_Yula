@@ -4,7 +4,7 @@ import { toggleTheme } from "@features/theme";
 
 import userSvg from 'assets/icons/user.svg';
 import basketSvg from 'assets/icons/basket.svg';
-import orderSvg from 'assets/icons/order.svg';
+import sellerSvg from 'assets/icons/seller.svg';
 import moonSvg from 'assets/icons/moon.svg';
 import sunSvg from 'assets/icons/sun.svg';
 import homeSVG from 'assets/icons/home.svg'
@@ -63,6 +63,15 @@ export const MenuPanelMobile = (parent) => {
                 size: "large",
                 invert: invert,
                 link: "/bucket",
+                actions: {
+                    'click': () => {
+                        if (store.getState('user')) {
+                            console.log("перенаправление...");
+                        } else {
+                            actions.login();
+                        }
+                    }
+                }
             }),
 
             createAnn: Icon(menu, {
@@ -83,12 +92,12 @@ export const MenuPanelMobile = (parent) => {
                 }
             }),
 
-            order: Icon(menu, {
-                id: "order",
-                src: orderSvg,
+            seller: Icon(menu, {
+                id: "seller",
+                src: sellerSvg,
                 size: "large",
                 invert: invert,
-                // link: "/order",
+                link: '/seller',
             }),
 
             user: Icon(menu, {
@@ -117,9 +126,9 @@ export const MenuPanelMobile = (parent) => {
                 Icons.basket.changeConfig({ bgColor: "secondary", invert: !invert });
                 Icons.basket.active = true;
                 break;
-            case "/order":
-                Icons.order.changeConfig({ bgColor: "secondary", invert: !invert });
-                Icons.order.active = true;
+            case "/seller":
+                Icons.seller.changeConfig({ bgColor: "secondary", invert: !invert });
+                Icons.seller.active = true;
                 break;
             case "/profile":
                 if (!store.getState('user')) {

@@ -5,7 +5,7 @@ import { toggleTheme } from "@features/theme";
 import createAnnSvg from 'assets/icons/create-ann.svg';
 import userSvg from 'assets/icons/user.svg';
 import basketSvg from 'assets/icons/basket.svg';
-import orderSvg from 'assets/icons/order.svg';
+import sellerSvg from 'assets/icons/seller.svg';
 import moonSvg from 'assets/icons/moon.svg';
 import sunSvg from 'assets/icons/sun.svg';
 import homeSVG from 'assets/icons/home.svg'

@@ -6,7 +6,7 @@ import { userApi } from "@shared/api/users.js";
 import { goTo } from "@shared/lib/history";
 import store from "@modules/state-manager.js";
 
-import './UserPanel.scss';
+import './SellerPanel.scss';
 
 import exitSVG from 'assets/icons/exit.svg';
 import passwordSVG from 'assets/icons/password-key.svg';
@@ -15,7 +15,7 @@ import usernameSVG from 'assets/icons/username.svg';
 import phoneSVG from 'assets/icons/phone.svg';
 import emailSVG from 'assets/icons/email.svg';
 
-export const UserPanel = (parent) => {
+export const SellerPanel = (parent) => {
     const actions = {
         logout: () => {},
     }
@@ -38,14 +38,20 @@ export const UserPanel = (parent) => {
 
     const render = async () => {
         const userPanel = document.createElement('div');
-        userPanel.classList.add('user_panel');
+        userPanel.classList.add('seller_panel');
         parent.appendChild(userPanel);
 
         const user = store.getState('user');
         const theme = store.getState('theme');
         const invert = (theme === 'light') ? false : true;
-
+        
         // задаем элемeнты боковой панели
+        const textInfo = document.createElement("h2");
+        textInfo.innerText = "Продавец";
+        textInfo.style.alignSelf = "center";
+        textInfo.style.color = "var(--text-color)";
+        userPanel.appendChild(textInfo);
+
         const elements = {
             elem0 : Icon(userPanel, {
                 id: "user",
@@ -73,31 +79,7 @@ export const UserPanel = (parent) => {
                 text: `${user.email}`,
                 invert: invert,
             }),
-            elem4 : PanelElement(userPanel, {
-                id: 'phone',
-                imgSource: phoneSVG,
-                text: `${user.phone}`,
-                invert: invert,
-            }),
-            elem5 : PanelElement(userPanel, {
-                id: 'password',
-                imgSource: passwordSVG,
-                text: `${user.password}`,
-                invert: invert,
-            }),
-            elem6 : PanelElement(userPanel, {
-                id: 'exit',
-                imgSource: exitSVG,
-                text: `Выйти`,
-                invert: invert,
-                actions: {
-                    click: async () => {
-                        await userApi.logout();
-                        store.setState('user', null);
-                        goTo('/');
-                    }
-                }
-            }),
+            
             elem7 : Divider(userPanel, {
                 id: 'bottom_divider',
                 class: 'user_panel_divider',

@@ -26,6 +26,17 @@ export const Divider = (parent, config) => {
         }
     }
 
+    const changeConfig = (newConfig) => {
+        config = {
+            ...config,
+            ...newConfig,
+        };
+
+        if (self()) {
+            render();
+        }
+    }
+
     const render = async () => {
         const wrapper = document.createElement('div');
         wrapper.innerHTML = template(config).trim();
@@ -41,6 +52,7 @@ export const Divider = (parent, config) => {
     return {
         self,
         destroy,
+        changeConfig,
         render,
     }
 }
