@@ -3,13 +3,10 @@ export class purchApi {
         let purchs = await fetch('api/bucket');
         purchs = await purchs.json();
 
-        const promises = purchs.map(async pur => {
-            const response = await fetch("data:image/jpeg;base64," + pur.img);
-            const imageBlob = await response.blob();
-            const imageUrl = URL.createObjectURL(imageBlob);
-            pur.src = imageUrl;
+        purchs = purchs.map(purch => {
+            purch.images = purch.images.map(img => `http://localhost/static/images/anns/${img}`);
+            return purch;
         });
-        await Promise.all(promises);
 
         return purchs
     }

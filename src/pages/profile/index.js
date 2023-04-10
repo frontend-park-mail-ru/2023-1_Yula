@@ -30,14 +30,14 @@ export const profilePage = (parent) => {
         annGroup.classList.add('announcement-group');
 
         if (user.anns) {
-            user.anns.forEach(ann => {
+            user.anns.forEach((ann, i) => {
                 const annCard = AnnCard(annGroup, {
-                    id: ann.name,
                     category: ann.category,
                     title: ann.title,
                     price: ann.price,
                     address: ann.address,
-                    src: ann.src,
+                    src: ann.images[0],
+                    link: `/ann/${i}`,
                 });
                 annCard.render();
             });

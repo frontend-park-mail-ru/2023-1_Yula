@@ -51,6 +51,7 @@ export const announcementPage = (parent, params) => {
             textColor: 'fg',
             size: 'large',
             direction: 'row',
+            invert: store.getState('theme') === 'dark',
         });
         buyIcon.render();
         buyIcon.self().style.alignSelf = 'flex-end';

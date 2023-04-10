@@ -28,7 +28,6 @@ export const boardPage = (parent) => {
         content.appendChild(annGroup);
 
         const anns = await annApi.getAll();
-        console.log(anns);
 
         anns.forEach((ann, i) => {
             const annCard = AnnCard(annGroup, {
@@ -36,7 +35,7 @@ export const boardPage = (parent) => {
                 title: ann.title,
                 price: ann.price,
                 address: ann.address,
-                src: ann.src,
+                src: ann.images[0],
                 link: `/ann/${i}`,
             });
             annCard.render();

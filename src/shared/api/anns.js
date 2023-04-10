@@ -3,18 +3,15 @@ export class annApi {
         let anns = await fetch('api/board');
         anns = await anns.json();
         
-        const promises = anns.map(async ann => {
-            const response = await fetch("data:image/jpeg;base64," + ann.img);
-            const imageBlob = await response.blob();
-            const imageUrl = URL.createObjectURL(imageBlob);
-            ann.src = imageUrl;
+        anns = anns.map(ann => {
+            ann.images = ann.images.map(img => `http://localhost/static/images/anns/${img}`);
+            return ann;
         });
-        await Promise.all(promises);
 
         return anns;
     }
 
-    static async getFromUser() {
+    static async getFromUser(id) {
         
     }
 
@@ -22,14 +19,7 @@ export class annApi {
         let ann = await fetch(`http://localhost:8080/api/board/${id}`);
         ann = await ann.json();
     
-        const imageUrls = await Promise.all(
-            ann.images.map(async img => {
-                const response = await fetch("data:image/jpeg;base64," + img);
-                const imageBlob = await response.blob();
-                const imageUrl = URL.createObjectURL(imageBlob);
-                return imageUrl;
-            })
-        );
+        const imageUrls = ann.images.map(img => `http://localhost/static/images/anns/${img}`);
         
         ann.images = imageUrls;
     

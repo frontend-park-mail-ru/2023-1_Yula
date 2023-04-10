@@ -41,7 +41,7 @@ export const sellerPage = (parent) => {
                 title: purch.title,
                 price: purch.price,
                 address: purch.address,
-                src: purch.src,
+                src: purch.images[0],
             });
             purchCard.render();
         });
