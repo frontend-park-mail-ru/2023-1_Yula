@@ -1,10 +1,10 @@
-import { AnnCard } from "@entities/announcement/ui";
-import { annApi } from "@shared/api/anns";
+import { CreateAnn } from "@features/ann";
 import { Navbar } from "@widgets/navbar";
 import { AuthWidget } from "@widgets/auth";
-import store from "@modules/state-manager";
 
-export const boardPage = (parent) => {
+import './layout.scss';
+
+export const createAnnPage = (parent) => {
     const header = document.createElement('header');
     const content = document.createElement('main');
 
@@ -22,24 +22,18 @@ export const boardPage = (parent) => {
 
     const contentFilling = async () => {
         content.innerHTML = '';
+        content.classList.add('create-ann-content');
 
-        const annGroup = document.createElement('div');
-        annGroup.classList.add('announcement-group');
-        content.appendChild(annGroup);
+        const contentCreater = document.createElement('div');
+        content.appendChild(contentCreater);
 
-        const anns = await annApi.getAll();
+        const createAnn = CreateAnn(contentCreater);
+        createAnn.render();
 
-        anns.forEach((ann, i) => {
-            const annCard = AnnCard(annGroup, {
-                category: ann.category,
-                title: ann.title,
-                price: ann.price,
-                address: ann.address,
-                images: ann.images,
-                link: `/ann/${i}`,
-            });
-            annCard.render();
-        });
+        const contentPreview = document.createElement('div');
+        contentPreview.classList.add('ann-characteristics');
+        content.appendChild(contentPreview);
+
     }
 
     headerFilling();
@@ -57,13 +51,7 @@ export const boardPage = (parent) => {
         } else {
             parent.querySelector('main').replaceWith(content);
         }
-    } 
-
-    // подписываемся на изменения в сторе (вынести в роутер)
-    store.subscribe('user', () => {
-        contentFilling();
-        render();
-    });
+    }
 
     return {
         render,

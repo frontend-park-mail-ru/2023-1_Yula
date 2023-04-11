@@ -9,6 +9,13 @@ import charackteristics from "./ann-characteristics.handlebars";
 
 import basketSVG from "assets/icons/basket.svg";
 
+/**
+ * Страница объявления
+ * @param {HTMLElement} parent - родительский элемент
+ * @param {Object} params
+ * @param {string} params.id - id объявления 
+ * @returns 
+ */
 export const announcementPage = (parent, params) => {
     const header = document.createElement('header');
     const content = document.createElement('main');
@@ -33,7 +40,8 @@ export const announcementPage = (parent, params) => {
         annCarousel.classList.add('announcement-carousel');
         content.appendChild(annCarousel);
 
-        const ann = await annApi.getById(params[0]);
+        console.log(params);
+        const ann = await annApi.getById(params.id);
 
         const carousel = Carousel(annCarousel, { images: ann.images });
         carousel.render();

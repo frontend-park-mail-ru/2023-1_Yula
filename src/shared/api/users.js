@@ -1,33 +1,23 @@
 export class userApi {
     static async getMe() {
-        let user = await fetch('http://localhost:8080/api/me');
+        let user = await fetch('http://localhost/api/user');
 
+        // если запрос прошел успешно
         if (user.ok) {
+            // получить данные пользователя
             user = await user.json();
 
-            const imageUrl = `http://localhost/static/images/users/${user.avatar}`;
-            user.avatar = imageUrl;
+            // добавить к user свойство avatar, которое будет содержать путь к аватарке
+            user.Avatar = `data:image/jpeg;base64,${user.Avatar}`;
 
-            const anns = await fetch('http://localhost:8080/api/me/anns');
-            user.anns = await anns.json();
+            // изменить свойства у user с заглавной буквы на строчную
+            user = Object.entries(user).reduce((acc, [key, value]) => {
+                acc[key[0].toLowerCase() + key.slice(1)] = value;
+                return acc;
+            }, {});            
 
-            user.anns = user.anns.map(ann => {
-                const imageUrl = `http://localhost/static/images/anns/${ann.images[0]}`;
-                ann.images = [imageUrl];
-                return ann;
-            });
-
-            const purchs = await fetch('http://localhost:8080/api/bucket');
-            user.purchs = await purchs.json();
-
-            user.purchs = user.purchs.map(ann => {
-                const imageUrl = `http://localhost/static/images/anns/${ann.images[0]}`;
-                ann.images = [imageUrl];
-                return ann;
-            });
-
-            return user;
         } else {
+            // если запрос не прошел успешно, то вернуть null
             user = null;
         }
 
@@ -42,7 +32,14 @@ export class userApi {
      * @param {string} data.password
      */
     static async signup(data) {
-       return await fetch('api/signup', {
+        // переводим свойства со строчной буквы на заглавную
+        data = Object.entries(data).reduce((acc, [key, value]) => {
+            acc[key[0].toUpperCase() + key.slice(1)] = value;
+            return acc;
+        }, {});
+            
+        // отправляем запрос на сервер
+        return await fetch('http://localhost/user', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'

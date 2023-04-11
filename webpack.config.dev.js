@@ -16,11 +16,11 @@ module.exports = {
         static: {
             directory: path.join(__dirname, './dist'),
         },
-        port: 8080,
+        port: 7070,
         hot: true,
-        proxy: {
-            '/api': 'http://localhost:3000'
-        },
+        // proxy: {
+        //     '/api': 'http://localhost:8080'
+        // },
         historyApiFallback: true
     },
     resolve: {

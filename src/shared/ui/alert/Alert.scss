@@ -1,0 +1,62 @@
+.button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 12px;
+    gap: 4px;
+
+    height: 32px;
+    border-radius: 8px;
+    border: none;
+
+    cursor: pointer;
+}
+
+.button_color_primary {
+    background: var(--primary-color);
+
+    &:hover {
+        background: var(--primary-color-strong);
+    }
+
+    &:disabled {
+        background: var(--primary-color-lite);
+    }
+}
+
+.alert__btn-close {
+    color: var(--secondary-color);
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    transform: scale(var(--ggs,1));
+    width: 22px;
+    height: 22px;
+    border: 2px solid transparent;
+    border-radius: 40px;
+    cursor: pointer;
+
+    &:hover {
+        color: var(--primary-color);
+    }
+
+    &::after,
+    &::before {
+        content: "";
+        display: block;
+        box-sizing: border-box;
+        position: absolute;
+        width: 16px;
+        height: 2px;
+        background: currentColor;
+        transform: rotate(45deg);
+        border-radius: 5px;
+        top: 8px;
+        left: 1px
+    }
+
+    &::after {
+        transform: rotate(-45deg)
+    }
+}

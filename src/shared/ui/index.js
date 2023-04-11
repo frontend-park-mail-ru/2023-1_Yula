@@ -6,3 +6,4 @@ export { Icon } from "./icon/Icon";
 export { Carousel } from "./carousel/Carousel";
 export { PanelElement } from "./panelelement/PanelElement.js"
 export { Divider } from "./divider/Divider.js"
+export { Alert } from "./alert/Alert"

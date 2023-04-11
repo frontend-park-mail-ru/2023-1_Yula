@@ -7,6 +7,7 @@
         "avatar": "/0.jpeg",
         "phone" : "+7 999 999 99 77",
         "anns": [ 0, 1, 2 ],
+        "basket": [],
         "purchs": [ 3, 4 ]
     },
     {
@@ -17,6 +18,7 @@
         "avatar": "/default.jpg",
         "phone" : "+7 999 999 44 99",
         "anns": [ 3, 4 ],
+        "basket": [ 5 ],
         "purchs": [ 1, 2 ]
     },
     {
@@ -27,6 +29,7 @@
         "avatar": "/default.jpg",
         "phone" : "+7 999 555 99 99",
         "anns": [],
+        "basket": [2],
         "purchs": [ 0, 1 ]
     }
 ]

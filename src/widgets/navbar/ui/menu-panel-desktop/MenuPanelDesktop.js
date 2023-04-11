@@ -1,4 +1,5 @@
 import { Icon } from "@shared/ui/index.js";
+import { goTo } from "@shared/lib/history";
 import store from "@modules/state-manager.js";
 
 import createAnnSvg from 'assets/icons/create-ann.svg';
@@ -56,7 +57,7 @@ export const MenuPanelDesktop = (parent) => {
                 actions: {
                     'click': () => {
                         if (store.getState('user')) {
-                            console.log("перенаправление...");
+                            goTo('/create');
                         } else {
                             actions.login();
                         }

@@ -1,4 +1,5 @@
 import { Icon } from "@shared/ui/index.js";
+import { goTo } from "@shared/lib/history";
 import store from "@modules/state-manager.js";
 
 import userSvg from 'assets/icons/user.svg';
@@ -63,7 +64,7 @@ export const MenuPanelMobile = (parent) => {
                 actions: {
                     'click': () => {
                         if (store.getState('user')) {
-                            console.log("перенаправление...");
+                            goTo('/bucket');
                         } else {
                             actions.login();
                         }
@@ -81,7 +82,7 @@ export const MenuPanelMobile = (parent) => {
                 actions: {
                     'click': () => {
                         if (store.getState('user')) {
-                            console.log("перенаправление...");
+                            goTo('/create');
                         } else {
                             actions.login();
                         }

@@ -1,0 +1,34 @@
+<form id="{{id}}">
+    <section class="form__input-group">
+        <label class="form__text" for="title">Что будем продавать?</label>
+        <input type="text" class="input" name="title" required>
+        <span class="form__text_error" id="titleMessage"></span>
+    </section>
+    <section class="form__input-group">
+        <label class="form__text" for="desc">Опишите продукт</label>
+        <textarea class="input input_type_textarea" name="desc" required></textarea>
+        <span class="form__text_error" id="descMessage"></span>
+    </section>
+    <div style="display: flex; justify-content: space-around; gap: 10px">
+        <section class="form__input-group">
+            <label class="form__text" for="price">Цена</label>
+            <input type="text" class="input input_type_number" name="price" required>
+            <span class="form__text_error" id="priceMessage"></span>
+        </section>
+        <section class="form__input-group">
+            <label class="form__text" for="category">Категория</label>
+            <select class="input input_type_select" name="category" required>
+                <option value="В быту">В быту</option>
+                <option value="Электроника">Электроника</option>
+                <option value="Живопись">Живопись</option>
+                <option value="Музыка">Музыка</option>
+            </select>
+            <span class="form__text_error" id="categoryMessage"></span>
+        </section>
+    </div>
+    <section class="form__input-group">
+        <div class="input_type_file" required>Переместите сюда изображения</div>
+        <input type="file" name="image" style="display: none;" required>
+        <span class="form__text_error" id="imageMessage"></span>
+    </section>
+</form>

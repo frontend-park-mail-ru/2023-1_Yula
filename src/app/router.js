@@ -12,7 +12,7 @@ export const Router = (parent) => {
     const register = (route, page, name, isPrivate = false, redirect = '/') => {
         const routeRegex = new RegExp(`^${route.replace(/{\w+}/g, '(.*)')}$`);
 
-        routes.push({ regex: routeRegex, page, isPrivate, redirect, name });
+        routes.push({ regex: routeRegex, page, isPrivate, redirect, name, paramNames: route.match(/{\w+}/g) });
     }
 
     /**
@@ -25,18 +25,28 @@ export const Router = (parent) => {
         for (const route of routes) {
             const matches = path.match(route.regex);
             if (matches) {
-                const params = matches.slice(1);
+                const params = {};
+                if (route.paramNames) {
+                    route.paramNames.map(param => param.slice(1, -1))
+                        .forEach((paramName, index) => {
+                            params[paramName] = matches[index + 1];
+                        });
+                }
                 return { ...route, params };
             }
         }
-        console.error(`No route found for path ${path}`);
-    }
+        throw new Error(`No route found for path ${path}`);
+    }    
+    
 
     /**
      * Переход на страницу по url-адресу
      * @param {string} path - url-адрес
      */
     const goTo = (path) => {
+        // убираем слэш в конце адреса
+        if (path !== '/' && path[path.length - 1] === '/') path = path.slice(0, path.length - 1);
+
         const route = findRoute(path);
         const { page, params, redirect, name } = route;
         window.history.pushState({ params }, name, path);
