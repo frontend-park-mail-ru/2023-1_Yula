@@ -1,23 +1,34 @@
+import { baseUrl } from '../config';
+
 export class userApi {
     static async getMe() {
-        let user = await fetch('http://localhost/api/user');
+        let user = await fetch(`${baseUrl}/api/me`);
 
-        // если запрос прошел успешно
         if (user.ok) {
-            // получить данные пользователя
             user = await user.json();
 
-            // добавить к user свойство avatar, которое будет содержать путь к аватарке
-            user.Avatar = `data:image/jpeg;base64,${user.Avatar}`;
+            const imageUrl = `${baseUrl}/static/images/users/${user.avatar}`;
+            user.avatar = imageUrl;
 
-            // изменить свойства у user с заглавной буквы на строчную
-            user = Object.entries(user).reduce((acc, [key, value]) => {
-                acc[key[0].toLowerCase() + key.slice(1)] = value;
-                return acc;
-            }, {});            
+            const anns = await fetch(`${baseUrl}/api/me/anns`);
+            user.anns = await anns.json();
 
+            user.anns = user.anns.map(ann => {
+                ann.images = ann.images.map(img => `${baseUrl}/static/images/anns/${img}`);
+                return ann;
+            });
+
+            const purchs = await fetch(`${baseUrl}/api/me/purchs`);
+            user.purchs = await purchs.json();
+
+            user.purchs = user.purchs.map(ann => {
+                const imageUrl = `${baseUrl}/static/images/anns/${ann.images[0]}`;
+                ann.images = [imageUrl];
+                return ann;
+            });
+
+            return user;
         } else {
-            // если запрос не прошел успешно, то вернуть null
             user = null;
         }
 
@@ -32,14 +43,7 @@ export class userApi {
      * @param {string} data.password
      */
     static async signup(data) {
-        // переводим свойства со строчной буквы на заглавную
-        data = Object.entries(data).reduce((acc, [key, value]) => {
-            acc[key[0].toUpperCase() + key.slice(1)] = value;
-            return acc;
-        }, {});
-            
-        // отправляем запрос на сервер
-        return await fetch('http://localhost/user', {
+       return await fetch(`${baseUrl}/api/signup`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -55,7 +59,7 @@ export class userApi {
      * @param {string} data.password
      */
     static async loginByEmail(data) {
-        return await fetch('api/login', {
+        return await fetch(`${baseUrl}/api/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -68,6 +72,6 @@ export class userApi {
      * Выход из аккаунта
      */
     static async logout() {
-        return await fetch('api/logout', {method: 'POST'});
+        return await fetch(`${baseUrl}/api/logout`, {method: 'POST'});
     }
 }

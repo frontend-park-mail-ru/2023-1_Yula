@@ -82,6 +82,8 @@ app.post('/api/logout', (req, res) => {
 app.get('/api/board', (req, res) => {
     const id = req.cookies.appuniq;
     const emailSession = ids[id];
+
+    console.log(id, emailSession);
     const user = users.find((user) => user.email === emailSession);
 
     if (!emailSession || !user) {
@@ -115,6 +117,8 @@ app.get('/api/me', (req, res) => {
     const emailSession = ids[id];
     const user = users.find((user) => user.email === emailSession);
 
+    console.log(req.headers);
+
     if (!emailSession || !user) {
         return res.status(401).json({error: 'Пользователь не найден'});
     }
@@ -140,8 +144,21 @@ app.get('/api/me/anns', (req, res) => {
     return res.json(result);
 });
 
+app.get('/api/me/purchs', (req, res) => {
+    const id = req.cookies.appuniq;
+    const emailSession = ids[id];
+    const user = users.find((user) => user.email === emailSession);
+
+    if (!emailSession || !user) {
+        return res.status(401).json({error: 'Пользователь не найден'});
+    }
+
+    const result = anns.filter((_, i) => user.purchs.includes(i));
+    return res.json(result);
+});
+
 /** port to listen */
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 
 app.listen(port, () => {
     console.log(`Server listening port ${port}`);

@@ -18,9 +18,9 @@ module.exports = {
         },
         port: 7070,
         hot: true,
-        // proxy: {
-        //     '/api': 'http://localhost:8080'
-        // },
+        proxy: {
+            '/api': 'http://localhost:8080/'
+        },
         historyApiFallback: true
     },
     resolve: {

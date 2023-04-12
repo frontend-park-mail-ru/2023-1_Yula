@@ -40,7 +40,6 @@ export const announcementPage = (parent, params) => {
         annCarousel.classList.add('announcement-carousel');
         content.appendChild(annCarousel);
 
-        console.log(params);
         const ann = await annApi.getById(params.id);
 
         const carousel = Carousel(annCarousel, { images: ann.images });

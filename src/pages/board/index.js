@@ -29,14 +29,14 @@ export const boardPage = (parent) => {
 
         const anns = await annApi.getAll();
 
-        anns.forEach((ann, i) => {
+        anns.forEach(ann => {
             const annCard = AnnCard(annGroup, {
                 category: ann.category,
                 title: ann.title,
                 price: ann.price,
                 address: ann.address,
                 images: ann.images,
-                link: `/ann/${i}`,
+                link: `/ann/${ann.id}`,
             });
             annCard.render();
         });
