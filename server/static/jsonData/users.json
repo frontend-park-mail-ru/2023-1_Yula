@@ -1,0 +1,35 @@
+[
+    {
+        "id": 0,
+        "username": "Азат Билалов",
+        "email": "az.bilalov@mail.ru",
+        "password": "123456",
+        "avatar": "0.jpeg",
+        "phone" : "+7 999 999 99 77",
+        "anns": [ 0, 1, 2 ],
+        "basket": [],
+        "purchs": [ 3, 4 ]
+    },
+    {
+        "id": 1,
+        "username": "Тимур Аюшиев",
+        "email": "tayushiev@gmail.com",
+        "password": "1234578",
+        "avatar": "default.jpg",
+        "phone" : "+7 999 999 44 99",
+        "anns": [ 3, 4 ],
+        "basket": [ 5 ],
+        "purchs": [ 1, 2 ]
+    },
+    {
+        "id": 2,
+        "username": "Тестер",
+        "email": "test@mail.ru",
+        "password": "000000",
+        "avatar": "default.jpg",
+        "phone" : "+7 999 555 99 99",
+        "anns": [],
+        "basket": [2],
+        "purchs": [ 0, 1 ]
+    }
+]

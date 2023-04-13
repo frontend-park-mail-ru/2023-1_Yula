@@ -1,10 +1,8 @@
 import { AnnCard } from "@entities/announcement/ui/card/AnnCard.js";
 import { Navbar } from "@widgets/navbar/index.js";
 import { AuthWidget } from "@widgets/auth/index.js";
-import { Button } from "@shared/ui/index.js";
-import { userApi } from "@shared/api/users.js";
+import { UserPanel } from "@widgets/userpanel/UserPanel.js";
 import store from "@modules/state-manager.js";
-import { goTo } from "@shared/lib/history";
 
 export const profilePage = (parent) => {
     const header = document.createElement('header');
@@ -24,24 +22,9 @@ export const profilePage = (parent) => {
 
     const contentFilling = async () => {
         const user = store.getState('user');
-
-        const info = document.createElement('h3');
-        info.innerText = `Имя: ${user.username} \n Адрес: ${user.email}`;
-        info.style.color = 'var(--fg-color)';
-
-        const logoutBtn = Button(content, {
-            text: 'Выйти',
-            type: 'button',
-            color: 'primary',
-            size: 'small',
-        });
-        logoutBtn.setActions({
-            click: async () => {
-                await userApi.logout();
-                store.setState('user', null);
-                goTo('/');
-            }
-        });
+        
+        const userPanel = UserPanel(content);
+        userPanel.render();
 
         const annGroup = document.createElement('div');
         annGroup.classList.add('announcement-group');
@@ -49,19 +32,17 @@ export const profilePage = (parent) => {
         if (user.anns) {
             user.anns.forEach(ann => {
                 const annCard = AnnCard(annGroup, {
-                    id: ann.name,
                     category: ann.category,
                     title: ann.title,
                     price: ann.price,
                     address: ann.address,
-                    src: ann.src,
+                    images: ann.images,
+                    link: `/ann/${ann.id}`,
                 });
                 annCard.render();
             });
         }
 
-        content.appendChild(info);
-        logoutBtn.render();
         content.appendChild(annGroup);
     }
 
@@ -69,12 +50,12 @@ export const profilePage = (parent) => {
     contentFilling();
 
     const render = () => {
-        // рендерим, если только нет на странице
         if (!parent.querySelector('header')) {
             parent.appendChild(header);
+        } else {
+            parent.querySelector('header').replaceWith(header);
         }
 
-        // если контент есть, заменяем его новым
         if (!parent.querySelector('main')) {
             parent.appendChild(content);
         } else {

@@ -9,20 +9,19 @@ module.exports = {
     output: {
         filename: 'main.js',
         path: path.resolve(__dirname, 'dist'),
+        publicPath: '/',
     },
     devtool: 'inline-source-map',
     devServer: {
         static: {
             directory: path.join(__dirname, './dist'),
         },
-        port: 8080,
+        port: 7070,
         hot: true,
         proxy: {
-            '/api': 'http://localhost:3000'
+            '/api': 'http://localhost:8080/'
         },
-        historyApiFallback: {
-            index: 'index.html'
-        }
+        historyApiFallback: true
     },
     resolve: {
         alias: {

@@ -14,6 +14,7 @@ import template from './Button.handlebars';
  * @param {string} config.srcIcon - путь до иконки, которая будет внутри кнопки
  * @param {string} config.text - текст кнопки
  * @param {string} config.textColor - класс текста кнопки
+ * @param {boolean} config.autofocus - автофокус на кнопку
  * @returns 
  */
 export const Button = (parent, config) => {
@@ -26,6 +27,7 @@ export const Button = (parent, config) => {
     config.srcIcon = config.srcIcon || "";
     config.text = config.text || "";
     config.textColor = config.textColor || "white";
+    config.autofocus = config.autofocus || false;
 
     const actions = {};
 
@@ -58,8 +60,8 @@ export const Button = (parent, config) => {
             throw new Error(`Объект с id="${config.id}" уже есть на странице`);
         }
 
-        // const template = Handlebars.templates["shared/ui/button/Button"];
-        parent.insertAdjacentHTML("beforeEnd", template(config));
+        const templ = template(config).trim();
+        parent.insertAdjacentHTML("beforeEnd", templ);
 
         applyActions();
     }

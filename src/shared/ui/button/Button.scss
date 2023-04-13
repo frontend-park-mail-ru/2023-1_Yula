@@ -45,6 +45,18 @@
     }
 }
 
+.button_color_secondary {
+    background: var(--primary-color);
+
+    &:hover {
+        background: var(--primary-color-hover);
+    }
+
+    &:disabled {
+        background: var(--primary-color-disabled);
+    }
+}
+
 .button__text {
     align-self: center;
     justify-content: center;

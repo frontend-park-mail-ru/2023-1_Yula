@@ -10,52 +10,13 @@ const fs = require('fs');
 const app = express();
 
 app.use(morgan('dev'));
-app.use(express.static(path.resolve(__dirname, '..', 'dist')));
 app.use(express.static(path.resolve(__dirname, 'static')));
+// app.use(express.static(path.resolve(__dirname, '..', 'dist')));
 app.use(body.json());
 app.use(cookie());
 
-// mime.contentType('text/html');
-
-/** user data */
-const users = require('./static/jsonData/anns.json');
-
-/** base64 user avatars */
-Object.values(users).map(user => {
-    if (user.avatar) {
-        const imagePath = path.join(__dirname, 'static', 'images', user.avatar);
-        const imageBuffer = fs.readFileSync(imagePath);
-        user.avatar = Buffer.from(imageBuffer).toString('base64');
-    }
-
-    return user.avatar;
-}).filter(Boolean);
-
-/** base64 ann images */
-Object.values(users).map(user => {
-    if (user.anns) {
-        user.anns.map(ann => {
-            const imagePath = path.join(__dirname, 'static', 'images', ann.src);
-            const imageBuffer = fs.readFileSync(imagePath);
-            ann.img = Buffer.from(imageBuffer).toString('base64');
-        });
-    }
-    
-    return user.anns;
-}).filter(Boolean);
-
-/** base64 ann images */
-Object.values(users).map(user => {
-    if (user.purchs) {
-        user.purchs.map(purch => {
-            const imagePath = path.join(__dirname, 'static', 'images', purch.src);
-            const imageBuffer = fs.readFileSync(imagePath);
-            purch.img = Buffer.from(imageBuffer).toString('base64');
-        });
-    }
-    
-    return user.purchs;
-}).filter(Boolean);
+const users = require('./static/jsonData/users.json');
+const anns = require('./static/jsonData/anns.json');
 
 /** session identificators */
 const ids = {};
@@ -77,14 +38,11 @@ app.post('/api/signup', (req, res) => {
 
     const id = uuid();
     const user = {
-        password, email, username, anns: [], avatar: '/ava.jpg',
+        password, email, username, anns: [], avatar: '/default.jpg',
     };
-    const imagePath = path.join(__dirname, 'static', 'images', user.avatar);
-    const imageBuffer = fs.readFileSync(imagePath);
-    user.avatar = Buffer.from(imageBuffer).toString('base64');
 
     ids[id] = email;
-    users[email] = user;
+    users.push(user);
 
     res.cookie('appuniq', id, { expires: new Date(Date.now() + 1000 * 60 * 10) });
     return res.status(201).json({ id });
@@ -95,7 +53,9 @@ app.post('/api/login', (req, res) => {
     if (!password || !email) {
         return res.status(400).json({ error: 'Не указан E-Mail или пароль' });
     }
-    if (!users[email] || users[email].password !== password) {
+
+    const user = users.find((user) => user.email === email);
+    if (!user || user.password !== password) {
         return res.status(400).json({ error: 'Неверный E-Mail и/или пароль' });
     }
 
@@ -109,8 +69,9 @@ app.post('/api/login', (req, res) => {
 app.post('/api/logout', (req, res) => {
     const id = req.cookies.appuniq;
     const emailSession = ids[id];
+    const user = users.find((user) => user.email === emailSession);
 
-    if (!emailSession || !users[emailSession]) {
+    if (!emailSession || !user) {
         return res.status(401).end();
     }
 
@@ -122,37 +83,46 @@ app.get('/api/board', (req, res) => {
     const id = req.cookies.appuniq;
     const emailSession = ids[id];
 
-    const result = Object
-        .values(users)
-        .filter(({ email }) => email !== emailSession)
-        .map((user) => user.anns)
-        .filter(Boolean);
+    console.log(id, emailSession);
+    const user = users.find((user) => user.email === emailSession);
 
-    res.json(result.flat());
+    if (!emailSession || !user) {
+        return res.json(anns);
+    } else {
+        const result = anns.filter((_, i) => user.anns.includes(i));
+        return res.json(result);
+    }
+});
+
+app.get('/api/board/:id', (req, res) => {
+    const annId = req.params.id;
+    res.json(anns[annId]);
 });
 
 app.get('/api/bucket', (req, res) => {
     const id = req.cookies.appuniq;
     const emailSession = ids[id];
+    const user = users.find((user) => user.email === emailSession);
 
-    const result = Object
-        .values(users)
-        .filter(({email}) => email === emailSession)
-        .map((user) => user.purchs)
-        .filter(Boolean);
-    
-    res.json(result.flat());
+    if (!emailSession || !user) {
+        return res.status(401).json({error: 'Пользователь не найден'});
+    } else {
+        const result = anns.filter((_, i) => user.purchs.includes(i));
+        return res.json(result);
+    }
 })
 
 app.get('/api/me', (req, res) => {
     const id = req.cookies.appuniq;
     const emailSession = ids[id];
+    const user = users.find((user) => user.email === emailSession);
 
-    if (!emailSession || !users[emailSession]) {
+    console.log(req.headers);
+
+    if (!emailSession || !user) {
         return res.status(401).json({error: 'Пользователь не найден'});
     }
 
-    const user = users[emailSession];
     return res.json({
         username: user.username,
         email: user.email,
@@ -161,12 +131,34 @@ app.get('/api/me', (req, res) => {
     });
 });
 
-// app.get('/*', (_,res) => {
-//     res.sendFile(path.resolve("dist/index.html"));
-// });
+app.get('/api/me/anns', (req, res) => {
+    const id = req.cookies.appuniq;
+    const emailSession = ids[id];
+    const user = users.find((user) => user.email === emailSession);
+
+    if (!emailSession || !user) {
+        return res.status(401).json({error: 'Пользователь не найден'});
+    }
+
+    const result = anns.filter((_, i) => user.anns.includes(i));
+    return res.json(result);
+});
+
+app.get('/api/me/purchs', (req, res) => {
+    const id = req.cookies.appuniq;
+    const emailSession = ids[id];
+    const user = users.find((user) => user.email === emailSession);
+
+    if (!emailSession || !user) {
+        return res.status(401).json({error: 'Пользователь не найден'});
+    }
+
+    const result = anns.filter((_, i) => user.purchs.includes(i));
+    return res.json(result);
+});
 
 /** port to listen */
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 
 app.listen(port, () => {
     console.log(`Server listening port ${port}`);

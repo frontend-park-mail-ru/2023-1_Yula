@@ -1,0 +1,21 @@
+.seller_panel {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+
+    float: left;
+
+
+    background-color: var(--bg-color-lite);
+    
+    overflow: hidden;
+
+    width: 350px;
+    min-width: 300px;
+    height: fit-content;
+
+
+    margin-right: 2%;
+    margin-bottom: 5%;
+    padding: 1%;
+}

@@ -1,22 +1,33 @@
+import { baseUrl } from '../config';
+
 export class userApi {
     static async getMe() {
-        let user = await fetch('api/me');
+        let user = await fetch(`${baseUrl}/api/me`);
 
         if (user.ok) {
             user = await user.json();
 
-            const response = await fetch("data:image/jpeg;base64," + user.avatar);
-            const imageBlob = await response.blob();
-            const imageUrl = URL.createObjectURL(imageBlob);
+            const imageUrl = `${baseUrl}/static/images/users/${user.avatar}`;
             user.avatar = imageUrl;
 
-            const promises = user.anns.map(async ann => {
-                const response = await fetch("data:image/jpeg;base64," + ann.img);
-                const imageBlob = await response.blob();
-                const imageUrl = URL.createObjectURL(imageBlob);
-                ann.src = imageUrl;
+            const anns = await fetch(`${baseUrl}/api/me/anns`);
+            user.anns = await anns.json();
+
+            user.anns = user.anns.map(ann => {
+                ann.images = ann.images.map(img => `${baseUrl}/static/images/anns/${img}`);
+                return ann;
             });
-            await Promise.all(promises);
+
+            const purchs = await fetch(`${baseUrl}/api/me/purchs`);
+            user.purchs = await purchs.json();
+
+            user.purchs = user.purchs.map(ann => {
+                const imageUrl = `${baseUrl}/static/images/anns/${ann.images[0]}`;
+                ann.images = [imageUrl];
+                return ann;
+            });
+
+            return user;
         } else {
             user = null;
         }
@@ -32,7 +43,7 @@ export class userApi {
      * @param {string} data.password
      */
     static async signup(data) {
-       return await fetch('api/signup', {
+       return await fetch(`${baseUrl}/api/signup`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -48,7 +59,7 @@ export class userApi {
      * @param {string} data.password
      */
     static async loginByEmail(data) {
-        return await fetch('api/login', {
+        return await fetch(`${baseUrl}/api/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -61,6 +72,6 @@ export class userApi {
      * Выход из аккаунта
      */
     static async logout() {
-        return await fetch('api/logout', {method: 'POST'});
+        return await fetch(`${baseUrl}/api/logout`, {method: 'POST'});
     }
 }

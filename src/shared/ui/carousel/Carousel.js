@@ -72,7 +72,7 @@ export const Carousel = (parent, config) => {
         const thumbnails = self().querySelector('.carousel__thumbnails');
         thumbnails.addEventListener('click', (event) => {
             if (event.target.classList.contains('carousel__thumbnail')) {
-                slideTo(event.target.dataset.index);
+                slideTo(+event.target.dataset.index);
             }
         });
 

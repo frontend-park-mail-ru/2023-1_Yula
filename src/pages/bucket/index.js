@@ -33,13 +33,14 @@ export const bucketPage = (parent) => {
         const purchases = await purchApi.getPurchases();
 
         purchases.forEach(purch => {
+            console.log(purch.images);
             const purchCard = PurchCard(purchGroup, {
                 id: purch.id,
                 category: purch.category,
                 title: purch.title,
                 price: purch.price,
                 address: purch.address,
-                src: purch.src,
+                src: purch.images[0],
             });
             
             // const btn = Button(parent, {

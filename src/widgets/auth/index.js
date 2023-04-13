@@ -10,6 +10,17 @@ export const AuthWidget = (parent) => {
         const signup = signupModal(widget);
         const login = loginModal(widget);
 
+        const self = () => {
+            console.log(parent.querySelector('.auth-widget'));
+            return parent.querySelector('.auth-widget');
+        }
+
+        const destroy = () => {
+            if (self()) {
+                self().remove();
+            }
+        }
+
         signup.setActions({
             back: () => {
                 signup.destroy();

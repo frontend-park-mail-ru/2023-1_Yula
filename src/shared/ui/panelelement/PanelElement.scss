@@ -1,0 +1,50 @@
+.user_panel_element {
+    padding: 1%;
+    margin-bottom: 5px;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    border-radius: 5px;
+}
+
+.user_panel_element_image{
+    margin: 10px;
+    float: left;
+    width: 20px;
+    height: 20px;
+}
+
+.user_panel_element_text {
+    font-family: 'Roboto VK';
+    font-weight: 500;
+    line-height: 18px;
+    color: var(--panel-text-color);
+    width: fit-content;
+    height: fit-content;
+}
+
+.user_panel_element:hover {
+    background-color: var(--primary-color);
+};
+
+.user_panel_element:hover {
+    & .user_panel_element_image{
+        cursor: pointer;
+        filter: invert(1);
+    }
+}
+
+.user_panel_element:hover .user_panel_element_text {
+    cursor: pointer;
+    filter: invert(1);
+}
+
+.user_panel_element_invert {
+
+    & .user_panel_element_image {
+        filter: invert(1);
+    }
+    & .user_panel_element_text {
+        filter: invert(1);
+    }
+}

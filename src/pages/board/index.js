@@ -28,16 +28,15 @@ export const boardPage = (parent) => {
         content.appendChild(annGroup);
 
         const anns = await annApi.getAll();
-        console.log(anns);
 
         anns.forEach(ann => {
             const annCard = AnnCard(annGroup, {
-                id: ann.name,
                 category: ann.category,
                 title: ann.title,
                 price: ann.price,
                 address: ann.address,
-                src: ann.src,
+                images: ann.images,
+                link: `/ann/${ann.id}`,
             });
             annCard.render();
         });
@@ -47,14 +46,12 @@ export const boardPage = (parent) => {
     contentFilling();
 
     const render = () => {
-        // рендерим, если только нет на странице
         if (!parent.querySelector('header')) {
             parent.appendChild(header);
         } else {
             parent.querySelector('header').replaceWith(header);
         }
 
-        // если контент есть, заменяем его новым
         if (!parent.querySelector('main')) {
             parent.appendChild(content);
         } else {

@@ -52,6 +52,13 @@ export const Modal = (parent, config = {id: ""}) => {
     const applyActions = () => {
         const backButton = self().querySelector(`.modal__btn-back`);
         backButton.addEventListener('click', () => actions.back());
+        
+        // escape key pressed
+        self().addEventListener("keydown", (event) => {
+            if (event.keyCode === 27) {
+              actions.back();
+            }
+        });
 
         const closeButton = self().querySelector(`.modal__btn-close`);
         closeButton.addEventListener('click', () => actions.close());
@@ -61,7 +68,7 @@ export const Modal = (parent, config = {id: ""}) => {
                 actions.outside();
             }
         });
-    }
+    };
 
     const render = () => {
         if (self()) {

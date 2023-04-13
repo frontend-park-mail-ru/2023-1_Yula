@@ -24,6 +24,9 @@
     --fg-color-strong: #1e2745;
 
     --logo-color: #620760;
+
+    --text-color: #000000;
+    --panel-text-color: #000000;
 }
 
 body.dark {
@@ -36,7 +39,7 @@ body.dark {
     --success-color-lite: #2ab42a80;
 
     --secondary-color: #d2d2d7;
-    --secondary-color-strong: #5c6978;
+    --secondary-color-strong: #98a1ac;
     --secondary-color-lite: #6d7885b3;
 
     --bg-color: #182039;
@@ -48,6 +51,9 @@ body.dark {
     --fg-color-strong: #EDEDED;
 
     --logo-color: #3263de;
+
+    --text-color: #ffffff;
+    --panel-text-color: #000000;
 }
 
 @font-face {
