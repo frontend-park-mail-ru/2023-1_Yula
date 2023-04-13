@@ -32,7 +32,6 @@ export const PurchCard = (parent, config = {id: ""}) => {
 
     const render = () => {
         parent.insertAdjacentHTML("beforeEnd", template(config));
-        applyActions();
     }
 
     return {

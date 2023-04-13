@@ -34,14 +34,27 @@ export const bucketPage = (parent) => {
 
         purchases.forEach(purch => {
             const purchCard = PurchCard(purchGroup, {
-                id: purch.name,
+                id: purch.id,
                 category: purch.category,
                 title: purch.title,
                 price: purch.price,
                 address: purch.address,
                 src: purch.src,
             });
+            
+            // const btn = Button(parent, {
+            //     id: `delete${purch.id}`,
+            //     type: "submit",
+            //     color: 'red',
+            //     size: "small",
+            // });
+            // btn.setActions({
+            //     click: () => {
+            //         console.log("asd")
+            //     }
+            // })
             purchCard.render();
+            // btn.render();
         });
 
         priceWidget.render();

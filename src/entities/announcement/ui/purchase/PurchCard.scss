@@ -26,7 +26,8 @@
 
 .purchase-card__content {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    width: 100%;
     padding: 8px 12px 12px 12px;
     text-align: center;
     align-items: center;
@@ -79,4 +80,55 @@
     justify-items: center;
     align-items: left;
     margin: 10px 0;
+}
+
+@media screen and (max-width: 900px) {
+    .purchase-card__content {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        padding: 8px 12px 12px 12px;
+        width: 100%;
+        text-align: center;
+        align-items: center;
+        background-color: var(--bg-color-strong);
+        border-radius: 10px;
+    }
+
+    .purchase-card__img {
+        height: 50px;
+        border-radius: inherit;
+        margin-left: auto;
+        margin-right: auto;
+    
+        &>img {
+            height: 100%;
+            width: 100%;
+            object-fit: contain;
+            border-radius: inherit;
+        }
+    }
+    
+    .purchase-card__category {
+        display: none;
+    }
+    
+    .purchase-card__title {
+        font-size: 16px;
+        color: var(--fg-color);
+        font-family: "Roboto VK Bold";
+    }
+    
+    .purchase-card__sale {
+        font-family: 'Roboto VK';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 15px;
+        margin-left: auto;
+        margin-right: auto;
+        color: var(--fg-color);
+    }
+    
+    .purchase-card__address {
+        display: none;
+    }
 }
