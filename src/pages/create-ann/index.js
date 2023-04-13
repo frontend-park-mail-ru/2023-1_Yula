@@ -1,8 +1,10 @@
 import { CreateAnn } from "@features/ann";
 import { Navbar } from "@widgets/navbar";
 import { AuthWidget } from "@widgets/auth";
+import { Carousel } from "@shared/ui";
 
 import './layout.scss';
+import annPreview from "./ann-preview.handlebars";
 
 export const createAnnPage = (parent) => {
     const header = document.createElement('header');
@@ -34,6 +36,19 @@ export const createAnnPage = (parent) => {
         contentPreview.classList.add('ann-characteristics');
         content.appendChild(contentPreview);
 
+        const annCarousel = document.createElement('div');
+        annCarousel.classList.add('announcement-carousel');
+        content.appendChild(annCarousel);
+        const carousel = Carousel(annCarousel, { });
+        carousel.render();
+
+        contentPreview.innerHTML += annPreview({
+            title: 'Заголовок',
+            price: 'Цена',
+            address: 'Адрес',
+            description: 'Описание',
+            images: []
+        });
     }
 
     headerFilling();
