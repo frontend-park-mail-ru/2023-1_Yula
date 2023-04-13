@@ -3,7 +3,6 @@ const body = require('body-parser');
 const cookie = require('cookie-parser');
 const morgan = require('morgan');
 const uuid = require('uuid').v4;
-// const mime = require('mime-types')
 const path = require('path');
 const fs = require('fs');
 
@@ -11,7 +10,6 @@ const app = express();
 
 app.use(morgan('dev'));
 app.use(express.static(path.resolve(__dirname, 'static')));
-// app.use(express.static(path.resolve(__dirname, '..', 'dist')));
 app.use(body.json());
 app.use(cookie());
 
