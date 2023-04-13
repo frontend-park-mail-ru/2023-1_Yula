@@ -83,7 +83,6 @@ app.get('/api/board', (req, res) => {
     const id = req.cookies.appuniq;
     const emailSession = ids[id];
 
-    console.log(id, emailSession);
     const user = users.find((user) => user.email === emailSession);
 
     if (!emailSession || !user) {
@@ -116,8 +115,6 @@ app.get('/api/me', (req, res) => {
     const id = req.cookies.appuniq;
     const emailSession = ids[id];
     const user = users.find((user) => user.email === emailSession);
-
-    console.log(req.headers);
 
     if (!emailSession || !user) {
         return res.status(401).json({error: 'Пользователь не найден'});
