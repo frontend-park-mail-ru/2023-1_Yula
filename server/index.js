@@ -123,6 +123,7 @@ app.get('/api/me', (req, res) => {
         email: user.email,
         avatar: user.avatar,
         anns: user.anns,
+        phone: user.phone,
     });
 });
 
