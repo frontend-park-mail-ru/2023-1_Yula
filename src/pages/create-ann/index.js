@@ -30,25 +30,49 @@ export const createAnnPage = (parent) => {
         content.appendChild(contentCreater);
 
         const createAnn = CreateAnn(contentCreater);
+        createAnn.setActions({
+            titleChange: (e) => {
+                content.querySelector('.announcement-preview__title').innerText = e.target.value;
+            },
+            priceChange: (e) => {
+                content.querySelector('.announcement-preview__price').innerText = e.target.value;
+            },
+            addressChange: (e) => {
+                content.querySelector('.announcement-preview__address').innerText = e.target.value;
+            },
+            descriptionChange: (e) => {
+                content.querySelector('.announcement-preview__description').innerText = e.target.value;
+            },
+            categoryChange: (e) => {
+                content.querySelector('.announcement-preview__category').innerText = e.target.value;
+            },
+            imagesChange: (images) => {
+                annCarousel.style.display = 'block';
+                carousel.changeConfig({ images });
+            }
+        });
         createAnn.render();
 
         const contentPreview = document.createElement('div');
         contentPreview.classList.add('ann-characteristics');
         content.appendChild(contentPreview);
 
+        contentPreview.insertAdjacentHTML('beforeend', annPreview({
+            title: 'Картина Ван Гога',
+            price: '1 000 000',
+            address: 'г.Москва...',
+            description: 'Картина славится своей...',
+            category: 'Живопись',
+            images: []
+        }));
+
         const annCarousel = document.createElement('div');
         annCarousel.classList.add('announcement-carousel');
+        annCarousel.style.display = 'none';
+        annCarousel.style.maxWidth = '500px';
         content.appendChild(annCarousel);
-        const carousel = Carousel(annCarousel, { });
+        const carousel = Carousel(annCarousel, { images: [] });
         carousel.render();
-
-        contentPreview.innerHTML += annPreview({
-            title: 'Заголовок',
-            price: 'Цена',
-            address: 'Адрес',
-            description: 'Описание',
-            images: []
-        });
     }
 
     headerFilling();

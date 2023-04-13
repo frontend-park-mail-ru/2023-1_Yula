@@ -8,6 +8,7 @@ import './layout.scss';
 import charackteristics from "./ann-characteristics.handlebars";
 
 import basketSVG from "assets/icons/basket.svg";
+import userSVG from "assets/icons/user.svg";
 
 /**
  * Страница объявления
@@ -53,6 +54,7 @@ export const announcementPage = (parent, params) => {
         annCharacteristics.style.justifySelf = 'flex-start';
 
         const buyIcon = Icon(annCharacteristics, {
+            id: "buy",
             src: basketSVG,
             text: 'Купить',
             textColor: 'fg',
@@ -62,6 +64,19 @@ export const announcementPage = (parent, params) => {
         });
         buyIcon.render();
         buyIcon.self().style.alignSelf = 'flex-end';
+
+        const userIcon = Icon(annCharacteristics, {
+            id: "user",
+            src: userSVG,
+            text: 'Продавец',
+            textColor: 'fg',
+            size: 'large',
+            direction: 'row',
+            invert: store.getState('theme') === 'dark',
+            link: '/seller/id',
+        });
+        userIcon.render();
+        userIcon.self().style.alignSelf = 'flex-end';
 
         store.subscribe('theme', (theme) => {
             buyIcon.changeConfig({

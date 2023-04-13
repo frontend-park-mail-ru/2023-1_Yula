@@ -25,32 +25,19 @@
 .input_type_textarea {
     height: 200px;
     resize: none;
-}
-
-.input_type_number {
-    width: 200px;
-}
-
-.input_type_select {
-    width: 200px;
-
-    &__option {
-        font-family: "Roboto VK";
-        color: var(--fg-color);
-    }
+    font-size: 15px;
 }
 
 .input_type_file {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     font-family: 'Roboto VK';
     font-size: 14px;
     color: var(--secondary-color);
     background-color: var(--bg-color-lite);
     border-radius: 8px;
     border: none;
-    width: 30vw;
     height: 64px;
     margin: 0 auto;
 

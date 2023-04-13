@@ -27,6 +27,15 @@ export const Carousel = (parent, config) => {
         }
     }
 
+    const changeConfig = (newConfig) => {
+        config = {...config, ...newConfig};
+
+        if (self()) {
+            destroy();
+            render();
+        }
+    }
+
     const slideTo = (index) => {
         if (index < 0 || index >= config.images.length) {
             return;
@@ -92,6 +101,7 @@ export const Carousel = (parent, config) => {
     return {
         self,
         destroy,
+        changeConfig,
         slideTo,
         prevSlide,
         nextSlide,

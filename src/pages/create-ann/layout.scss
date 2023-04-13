@@ -1,6 +1,6 @@
 .create-ann-content {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: 1fr auto 1fr;
     gap: 20px;
     padding: 1vw;
 }
@@ -12,11 +12,12 @@
 
 }
 
-.announcement-characteristics {
+.announcement-preview {
     grid-column: span 1;
     font-family: 'Roboto VK';
     display: flex;
     flex-direction: column;
+    color: var(--fg-color);
 
     &__title {
         font-family: 'Roboto VK bold';
@@ -26,21 +27,16 @@
         color: var(--fg-color);
     }
 
-    &__key {
-        font-weight: 500;
-        font-size: 14px;
-        font-style: italic;
-        line-height: 18px;
-        color: var(--fg-color-lite);
-        vertical-align: top;
-        text-align: end;
-    }
-
-    &__value {
+    &__* {
         font-weight: 500;
         font-size: 14px;
         line-height: 18px;
         color: var(--fg-color-strong);
         vertical-align: top;
+    }
+
+    &__key {
+        color: var(--fg-color-lite);
+        text-align: end;
     }
 }
