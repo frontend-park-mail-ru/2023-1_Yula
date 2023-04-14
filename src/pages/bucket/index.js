@@ -7,6 +7,16 @@ import { Button } from "../../shared/ui";
 import { Price } from "@widgets/price";
 
 export const bucketPage = (parent) => {
+    const self = () => {
+        return parent.querySelector('.purchase-group');
+    }
+
+    const destroy = () => {
+        if (self()) {
+            self().remove();
+        }
+    }
+
     const header = document.createElement('header')
     const content = document.createElement('main')
 
@@ -31,6 +41,13 @@ export const bucketPage = (parent) => {
         content.appendChild(purchGroup);
 
         const purchases = await purchApi.getPurchases();
+
+        store.subscribe('bucket', newState => {
+            if (newState === 'clear') {
+                 parent.quarySelector('.purchase-group').remove();
+                 localStorage.clear();
+            }
+       })
 
         Object.keys(localStorage).forEach(function(key) {
             const obj = JSON.parse(localStorage.getItem(key))

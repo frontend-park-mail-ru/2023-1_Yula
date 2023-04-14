@@ -24,7 +24,7 @@ export const buyModal = (parent) => {
 
             form.setActions ({
                 submit: (fields) => {
-                    console.log(fields);
+                    modal.destroy();
                 },
                 validation: validation,
             });
@@ -37,6 +37,13 @@ export const buyModal = (parent) => {
                 color: "primary",
                 text: "Купить",
                 form: "buyForm",
+            });
+
+            submitBtn.setActions({
+                "click": ()=>{
+                    store.setStore('bucket', 'clear');
+                    localStorage.clear();
+                },
             });
 
             submitBtn.render();
