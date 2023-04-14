@@ -38,7 +38,7 @@ export const sellerPage = (parent, params) => {
         const annGroup = document.createElement('div');
         annGroup.classList.add('purchase-group');
 
-        const purchases = await annApi.getAllSellerAnns(user.id);
+        const purchases = await annApi.getFromUser(user.id);
 
         if (purchases) {
             purchases.forEach(purch => {
