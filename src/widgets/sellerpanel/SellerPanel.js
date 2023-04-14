@@ -9,12 +9,8 @@ import store from "@modules/state-manager.js";
 import './SellerPanel.scss';
 
 import userSvg from 'assets/icons/user.svg';
-import exitSVG from 'assets/icons/exit.svg';
-import passwordSVG from 'assets/icons/password-key.svg';
 import nameSurnameSVG from 'assets/icons/user_02.svg';
-import usernameSVG from 'assets/icons/username.svg';
 import phoneSVG from 'assets/icons/phone.svg';
-import emailSVG from 'assets/icons/email.svg';
 
 export const SellerPanel = (parent, user) => {
     const actions = {
@@ -71,19 +67,13 @@ export const SellerPanel = (parent, user) => {
                 invert: invert,
             }),
             elem2 : PanelElement(userPanel, {
-                id: 'username',
-                imgSource: usernameSVG,
-                text: (user != null) ? `${user.username}` : 'none',
-                invert: invert,
-            }),
-            elem3 : PanelElement(userPanel, {
-                id: 'email',
-                imgSource: emailSVG,
-                text: (user != null) ? `${user.email}` : 'none',
+                id: 'phone',
+                imgSource: phoneSVG,
+                text: (user != null) ? `${user.phone}` : 'none',
                 invert: invert,
             }),
             
-            elem7 : Divider(userPanel, {
+            elem3 : Divider(userPanel, {
                 id: 'bottom_divider',
                 class: 'user_panel_divider',
                 invert: invert,

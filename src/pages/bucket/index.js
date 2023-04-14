@@ -33,7 +33,7 @@ export const bucketPage = (parent) => {
         const purchases = await purchApi.getPurchases();
 
         purchases.forEach(purch => {
-            console.log(purch.images);
+
             const purchCard = PurchCard(purchGroup, {
                 id: purch.id,
                 category: purch.category,

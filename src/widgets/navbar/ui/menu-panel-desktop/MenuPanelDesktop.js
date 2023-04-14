@@ -100,7 +100,7 @@ export const MenuPanelDesktop = (parent) => {
                 src: sellerSvg,
                 size: "large",
                 invert: invert,
-                link: '/seller',
+                // link: '/seller',
                 actions: {
                     'click': () => {
                         if (store.getState('user')) {

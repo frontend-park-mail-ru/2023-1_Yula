@@ -10,7 +10,6 @@ import { SellerPanel } from "@/widgets/sellerpanel/SellerPanel";
 export const sellerPage = (parent, params) => {
     const header = document.createElement('header');
     const content = document.createElement('main');
-    console.log(params);
 
     const headerFilling = () => {
         const navbar = Navbar(header);
@@ -39,7 +38,6 @@ export const sellerPage = (parent, params) => {
         const annGroup = document.createElement('div');
         annGroup.classList.add('purchase-group');
 
-        console.log(user);
         const purchases = await annApi.getAllSellerAnns(user.id);
 
         purchases.forEach(purch => {
@@ -64,6 +62,8 @@ export const sellerPage = (parent, params) => {
         // рендерим, если только нет на странице
         if (!parent.querySelector('header')) {
             parent.appendChild(header);
+        } else {
+            parent.querySelector('header').replaceWith(header);
         }
 
         // если контент есть, заменяем его новым
