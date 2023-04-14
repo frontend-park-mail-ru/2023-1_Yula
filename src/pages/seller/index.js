@@ -1,8 +1,8 @@
-import { AnnCard } from "@entities/announcement/ui/card/AnnCard.js";
+import { sellerApi } from "@shared/api/seller_api";
 import { Navbar } from "@widgets/navbar/index.js";
 import { AuthWidget } from "@widgets/auth/index.js";
 import { PurchCard } from "@entities/announcement/ui";
-import { purchApi } from "@shared/api/purch.js";
+import { annApi } from "@shared/api/anns";
 import store from "@modules/state-manager.js";
 
 import { SellerPanel } from "@/widgets/sellerpanel/SellerPanel";
@@ -11,6 +11,7 @@ export const sellerPage = (parent, params) => {
     console.log(params);
     const header = document.createElement('header');
     const content = document.createElement('main');
+    console.log(params);
 
     const headerFilling = () => {
         const navbar = Navbar(header);
@@ -25,27 +26,34 @@ export const sellerPage = (parent, params) => {
     }
 
     const contentFilling = async () => {
-        const user = store.getState('user');
+        let user;
         
-        const userPanel = SellerPanel(content);
+        if (!params || params.id == null) {
+            user = store.getState('user');
+        } else {
+            user = await sellerApi.GetSellerById(params.id);
+        };
+        
+        const userPanel = SellerPanel(content, user);
         userPanel.render();
 
         const annGroup = document.createElement('div');
         annGroup.classList.add('purchase-group');
 
-        // const purchases = await purchApi.getPurchases();
+        console.log(user);
+        const purchases = await annApi.getAllSellerAnns(user.id);
 
-        // purchases.forEach(purch => {
-        //     const purchCard = PurchCard(annGroup, {
-        //         id: purch.name,
-        //         category: purch.category,
-        //         title: purch.title,
-        //         price: purch.price,
-        //         address: purch.address,
-        //         src: purch.images[0],
-        //     });
-        //     purchCard.render();
-        // });
+        purchases.forEach(purch => {
+            const purchCard = PurchCard(annGroup, {
+                id: purch.name,
+                category: purch.category,
+                title: purch.title,
+                price: purch.price,
+                address: purch.address,
+                src: purch.images[0],
+            });
+            purchCard.render();
+        });
 
         content.appendChild(annGroup);
     }

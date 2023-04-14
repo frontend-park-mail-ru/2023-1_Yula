@@ -38,4 +38,14 @@ export class annApi {
         return seller;
     }
     
+    static async getAllSellerAnns(id) {
+        let anns = await fetch(`${baseUrl}/api/anns/${id}`);
+        anns = await anns.json();
+        anns = anns.map(ann => {
+            ann.images = ann.images.map(img => `${baseUrl}/static/images/anns/${img}`);
+            return ann;
+        });
+
+        return anns;
+    }
 }

@@ -101,6 +101,15 @@ export const MenuPanelDesktop = (parent) => {
                 size: "large",
                 invert: invert,
                 link: '/seller',
+                actions: {
+                    'click': () => {
+                        if (store.getState('user')) {
+                            goTo('/seller');
+                        } else {
+                            actions.login();
+                        }
+                    }
+                }
             }),
         }
         

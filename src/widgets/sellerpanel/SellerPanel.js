@@ -8,6 +8,7 @@ import store from "@modules/state-manager.js";
 
 import './SellerPanel.scss';
 
+import userSvg from 'assets/icons/user.svg';
 import exitSVG from 'assets/icons/exit.svg';
 import passwordSVG from 'assets/icons/password-key.svg';
 import nameSurnameSVG from 'assets/icons/user_02.svg';
@@ -15,7 +16,7 @@ import usernameSVG from 'assets/icons/username.svg';
 import phoneSVG from 'assets/icons/phone.svg';
 import emailSVG from 'assets/icons/email.svg';
 
-export const SellerPanel = (parent) => {
+export const SellerPanel = (parent, user) => {
     const actions = {
         logout: () => {},
     }
@@ -41,7 +42,7 @@ export const SellerPanel = (parent) => {
         userPanel.classList.add('seller_panel');
         parent.appendChild(userPanel);
 
-        const user = store.getState('user');
+        // const user = store.getState('user');
         const theme = store.getState('theme');
         const invert = (theme === 'light') ? false : true;
         
@@ -51,11 +52,13 @@ export const SellerPanel = (parent) => {
         textInfo.style.alignSelf = "center";
         textInfo.style.color = "var(--text-color)";
         userPanel.appendChild(textInfo);
+        
+        
 
         const elements = {
             elem0 : Icon(userPanel, {
                 id: "user",
-                src: user ? user.avatar : userSvg,
+                src: (user != null) ? user.avatar : userSvg,
                 size: "large",
                 invert: user ? false : invert,
                 link: user ? '/profile' : null,
@@ -64,19 +67,19 @@ export const SellerPanel = (parent) => {
             elem1 : PanelElement(userPanel, {
                 id: 'fio',
                 imgSource: nameSurnameSVG,
-                text: `${user.username}`,
+                text: (user != null) ? `${user.username}` : 'none',
                 invert: invert,
             }),
             elem2 : PanelElement(userPanel, {
                 id: 'username',
                 imgSource: usernameSVG,
-                text: `${user.username}`,
+                text: (user != null) ? `${user.username}` : 'none',
                 invert: invert,
             }),
             elem3 : PanelElement(userPanel, {
                 id: 'email',
                 imgSource: emailSVG,
-                text: `${user.email}`,
+                text: (user != null) ? `${user.email}` : 'none',
                 invert: invert,
             }),
             
