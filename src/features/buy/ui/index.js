@@ -39,6 +39,10 @@ export const buyModal = (parent) => {
                 form: "buyForm",
             });
 
+            submitBtn.setActions({
+                "click": ()=>localStorage.clear()
+            });
+
             submitBtn.render();
 
             if (actions.back) {
