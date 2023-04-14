@@ -23,9 +23,10 @@ export const buyModal = (parent) => {
             });
 
             form.setActions ({
-                submit: () => {
-                    console.log('Перенаправление на выполнение покупки.');
-                }
+                submit: (fields) => {
+                    console.log(fields);
+                },
+                validation: validation,
             });
 
             form.render();

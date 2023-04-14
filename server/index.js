@@ -13,8 +13,8 @@ app.use(express.static(path.resolve(__dirname, 'static')));
 // app.use(body.json());
 app.use(cookie());
 // Устанавливаем максимально допустимый размер тела JSON-запроса в 50 МБ
-app.use(body.json({ limit: '50mb' }));
-app.use(body.urlencoded({ limit: '50mb', extended: true }));
+app.use(body.json({ limit: '500mb' }));
+app.use(body.urlencoded({ limit: '500mb', extended: true }));
 
 const users = require('./static/jsonData/users.json');
 const anns = require('./static/jsonData/anns.json');

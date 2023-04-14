@@ -32,31 +32,43 @@ export const bucketPage = (parent) => {
 
         const purchases = await purchApi.getPurchases();
 
-        purchases.forEach(purch => {
-            console.log(purch.images);
+        Object.keys(localStorage).forEach(function(key) {
+            const obj = JSON.parse(localStorage.getItem(key))
             const purchCard = PurchCard(purchGroup, {
-                id: purch.id,
-                tags: purch.tags,
-                title: purch.title,
-                price: purch.price,
-                address: purch.address,
-                src: purch.images[0],
+                id: obj.id,
+                tags: obj.tags,
+                title: obj.title,
+                price: obj.price,
+                address: obj.address,
+                src: obj.images[0],
             });
-            
-            // const btn = Button(parent, {
-            //     id: `delete${purch.id}`,
-            //     type: "submit",
-            //     color: 'red',
-            //     size: "small",
-            // });
-            // btn.setActions({
-            //     click: () => {
-            //         console.log("asd")
-            //     }
-            // })
             purchCard.render();
-            // btn.render();
         });
+
+        // purchases.forEach(purch => {
+        //     const purchCard = PurchCard(purchGroup, {
+        //         id: purch.id,
+        //         tags: purch.tags,
+        //         title: purch.title,
+        //         price: purch.price,
+        //         address: purch.address,
+        //         src: purch.images,
+        //     });
+            
+        //     // const btn = Button(parent, {
+        //     //     id: `delete${purch.id}`,
+        //     //     type: "submit",
+        //     //     color: 'red',
+        //     //     size: "small",
+        //     // });
+        //     // btn.setActions({
+        //     //     click: () => {
+        //     //         console.log("asd")
+        //     //     }
+        //     // })
+        //     purchCard.render();
+        //     // btn.render();
+        // });
 
         priceWidget.render();
     }

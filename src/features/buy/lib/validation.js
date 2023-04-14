@@ -1,14 +1,13 @@
 export const validation = (fields) => {
-    let { cardNumber, cvv, name, expDate } = fields;
+    let { cardNum, cvv, expDate, nameSurname } = fields;
     const errors = {};
-
-    if (cardNumber.trim() === '') {
+    if (cardNum.trim() === '') {
         errors.cardNumber = 'Введите номер карты';
     }
     if (cvv.trim() === '') {
         errors.cvv = 'Введите CVV-код';
     }
-    if (name.trim() === '') {
+    if (nameSurname.trim() === '') {
         errors.name = 'Введите фамилию и имя владельца';
     }
     if (expDate.trim() === '') {

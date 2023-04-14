@@ -62,6 +62,11 @@ export const announcementPage = (parent, params) => {
             size: 'large',
             direction: 'row',
             invert: store.getState('theme') === 'dark',
+            actions: {
+                'click': () => {
+                    localStorage.setItem(ann.id, JSON.stringify(ann));
+                }
+            }
         });
         buyIcon.render();
 
