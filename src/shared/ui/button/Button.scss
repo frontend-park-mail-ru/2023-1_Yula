@@ -1,0 +1,98 @@
+.button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 12px;
+    gap: 4px;
+
+    height: 32px;
+    border-radius: 8px;
+    border: none;
+
+    cursor: pointer;
+}
+
+.button_color_primary {
+    background: var(--primary-color);
+
+    &:hover {
+        background: var(--primary-color-strong);
+    }
+
+    &:disabled {
+        background: var(--primary-color-lite);
+    }
+}
+
+.button_color_tertiary {
+    background-color: rgba(0, 0, 0, 0);
+
+    &:hover {
+        background-color: var(--bg-color-lite);
+    }
+}
+
+.button_color_success {
+    background: var(--success-color);
+
+    &:hover {
+        background: var(--success-color-strong);
+    }
+
+    &:disabled {
+        background: var(--success-color-lite);
+    }
+}
+
+.button_color_secondary {
+    background: var(--primary-color);
+
+    &:hover {
+        background: var(--primary-color-hover);
+    }
+
+    &:disabled {
+        background: var(--primary-color-disabled);
+    }
+}
+
+.button__text {
+    align-self: center;
+    justify-content: center;
+    font-family: 'Roboto VK';
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+.button__text_color_primary {
+    color: var(--primary-color);
+}
+
+.button__text_color_success {
+    color: var(--success-color);
+}
+
+.button__icon {
+    align-self: center;
+    justify-content: center;
+    height: 16px;
+}
+
+.cell-btn-sm {
+    color: #2688EB;
+    font-family: 'Roboto VK';
+    font-size: 13px;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    cursor: pointer;
+}
+
+.btn-group {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}

@@ -1,0 +1,126 @@
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+    padding: 2px;
+    transition: background-color 0.2s ease-in-out;
+    transition: 0.5s;
+}
+
+.icon_direction_row {
+    flex-direction: row;
+}
+
+.icon_direction_column {
+    flex-direction: column;
+}
+
+.icon_color_none {
+    background-color: rgba(0, 0, 0, 0);
+
+    &:hover {
+        background-color: var(--bg-color-lite);
+    }
+}
+
+.icon_color_primary {
+    background-color: var(--primary-color);
+
+    &:hover {
+        background-color: var(--primary-color-strong);
+    }
+}
+
+.icon_color_secondary {
+    background-color: var(--secondary-color);
+
+    &:hover {
+        background-color: var(--secondary-color-strong);
+    }
+}
+
+.icon_color_success {
+    background-color: var(--success-color);
+
+    &:hover {
+        background-color: var(--success-color-strong);
+    }
+}
+
+.icon_size_small {
+    & .icon__img {
+        width: 20px;
+        height: 20px;
+    }
+
+    & .icon__text {
+        font-size: 11px;
+    }
+}
+
+.icon_size_medium {
+    & .icon__img {
+        width: 28px;
+        height: 28px;
+    }
+
+    & .icon__text {
+        font-size: 12px;
+    }
+}
+
+.icon_size_large {
+    & .icon__img {
+        width: 36px;
+        height: 36px;
+    }
+
+    & .icon__text {
+        font-size: 14px;
+    }
+}
+
+.icon_invert {
+
+    & .icon__img {
+        filter: invert(1);
+    }
+}
+
+.icon_circular {
+    & .icon__img {
+        border-radius: 50%;
+    }
+}
+
+.icon__text {
+    font-family: 'Roboto VK';
+    font-weight: 500;
+    line-height: 18px;
+    color: var(--grey-color);
+}
+
+.icon__text_color_primary {
+    color: var(--primary-color);
+}
+
+.icon__text_color_secondary {
+    color: var(--secondary-color);
+}
+
+.icon__text_color_success {
+    color: var(--success-color);
+}
+
+.icon__text_color_grey {
+    color: var(--grey-color);
+}
+
+.icon__text_color_fg {
+    color: var(--fg-color)
+}

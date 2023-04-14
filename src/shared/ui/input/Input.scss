@@ -1,0 +1,72 @@
+.input {
+    box-sizing: border-box;
+    display: flex;
+    flex: auto;
+    width: 100%;
+    height: 32px;
+    border-radius: 8px;
+    border: none;
+    font-family: "Roboto VK";
+    background-color: var(--bg-color-lite);
+    color: var(--fg-color-lite);  /* убрать */
+    padding-left: 5px;
+
+    &:focus {
+        outline: none;
+        // background: var(--bg-color); /* убрать */
+    }
+
+    &::placeholder {
+        color: #818C99;
+        font-family: "Roboto VK";
+    }
+}
+
+.input_type_textarea {
+    height: 200px;
+    resize: none;
+    font-size: 15px;
+}
+
+.input_type_file {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Roboto VK';
+    font-size: 14px;
+    color: var(--secondary-color);
+    background-color: var(--bg-color-lite);
+    border-radius: 8px;
+    border: none;
+    height: 64px;
+    margin: 0 auto;
+
+    &:hover {
+        background-color: var(--bg-color-strong);
+    }
+}
+
+.input_error {
+    border: 0.5px solid var(--danger-color);
+}
+
+.input__field { 
+    background-color: rgba(0, 0, 0, 0);
+    color: var(--fg-color-lite); 
+    border: none;
+    width: 100%;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+.input__icon {
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    padding: 0;
+    height: 24px;
+    display: flex;
+    align-self: center;
+    justify-content: center;
+}

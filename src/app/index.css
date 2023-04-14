@@ -1,0 +1,77 @@
+:root {
+    --primary-color: #2688EB;
+    --primary-color-strong: #2C7CDE;
+    --primary-color-lite: #2689ebcb;
+
+    --success-color: #4BB34B;
+    --success-color-strong: #3CA03E;
+    --success-color-lite: #4bb34b80;
+
+    --danger-color: #E64646;
+    --danger-color-strong: #d72727;
+    --danger-color-lite: #E64646b80;
+
+    --secondary-color: #6D7885;
+    --secondary-color-strong: #5c6978;
+    --secondary-color-lite: #6d7885b3;
+
+    --bg-color: #dcddff;;
+    --bg-color-lite: #EDEDED;
+    --bg-color-strong: #f9f9f9;
+
+    --fg-color: #141a32;
+    --fg-color-lite: #212b4e;
+    --fg-color-strong: #1e2745;
+
+    --logo-color: #620760;
+
+    --text-color: #000000;
+    --panel-text-color: #000000;
+}
+
+body.dark {
+    --primary-color: #3e65fb;
+    --primary-color-strong: #4d70fc;
+    --primary-color-lite: #3e64fbc5;
+
+    --success-color: #43b443;
+    --success-color-strong: #2dad30;
+    --success-color-lite: #2ab42a80;
+
+    --secondary-color: #d2d2d7;
+    --secondary-color-strong: #98a1ac;
+    --secondary-color-lite: #6d7885b3;
+
+    --bg-color: #182039;
+    --bg-color-lite: #373e5d;
+    --bg-color-strong: #1e2745;
+
+    --fg-color: #edfaff;
+    --fg-color-lite: #f1f1f1;
+    --fg-color-strong: #EDEDED;
+
+    --logo-color: #3263de;
+
+    --text-color: #ffffff;
+    --panel-text-color: #000000;
+}
+
+@font-face {
+    font-family: "Roboto VK";
+    src: url("assets/fonts/Roboto-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Roboto VK Bold";
+    src: url("assets/fonts/Roboto-Bold.ttf");
+}
+
+body {
+    background-color: var(--bg-color);
+}
+
+@media screen and (max-width: 900px) {
+    main {
+        padding-bottom: 110px;
+    }
+}

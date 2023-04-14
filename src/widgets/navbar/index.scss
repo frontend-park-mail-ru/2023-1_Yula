@@ -1,0 +1,20 @@
+.nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    gap: 15px;
+    margin: 0 10px;
+}
+
+.nav__logo {
+    text-decoration: none;
+    font-family: 'Roboto VK';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 28px;
+    color: var(--logo-color);
+    text-shadow: -3px 2px 0px rgba(0, 0, 0, 0.2);
+}

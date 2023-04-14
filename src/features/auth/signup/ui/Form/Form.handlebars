@@ -1,0 +1,58 @@
+<form id="{{id}}">
+    <section class="form__input-group">
+        <label class="modal__text" for="login">Логин</label>
+        <input type="text" class="input" name="login" required>
+        <span class="form__text_error" id="loginMessage"></span>
+    </section>
+    <section class="form__input-group">
+        <label class="modal__text" for="secondName">Фамилия</label>
+        <input type="text" class="input" name="secondName" required>
+        <span class="form__text_error" id="secondNameMessage"></span>
+    </section>
+    <section class="form__input-group">
+        <label class="modal__text" for="firstName">Имя</label>
+        <input type="text" class="input" name="firstName" required>
+        <span class="form__text_error" id="firstNameMessage"></span>
+    </section>
+    <section class="form__input-group">
+        <label class="modal__text" for="patronimic">Отчество</label>
+        <input type="text" class="input" name="patronimic" required>
+        <span class="form__text_error" id="patronimicMessage"></span>
+    </section>
+    <section class="form__input-group">
+        <label class="modal__text" for="phoneNumber">Телефон</label>
+        <input type="text" class="input" name="phoneNumber" required>
+        <span class="form__text_error" id="phoneNumberMessage"></span>
+    </section>
+    <section class="form__input-group">
+        <label class="modal__text" for="email">Почта</label>
+        <input type="email" class="input" name="email" required>
+        <span class="form__text_error" id="emailMessage"></span>
+    </section>
+    <section class="form__input-group">
+        <label class="modal__text" for="password">Пароль</label>
+        <input type="password" class="input" name="password" required>
+        <span class="form__text_error" id="passwordMessage"></span>
+    </section>
+    <section class="form__input-group">
+        <label class="modal__text" for="passwordCheck">Повторите пароль</label>
+        <input type="password" class="input" name="passwordCheck" required>
+        <span class="form__text_error" id="passwordCheckMessage"></span>
+    </section>
+    <section class="form__input-group">
+        <label class="grid-left modal__text" for="accept">
+            <input type="checkbox" name="accept">
+            Я принимаю
+        </label>
+        <a href="#"><button class="cell-btn-sm">пользовательское соглашение</button></a>
+    </section>
+</form>
+
+<script>
+    let phone = document.getElementById('{{id}}').phoneNumber;
+    let maskOptions = {
+        mask: '+7(000)000-00-00',
+        lazy: false
+    }
+    let mask = new IMask(phone, maskOptions);
+</script>

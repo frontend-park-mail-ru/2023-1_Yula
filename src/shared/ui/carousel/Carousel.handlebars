@@ -1,0 +1,12 @@
+<div class="carousel">
+    <div class="carousel__slider">
+        {{#each images}}
+        <div class="carousel__slide" style="background-image: url('{{this}}');"></div>
+        {{/each}}
+    </div>
+    <div class="carousel__thumbnails">
+        {{#each images}}
+        <div class="carousel__thumbnail" style="background-image: url('{{this}}');" data-index="{{@index}}"></div>
+        {{/each}}
+    </div>
+</div>
