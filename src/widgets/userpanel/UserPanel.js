@@ -49,7 +49,7 @@ export const UserPanel = (parent) => {
         const elements = {
             elem0 : Icon(userPanel, {
                 id: "user",
-                src: user ? user.avatar : userSvg,
+                src: user.avatar,
                 size: "large",
                 invert: user ? false : invert,
                 link: user ? '/profile' : null,
@@ -58,13 +58,13 @@ export const UserPanel = (parent) => {
             elem1 : PanelElement(userPanel, {
                 id: 'fio',
                 imgSource: nameSurnameSVG,
-                text: `${user.username}`,
+                text: `${user.firstName} ${user.secondName}`,
                 invert: invert,
             }),
             elem2 : PanelElement(userPanel, {
-                id: 'username',
+                id: 'login',
                 imgSource: usernameSVG,
-                text: `${user.username}`,
+                text: `${user.login}`,
                 invert: invert,
             }),
             elem3 : PanelElement(userPanel, {
@@ -76,13 +76,13 @@ export const UserPanel = (parent) => {
             elem4 : PanelElement(userPanel, {
                 id: 'phone',
                 imgSource: phoneSVG,
-                text: `${user.phone}`,
+                text: `${user.phoneNumber}`,
                 invert: invert,
             }),
             elem5 : PanelElement(userPanel, {
                 id: 'password',
                 imgSource: passwordSVG,
-                text: `${user.password}`,
+                text: `${'●'.repeat(user.password.length)}`,
                 invert: invert,
             }),
             elem6 : PanelElement(userPanel, {

@@ -19,10 +19,10 @@ const anns = require('./static/jsonData/anns.json');
 /** session identificators */
 const ids = {};
 
-app.post('/api/signup', (req, res) => {
-    const { password, email, username } = req.body;
-    if (!username || username.length < 4) {
-        return res.status(400).json({ error: 'Имя пользователя не менее 4 символов', errorFill: 'username' });
+app.post('/api/user', (req, res) => {
+    const { password, login, username } = req.body;
+    if (!username || login.length < 4) {
+        return res.status(400).json({ error: 'Логин не менее 4 символов', errorFill: 'username' });
     }
     if (!password || !password.match(/^\S{4,}$/)) {
         return res.status(400).json({ error: 'Минимальная длина пароля 4 символа', errorFill: 'password' });
@@ -36,7 +36,7 @@ app.post('/api/signup', (req, res) => {
 
     const id = uuid();
     const user = {
-        password, email, username, anns: [], avatar: '/default.jpg',
+        ...req.body, purchs: [], anns: [], avatar: '/default.jpg',
     };
 
     ids[id] = email;
@@ -126,7 +126,7 @@ app.get('/api/bucket', (req, res) => {
     }
 })
 
-app.get('/api/me', (req, res) => {
+app.get('/api/user', (req, res) => {
     const id = req.cookies.appuniq;
     const emailSession = ids[id];
     const user = users.find((user) => user.email === emailSession);
@@ -135,13 +135,7 @@ app.get('/api/me', (req, res) => {
         return res.status(401).json({error: 'Пользователь не найден'});
     }
 
-    return res.json({
-        username: user.username,
-        email: user.email,
-        avatar: user.avatar,
-        anns: user.anns,
-        phone: user.phone,
-    });
+    return res.json({ ...user });
 });
 
 app.get('/api/me/anns', (req, res) => {

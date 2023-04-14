@@ -2,7 +2,7 @@ import { baseUrl } from '../config';
 
 export class userApi {
     static async getMe() {
-        let user = await fetch(`${baseUrl}/api/me`);
+        let user = await fetch(`${baseUrl}/api/user`);
 
         if (user.ok) {
             user = await user.json();
@@ -43,7 +43,7 @@ export class userApi {
      * @param {string} data.password
      */
     static async signup(data) {
-       return await fetch(`${baseUrl}/api/signup`, {
+       return await fetch(`${baseUrl}/user`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'

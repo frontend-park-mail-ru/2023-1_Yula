@@ -7,7 +7,8 @@ import store from "@modules/state-manager.js";
 
 import { SellerPanel } from "@/widgets/sellerpanel/SellerPanel";
 
-export const sellerPage = (parent) => {
+export const sellerPage = (parent, params) => {
+    console.log(params);
     const header = document.createElement('header');
     const content = document.createElement('main');
 
