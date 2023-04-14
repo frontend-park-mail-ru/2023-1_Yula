@@ -31,10 +31,9 @@ export const boardPage = (parent) => {
 
         anns.forEach(ann => {
             const annCard = AnnCard(annGroup, {
-                category: ann.category,
+                tags: ann.tags,
                 title: ann.title,
                 price: ann.price,
-                address: ann.address,
                 images: ann.images,
                 link: `/ann/${ann.id}`,
             });

@@ -2,6 +2,7 @@ import { Carousel, Icon } from "@shared/ui";
 import { Navbar } from "@widgets/navbar";
 import { AuthWidget } from "@widgets/auth";
 import { annApi } from "@shared/api/anns";
+import { userApi } from "@shared/api/users";
 import store from "@modules/state-manager";
 
 import './layout.scss';
@@ -42,8 +43,6 @@ export const announcementPage = (parent, params) => {
         content.appendChild(annCarousel);
 
         const ann = await annApi.getById(params.id);
-        // debugger
-        const annSeller = await annApi.getAnnSellerByAnnId(params.id);
 
         const carousel = Carousel(annCarousel, { images: ann.images });
         carousel.render();
@@ -58,34 +57,27 @@ export const announcementPage = (parent, params) => {
         const buyIcon = Icon(annCharacteristics, {
             id: "buy",
             src: basketSVG,
-            text: 'Купить',
+            text: 'В корзину',
             textColor: 'fg',
             size: 'large',
             direction: 'row',
             invert: store.getState('theme') === 'dark',
         });
         buyIcon.render();
-        buyIcon.self().style.alignSelf = 'flex-end';
 
         const userIcon = Icon(annCharacteristics, {
             id: "user",
             src: userSVG,
-            text: 'Продавец',
+            text: 'Профиль продаца',
             textColor: 'fg',
             size: 'large',
             direction: 'row',
             invert: store.getState('theme') === 'dark',
-            link: `/sellers/${annSeller.id}`,
+            link: `/sellers/${ann.userId}`,
         });
         userIcon.render();
-        userIcon.self().style.alignSelf = 'flex-end';
 
-        store.subscribe('theme', (theme) => {
-            buyIcon.changeConfig({
-                invert: theme === 'dark',
-            });
-            buyIcon.self().style.alignSelf = 'flex-end';
-        });
+        store.subscribe('theme', (theme) => buyIcon.changeConfig({invert: theme === 'dark'}));
     }
 
     headerFilling();

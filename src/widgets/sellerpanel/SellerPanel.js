@@ -1,19 +1,13 @@
 import { PanelElement } from '@shared/ui/index.js';
 import { Icon } from '@shared/ui/index.js';
 import { Divider } from '@shared/ui/index.js';
-import { Button } from "@shared/ui/index.js";
-import { userApi } from "@shared/api/users.js";
-import { goTo } from "@shared/lib/history";
 import store from "@modules/state-manager.js";
 
 import './SellerPanel.scss';
 
 import userSvg from 'assets/icons/user.svg';
-import exitSVG from 'assets/icons/exit.svg';
-import passwordSVG from 'assets/icons/password-key.svg';
 import nameSurnameSVG from 'assets/icons/user_02.svg';
 import usernameSVG from 'assets/icons/username.svg';
-import phoneSVG from 'assets/icons/phone.svg';
 import emailSVG from 'assets/icons/email.svg';
 
 export const SellerPanel = (parent, user) => {
@@ -56,7 +50,7 @@ export const SellerPanel = (parent, user) => {
         const elements = {
             elem0 : Icon(userPanel, {
                 id: "user",
-                src: (user != null) ? user.avatar : userSvg,
+                src: (user != null) ? user.pathtoavatar : userSvg,
                 size: "large",
                 invert: user ? false : invert,
                 link: user ? '/profile' : null,

@@ -1,6 +1,5 @@
 import './PurchCard.scss';
 import template from './PurchCard.handlebars';
-import { Button } from '../../../../shared/ui';
 
 export const PurchCard = (parent, config = {id: ""}) => {
     config.id += "PurchCard";
@@ -32,6 +31,8 @@ export const PurchCard = (parent, config = {id: ""}) => {
 
     const render = () => {
         parent.insertAdjacentHTML("beforeEnd", template(config));
+
+        applyActions();
     }
 
     return {

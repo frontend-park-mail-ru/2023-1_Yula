@@ -2,7 +2,8 @@ import { AnnCard } from "@entities/announcement/ui/card/AnnCard.js";
 import { Navbar } from "@widgets/navbar/index.js";
 import { AuthWidget } from "@widgets/auth/index.js";
 import { UserPanel } from "@widgets/userpanel/UserPanel.js";
-import store from "@modules/state-manager.js";
+
+import { annApi } from "@shared/api/anns";
 
 export const profilePage = (parent) => {
     const header = document.createElement('header');
@@ -21,27 +22,23 @@ export const profilePage = (parent) => {
     }
 
     const contentFilling = async () => {
-        const user = store.getState('user');
-        
         const userPanel = UserPanel(content);
         userPanel.render();
 
         const annGroup = document.createElement('div');
         annGroup.classList.add('announcement-group');
 
-        if (user.anns) {
-            user.anns.forEach(ann => {
-                const annCard = AnnCard(annGroup, {
-                    category: ann.category,
-                    title: ann.title,
-                    price: ann.price,
-                    address: ann.address,
-                    images: ann.images,
-                    link: `/ann/${ann.id}`,
-                });
-                annCard.render();
+        const anns = await annApi.getAll();
+        anns.forEach(ann => {
+            const annCard = AnnCard(annGroup, {
+                tags: ann.tags,
+                title: ann.title,
+                price: ann.price,
+                images: ann.images,
+                link: `/ann/${ann.id}`,
             });
-        }
+            annCard.render();
+        });
 
         content.appendChild(annGroup);
     }

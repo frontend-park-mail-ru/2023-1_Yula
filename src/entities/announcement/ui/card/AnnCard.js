@@ -11,7 +11,7 @@ import template from './AnnCard.handlebars';
  * @param {string} config.link - ссылка на объявление
  * @param {string} config.title - заголовок объявления
  * @param {string} config.price - цена
- * @param {string} config.category - категория
+ * @param {string} config.tags - тег
  * @param {string} config.images - массив изображений
  */
 export const AnnCard = (parent, config = {id: ""}) => {
