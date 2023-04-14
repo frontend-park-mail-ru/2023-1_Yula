@@ -52,8 +52,6 @@ export const SellerPanel = (parent, user) => {
         textInfo.style.alignSelf = "center";
         textInfo.style.color = "var(--text-color)";
         userPanel.appendChild(textInfo);
-        
-        
 
         const elements = {
             elem0 : Icon(userPanel, {
@@ -67,13 +65,13 @@ export const SellerPanel = (parent, user) => {
             elem1 : PanelElement(userPanel, {
                 id: 'fio',
                 imgSource: nameSurnameSVG,
-                text: (user != null) ? `${user.username}` : 'none',
+                text: (user != null) ? `${user.firstName} ${user.secondName}` : 'none',
                 invert: invert,
             }),
             elem2 : PanelElement(userPanel, {
                 id: 'username',
                 imgSource: usernameSVG,
-                text: (user != null) ? `${user.username}` : 'none',
+                text: (user != null) ? `${user.login}` : 'none',
                 invert: invert,
             }),
             elem3 : PanelElement(userPanel, {
