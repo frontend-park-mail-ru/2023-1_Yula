@@ -1,10 +1,16 @@
 import { Button, Form } from '@shared/ui';
 import { validation } from '../lib/validation';
 import { readFileAsDataURL } from '../lib/utils'
+import { goTo } from '@shared/lib/history';
+import { annApi } from '@shared/api/anns';
+
 import template from './Form/Form.handlebars';
 
 export const CreateAnn = (parent) => {
     const actions = {};
+    
+    // сохраняем картинки
+    let imges;
 
     const self = () => {
         return parent.querySelector('#createAnnForm');
@@ -38,11 +44,8 @@ export const CreateAnn = (parent) => {
         if (actions.priceChange) {
             self().price.addEventListener('input', actions.priceChange);
         }
-        if (actions.categoryChange) {
-            self().category.addEventListener('input', actions.categoryChange);
-        }
-        if (actions.addressChange) {
-            self().address.addEventListener('input', actions.addressChange);
+        if (actions.tagsChange) {
+            self().tags.addEventListener('input', actions. tagsChange);
         }
         if (actions.imagesChange) {
             self().image.addEventListener('change', function (event) {
@@ -54,6 +57,7 @@ export const CreateAnn = (parent) => {
                 }
 
                 Promise.all(promises).then(function (images) {
+                    imges = images;
                     actions.imagesChange(images);
                 }).catch(function (error) {
                     console.error('Ошибка чтения файлов:', error);
@@ -70,21 +74,25 @@ export const CreateAnn = (parent) => {
 
         form.setActions({
             submit: async (fields) => {
-                console.log(fields);
-                // let res = await userApi.loginByEmail(fields);
+                fields.image = imges;
 
-                // if (res.ok) {
-                //     const user = await userApi.getMe();
-                //     store.setState('user', user);
-                //     modal.destroy();
+                const data = {
+                    ...fields,
+                    close: false,
+                }
 
-                // } else {
-                //     let message = await res.json(); 
-                //     const error = {};
+                console.log(data);
+                let res = await annApi.create(data);
 
-                //     error['email'] = message.error;
-                //     form.showError(error);
-                // }
+                if (res.ok) {
+                    goTo('/seller');
+                } else {
+                    let message = await res.json(); 
+                    const error = {};
+
+                    error['title'] = message.error;
+                    form.showError(error);
+                }
             },
             validation: validation,
         });

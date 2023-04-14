@@ -1,9 +1,6 @@
 import { PanelElement } from '@shared/ui/index.js';
 import { Icon } from '@shared/ui/index.js';
 import { Divider } from '@shared/ui/index.js';
-import { Button } from "@shared/ui/index.js";
-import { userApi } from "@shared/api/users.js";
-import { goTo } from "@shared/lib/history";
 import store from "@modules/state-manager.js";
 
 import './SellerPanel.scss';
@@ -48,13 +45,11 @@ export const SellerPanel = (parent, user) => {
         textInfo.style.alignSelf = "center";
         textInfo.style.color = "var(--text-color)";
         userPanel.appendChild(textInfo);
-        
-        
 
         const elements = {
             elem0 : Icon(userPanel, {
                 id: "user",
-                src: (user != null) ? user.avatar : userSvg,
+                src: (user != null) ? user.pathtoavatar : userSvg,
                 size: "large",
                 invert: user ? false : invert,
                 link: user ? '/profile' : null,
@@ -63,7 +58,7 @@ export const SellerPanel = (parent, user) => {
             elem1 : PanelElement(userPanel, {
                 id: 'fio',
                 imgSource: nameSurnameSVG,
-                text: (user != null) ? `${user.username}` : 'none',
+                text: (user != null) ? `${user.firstName} ${user.secondName}` : 'none',
                 invert: invert,
             }),
             elem2 : PanelElement(userPanel, {

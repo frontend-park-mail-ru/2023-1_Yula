@@ -10,8 +10,11 @@ const app = express();
 
 app.use(morgan('dev'));
 app.use(express.static(path.resolve(__dirname, 'static')));
-app.use(body.json());
+// app.use(body.json());
 app.use(cookie());
+// Устанавливаем максимально допустимый размер тела JSON-запроса в 50 МБ
+app.use(body.json({ limit: '50mb' }));
+app.use(body.urlencoded({ limit: '50mb', extended: true }));
 
 const users = require('./static/jsonData/users.json');
 const anns = require('./static/jsonData/anns.json');
@@ -19,10 +22,20 @@ const anns = require('./static/jsonData/anns.json');
 /** session identificators */
 const ids = {};
 
-app.post('/api/signup', (req, res) => {
-    const { password, email, username } = req.body;
-    if (!username || username.length < 4) {
-        return res.status(400).json({ error: 'Имя пользователя не менее 4 символов', errorFill: 'username' });
+app.get('/api/user/:id', (req, res) => {
+    const { id } = req.params;
+    const user = users.find((user) => user.id === id);
+    if (!user) {
+        return res.status(404).json({ error: 'Пользователь не найден' });
+    }
+    const { password, checkPassword, ...rest } = user;
+    return res.json(rest);
+});
+
+app.post('/api/user', (req, res) => {
+    const { password, login, email } = req.body;
+    if (!login || login.length < 4) {
+        return res.status(400).json({ error: 'Логин не менее 4 символов', errorFill: 'username' });
     }
     if (!password || !password.match(/^\S{4,}$/)) {
         return res.status(400).json({ error: 'Минимальная длина пароля 4 символа', errorFill: 'password' });
@@ -30,13 +43,13 @@ app.post('/api/signup', (req, res) => {
     if (!email) {
         return res.status(400).json({ error: 'Невалидные данные пользователя', errorFill: 'email' });
     }
-    if (users[email]) {
+    if (users.find((user) => user.email === email)) {
         return res.status(400).json({ error: 'Пользователь уже существует', errorFill: 'username' });
     }
 
     const id = uuid();
     const user = {
-        password, email, username, anns: [], avatar: '/default.jpg',
+        ...req.body, purchs: [], anns: [], avatar: '/default.jpg',
     };
 
     ids[id] = email;
@@ -86,14 +99,94 @@ app.get('/api/board', (req, res) => {
     if (!emailSession || !user) {
         return res.json(anns);
     } else {
-        const result = anns.filter((_, i) => user.anns.includes(i));
+        const result = anns.filter((_, i) => !user.anns.includes(i));
         return res.json(result);
     }
 });
 
-app.get('/api/board/:id', (req, res) => {
-    const annId = req.params.id;
-    res.json(anns[annId]);
+app.get('/api/sort/new/:page', (req, res) => {
+    const id = req.cookies.appuniq;
+    const emailSession = ids[id];
+
+    const page = req.params.page;
+    const user = users.find((user) => user.email === emailSession);
+
+    if (!emailSession || !user) {
+        return res.json(anns.slice((page - 1) * 12, page * 12));
+    } else {
+        const result = anns.filter((_, i) => !user.anns.includes(i));
+        return res.json(result.slice((page - 1) * 12, page * 12));
+    }
+});
+
+app.get('/api/post', (req, res) => {
+    const id = req.cookies.appuniq;
+    const emailSession = ids[id];
+
+    const user = users.find((user) => user.email === emailSession);
+
+    if (!emailSession || !user) {
+        return res.status(401).json({ error: 'Пользователь не найден' });
+    } else {
+        return res.json(user.anns);
+    }
+});
+
+app.post('/api/post', (req, res) => {
+    const id = req.cookies.appuniq;
+    const emailSession = ids[id];
+
+    const user = users.find((user) => user.email === emailSession);
+
+    if (!emailSession || !user) {
+        return res.status(401).json({ error: 'Пользователь не найден' });
+    } else {
+        const { title, description, price, tags, image, close } = req.body;
+        if (!title || !description || !price || !tags || !image || close === undefined) {
+            return res.status(400).json({ error: 'Не все поля заполнены' });
+        }
+
+        // типа сохранение файла
+        const images = image.map((img) => {
+            const path = `0.jpeg`;
+            return path;
+        });
+
+        const ann = {
+            id: anns.length,
+            title,
+            description,
+            price,
+            tags,
+            images,
+            close,
+            userId: user.id,
+        };
+
+        anns.push(ann);
+    }
+    return res.status(201).end();
+});
+
+app.get('/api/post/:id', (req, res) => {
+    const id = req.params.id;
+
+    if (!anns[id]) {
+        return res.status(404).json({ error: 'Объявление не найдено' });
+    } else {
+        return res.json(anns[id]);
+    }
+});
+
+app.get('/api/post/user/:id', (req, res) => {
+    const id = req.params.id;
+    const user = users.find(user => user.id === id);
+
+    if (!user) {
+        return res.status(404).json({ error: 'Пользователь не найден' });   
+    } else {
+        return res.json(anns.filter(ann => ann.userId === id));
+    }
 });
 
 app.get('/api/sellers/:id', (req, res) => {
@@ -143,7 +236,7 @@ app.get('/api/bucket', (req, res) => {
     }
 })
 
-app.get('/api/me', (req, res) => {
+app.get('/api/user', (req, res) => {
     const id = req.cookies.appuniq;
     const emailSession = ids[id];
     const user = users.find((user) => user.email === emailSession);
@@ -152,14 +245,7 @@ app.get('/api/me', (req, res) => {
         return res.status(401).json({error: 'Пользователь не найден'});
     }
 
-    return res.json({
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        avatar: user.avatar,
-        anns: user.anns,
-        phone: user.phone,
-    });
+    return res.json({ ...user });
 });
 
 app.get('/api/anns/:id', (req, res) => {

@@ -1,4 +1,4 @@
-import { sellerApi } from "@shared/api/seller_api";
+import { userApi } from "@shared/api/users";
 import { Navbar } from "@widgets/navbar/index.js";
 import { AuthWidget } from "@widgets/auth/index.js";
 import { PurchCard } from "@entities/announcement/ui";
@@ -29,7 +29,7 @@ export const sellerPage = (parent, params) => {
         if (!params || params.id == null) {
             user = store.getState('user');
         } else {
-            user = await sellerApi.GetSellerById(params.id);
+            user = await userApi.getById(params.id)
         };
         
         const userPanel = SellerPanel(content, user);
@@ -40,17 +40,18 @@ export const sellerPage = (parent, params) => {
 
         const purchases = await annApi.getAllSellerAnns(user.id);
 
-        purchases.forEach(purch => {
-            const purchCard = PurchCard(annGroup, {
-                id: purch.name,
-                category: purch.category,
-                title: purch.title,
-                price: purch.price,
-                address: purch.address,
-                src: purch.images[0],
+        if (purchases) {
+            purchases.forEach(purch => {
+                const purchCard = PurchCard(annGroup, {
+                    id: purch.name,
+                    tags: purch.tags,
+                    title: purch.title,
+                    price: purch.price,
+                    src: purch.images[0],
+                });
+                purchCard.render();
             });
-            purchCard.render();
-        });
+        }
 
         content.appendChild(annGroup);
     }
