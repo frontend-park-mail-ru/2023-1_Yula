@@ -64,7 +64,7 @@ export const SellerPanel = (parent, user) => {
             elem2 : PanelElement(userPanel, {
                 id: 'phone',
                 imgSource: phoneSVG,
-                text: (user != null) ? `${user.phone}` : 'none',
+                text: (user != null) ? `${user.phoneNumber}` : 'none',
                 invert: invert,
             }),
             

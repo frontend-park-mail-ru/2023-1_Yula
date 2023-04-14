@@ -25,13 +25,13 @@ export const sellerPage = (parent, params) => {
 
     const contentFilling = async () => {
         let user;
-        
+
         if (!params || params.id == null) {
             user = store.getState('user');
         } else {
-            user = await userApi.getById(params.id)
+            user = await userApi.getById(params.id);
         };
-        
+
         const userPanel = SellerPanel(content, user);
         userPanel.render();
 
