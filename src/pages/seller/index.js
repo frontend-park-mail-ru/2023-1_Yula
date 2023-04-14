@@ -32,19 +32,19 @@ export const sellerPage = (parent) => {
         const annGroup = document.createElement('div');
         annGroup.classList.add('purchase-group');
 
-        const purchases = await purchApi.getPurchases();
+        // const purchases = await purchApi.getPurchases();
 
-        purchases.forEach(purch => {
-            const purchCard = PurchCard(annGroup, {
-                id: purch.name,
-                category: purch.category,
-                title: purch.title,
-                price: purch.price,
-                address: purch.address,
-                src: purch.images[0],
-            });
-            purchCard.render();
-        });
+        // purchases.forEach(purch => {
+        //     const purchCard = PurchCard(annGroup, {
+        //         id: purch.name,
+        //         category: purch.category,
+        //         title: purch.title,
+        //         price: purch.price,
+        //         address: purch.address,
+        //         src: purch.images[0],
+        //     });
+        //     purchCard.render();
+        // });
 
         content.appendChild(annGroup);
     }

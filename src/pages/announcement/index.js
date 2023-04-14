@@ -42,6 +42,8 @@ export const announcementPage = (parent, params) => {
         content.appendChild(annCarousel);
 
         const ann = await annApi.getById(params.id);
+        // debugger
+        const annSeller = await annApi.getAnnSellerByAnnId(params.id);
 
         const carousel = Carousel(annCarousel, { images: ann.images });
         carousel.render();
@@ -73,7 +75,7 @@ export const announcementPage = (parent, params) => {
             size: 'large',
             direction: 'row',
             invert: store.getState('theme') === 'dark',
-            link: '/seller/id',
+            link: `/sellers/${annSeller.id}`,
         });
         userIcon.render();
         userIcon.self().style.alignSelf = 'flex-end';

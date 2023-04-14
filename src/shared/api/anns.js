@@ -31,5 +31,11 @@ export class annApi {
     
         return ann;
     }
+
+    static async getAnnSellerByAnnId(id) {
+        let seller = await fetch(`${baseUrl}/api/getseller/${id}`);
+        seller = await seller.json();
+        return seller;
+    }
     
 }

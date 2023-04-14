@@ -96,6 +96,23 @@ app.get('/api/board/:id', (req, res) => {
     res.json(anns[annId]);
 });
 
+app.get('/api/sellers/:id', (req, res) => {
+    const sellerId = req.params.id;
+    res.json(users[sellerId]);
+});
+
+app.get('/api/getseller/:id', (req, res) => {
+    let sellerId = -1;
+    for (let User in users) {
+        if (users[User].anns.find(elem => elem == req.params.id)) {
+            sellerId = users[User].id;
+            break;
+        };
+    }
+    // console.log("getseller output: ", sellerId);
+    res.json(users[sellerId]);
+});
+
 app.get('/api/bucket', (req, res) => {
     const id = req.cookies.appuniq;
     const emailSession = ids[id];
