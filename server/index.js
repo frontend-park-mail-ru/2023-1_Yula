@@ -101,6 +101,24 @@ app.get('/api/sellers/:id', (req, res) => {
     res.json(users[sellerId]);
 });
 
+app.get('/seller', (req, res) => {
+    const id = req.cookies.appuniq;
+    const emailSession = ids[id];
+    const user = users.find((user) => user.email === emailSession);
+
+    if (!emailSession || !user) {
+        return res.status(401).json({error: 'Пользователь не найден'});
+    }
+
+    return res.json({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        avatar: user.avatar,
+    });
+});
+
+// get seller of announcement
 app.get('/api/getseller/:id', (req, res) => {
     let sellerId = -1;
     for (let User in users) {
@@ -110,7 +128,7 @@ app.get('/api/getseller/:id', (req, res) => {
         };
     }
     // console.log("getseller output: ", sellerId);
-    res.json(users[sellerId]);
+    res.json({id: users[sellerId].id});
 });
 
 app.get('/api/bucket', (req, res) => {
@@ -136,12 +154,25 @@ app.get('/api/me', (req, res) => {
     }
 
     return res.json({
+        id: user.id,
         username: user.username,
         email: user.email,
         avatar: user.avatar,
         anns: user.anns,
         phone: user.phone,
     });
+});
+
+app.get('/api/anns/:id', (req, res) => {
+    const id = req.params.id;
+    const user = users[id];
+
+    if (!user) {
+        return res.status(401).json({error: 'Пользователь не найден'});
+    }
+
+    const result = anns.filter((_, i) => user.anns.includes(i));
+    return res.json(result);
 });
 
 app.get('/api/me/anns', (req, res) => {
