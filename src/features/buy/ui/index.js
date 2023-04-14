@@ -41,7 +41,7 @@ export const buyModal = (parent) => {
 
             submitBtn.setActions({
                 "click": ()=>{
-                    store.setStore('bucket', 'clear');
+                    store.setState('bucket', 'clear');
                     localStorage.clear();
                 },
             });

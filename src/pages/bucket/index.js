@@ -2,8 +2,6 @@ import { Navbar } from "@widgets/navbar";
 import { AuthWidget } from "@widgets/auth";
 import { PurchCard } from "@entities/announcement/ui";
 import store from "@modules/state-manager";
-import { purchApi } from "@shared/api/purch.js";
-import { Button } from "../../shared/ui";
 import { Price } from "@widgets/price";
 
 export const bucketPage = (parent) => {
@@ -40,14 +38,12 @@ export const bucketPage = (parent) => {
         purchGroup.classList.add('purchase-group');
         content.appendChild(purchGroup);
 
-        const purchases = await purchApi.getPurchases();
-
         store.subscribe('bucket', newState => {
             if (newState === 'clear') {
-                 parent.quarySelector('.purchase-group').remove();
-                 localStorage.clear();
+                purchGroup.innerHTML = '';
+                localStorage.clear();
             }
-       })
+        });
 
         Object.keys(localStorage).forEach(function(key) {
             const obj = JSON.parse(localStorage.getItem(key))
@@ -61,31 +57,6 @@ export const bucketPage = (parent) => {
             });
             purchCard.render();
         });
-
-        // purchases.forEach(purch => {
-        //     const purchCard = PurchCard(purchGroup, {
-        //         id: purch.id,
-        //         tags: purch.tags,
-        //         title: purch.title,
-        //         price: purch.price,
-        //         address: purch.address,
-        //         src: purch.images,
-        //     });
-            
-        //     // const btn = Button(parent, {
-        //     //     id: `delete${purch.id}`,
-        //     //     type: "submit",
-        //     //     color: 'red',
-        //     //     size: "small",
-        //     // });
-        //     // btn.setActions({
-        //     //     click: () => {
-        //     //         console.log("asd")
-        //     //     }
-        //     // })
-        //     purchCard.render();
-        //     // btn.render();
-        // });
 
         priceWidget.render();
     }
