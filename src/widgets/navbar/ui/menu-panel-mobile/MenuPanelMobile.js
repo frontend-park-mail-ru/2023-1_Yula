@@ -60,7 +60,7 @@ export const MenuPanelMobile = (parent) => {
                 src: basketSvg,
                 size: "large",
                 invert: invert,
-                link: "/bucket",
+                // link: "/bucket",
                 actions: {
                     'click': () => {
                         if (store.getState('user')) {
@@ -95,7 +95,7 @@ export const MenuPanelMobile = (parent) => {
                 src: sellerSvg,
                 size: "large",
                 invert: invert,
-                link: '/seller',
+                // link: '/seller',
                 actions: {
                     'click': () => {
                         if (store.getState('user')) {

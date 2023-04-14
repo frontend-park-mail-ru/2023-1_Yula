@@ -205,9 +205,8 @@ app.get('/seller', (req, res) => {
 
     return res.json({
         id: user.id,
-        login: user.login,
-        email: user.email,
-        avatar: user.avatar,
+        username: user.username,
+        phone: user.phone,
     });
 });
 

@@ -25,20 +25,19 @@ export const sellerPage = (parent, params) => {
 
     const contentFilling = async () => {
         let user;
-        
+
         if (!params || params.id == null) {
             user = store.getState('user');
         } else {
-            user = await userApi.getById(params.id)
+            user = await userApi.getById(params.id);
         };
-        
+
         const userPanel = SellerPanel(content, user);
         userPanel.render();
 
         const annGroup = document.createElement('div');
         annGroup.classList.add('purchase-group');
 
-        console.log(user);
         const purchases = await annApi.getFromUser(user.id);
 
         if (purchases) {
@@ -64,6 +63,8 @@ export const sellerPage = (parent, params) => {
         // рендерим, если только нет на странице
         if (!parent.querySelector('header')) {
             parent.appendChild(header);
+        } else {
+            parent.querySelector('header').replaceWith(header);
         }
 
         // если контент есть, заменяем его новым
