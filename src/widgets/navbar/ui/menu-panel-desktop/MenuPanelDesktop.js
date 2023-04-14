@@ -66,7 +66,7 @@ export const MenuPanelDesktop = (parent) => {
             }),
             user: Icon(menu, {
                 id: "user",
-                src: user ? user.avatar : userSvg,
+                src: user ? user.pathtoavatar : userSvg,
                 size: "large",
                 invert: user ? false : invert,
                 link: user ? '/profile' : null,
@@ -122,7 +122,7 @@ export const MenuPanelDesktop = (parent) => {
             if (user) {
                 Icons.user.changeConfig({
                     circular: true,
-                    src: user.avatar,
+                    src: user.pathtoavatar,
                     link: `/profile`,
                     invert: false,
                 });

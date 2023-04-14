@@ -7,16 +7,16 @@ export class userApi {
         if (user.ok) {
             user = await user.json();
 
-            const imageUrl = `${baseUrl}/static/images/users/${user.avatar}`;
-            user.avatar = imageUrl;
+            const imageUrl = `${baseUrl}/static/images/users/${user.pathtoavatar}`;
+            user.pathtoavatar = imageUrl;
 
-            const anns = await fetch(`${baseUrl}/api/me/anns`);
-            user.anns = await anns.json();
+            // const anns = await fetch(`${baseUrl}/api/me/anns`);
+            // user.anns = await anns.json();
 
-            user.anns = user.anns.map(ann => {
-                ann.images = ann.images.map(img => `${baseUrl}/static/images/anns/${img}`);
-                return ann;
-            });
+            // user.anns = user.anns.map(ann => {
+            //     ann.images = ann.images.map(img => `${baseUrl}/static/images/anns/${img}`);
+            //     return ann;
+            // });
 
             const purchs = await fetch(`${baseUrl}/api/me/purchs`);
             user.purchs = await purchs.json();
@@ -43,7 +43,12 @@ export class userApi {
      * @param {string} data.password
      */
     static async signup(data) {
-       return await fetch(`${baseUrl}/user`, {
+        data = Object.entries(data).reduce((acc, [key, value]) => {
+            acc[key[0].toUpperCase() + key.slice(1)] = value;
+            return acc;
+        }, {});
+
+        return await fetch(`${baseUrl}/api/user`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -72,6 +77,26 @@ export class userApi {
      * Выход из аккаунта
      */
     static async logout() {
-        return await fetch(`${baseUrl}/api/logout`, {method: 'POST'});
+        return await fetch(`${baseUrl}/api/logout`, { method: 'POST' });
+    }
+
+    /**
+     * Пользователь по id
+     * @param {number} id
+     * @returns {object}
+     */
+    static async getById(id) {
+        let user = await fetch(`${baseUrl}/api/user/${id}`);
+
+        if (user.ok) {
+            user = await user.json();
+            user.pathtoavatar = `${baseUrl}/static/images/users/${user.pathtoavatar}`;
+             
+            return user;
+        } else {
+            user = null;
+        }
+
+        return user;
     }
 }

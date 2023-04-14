@@ -1,9 +1,18 @@
 export const validation = (fields) => {
-    let {username, email, password, repeatPassword} = fields;
+    let {login, firstName, secondName, phoneNumber, email, password, passwordCheck} = fields;
     const errors = {};
 
-    if (username.trim() === '') {
-        errors.login = 'Введите имя пользователя';
+    if (login.trim() === '') {
+        errors.login = 'Введите логин';
+    }
+    if (firstName.trim() === '') {
+        errors.firstName = 'Введите имя';
+    }
+    if (secondName.trim() === '') {
+        errors.secondName = 'Введите фамилию';
+    }
+    if (phoneNumber.trim() === '') {
+        errors.phoneNumber = 'Введите номер телефона';
     }
     if (email.trim() === '') {
         errors.login = 'Введите логин';
@@ -12,8 +21,8 @@ export const validation = (fields) => {
         errors.password = 'Введите пароль';
     }
 
-    if (email.indexOf(' ') !== -1) {
-        errors.email = 'Имя пользователя не должно содержать пробелов';
+    if (login.indexOf(' ') !== -1) {
+        errors.login = 'Логин не должно содержать пробелов';
     }
 
     if (email.indexOf('@') === -1) {
@@ -24,8 +33,13 @@ export const validation = (fields) => {
         errors.password = 'Пароль должен содержать не менее 6 символов';
     }
 
-    if (repeatPassword !== password) {
-        errors.repeatPassword = 'Пароли должны совпадать';
+    if (phoneNumber.length !== 10) {
+        errors.phoneNumber = 'Номер телефона должен содержать 10 цифр';
+    }
+
+
+    if (passwordCheck !== password) {
+        errors.passwordCheck = 'Пароли должны совпадать';
     }
     
     return errors;

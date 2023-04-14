@@ -1,15 +1,15 @@
+{{#if link}}
+    <a href="{{link}}" style="text-decoration: none;">
+{{/if}}
 {{#if id}}
     <div id="{{id}}" class="icon icon_direction_{{direction}} icon_color_{{bgColor}} icon_size_{{size}} {{#if invert}}icon_invert{{/if}} {{#if circular}}icon_circular{{/if}}
     ">
 {{/if}}
-{{#if link}}
-    <a href="{{link}}">
-{{/if}}
         <img class="icon__img" src="{{src}}" alt="">
         <span class="icon__text icon__text_color_{{textColor}}">{{text}}</span>
-{{#if link}}
-    </a>
-{{/if}}
 {{#if id}}
     </div>
+{{/if}}
+{{#if link}}
+    </a>
 {{/if}}

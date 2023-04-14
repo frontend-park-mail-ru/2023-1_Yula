@@ -36,7 +36,7 @@ export const bucketPage = (parent) => {
             console.log(purch.images);
             const purchCard = PurchCard(purchGroup, {
                 id: purch.id,
-                category: purch.category,
+                tags: purch.tags,
                 title: purch.title,
                 price: purch.price,
                 address: purch.address,

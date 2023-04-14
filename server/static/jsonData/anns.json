@@ -1,11 +1,12 @@
 [
     {
         "id": 0,
-        "category": "В быту",
+        "userId": "c4a760a8-dbcf-4d53-bf13-1451c8e7723f",
+        "tags": "В быту",
         "title": "Корзина",
-        "desc": "Удобная корзина",
+        "description": "Удобная корзина",
         "price": "500",
-        "address": "Москва, ул. Лобаческого 88",
+        "closed": false,
         "images": [
             "0-0.jpeg",
             "0-1.jpeg",
@@ -14,11 +15,12 @@
     },
     {
         "id": 1,
-        "category": "Электроника",
+        "userId": "c4a760a8-dbcf-4d53-bf13-1451c8e7723f",
+        "tags": "Электроника",
         "title": "Планшет",
-        "desc": "Удобный планшет",
+        "description": "Удобный планшет",
         "price": "15000",
-        "address": "Москва, ул. Институтская 43",
+        "closed": false,
         "images": [
             "1-0.jpeg",
             "1-1.jpeg"
@@ -26,11 +28,12 @@
     },
     {
         "id": 2,
-        "category": "В быту",
+        "userId": "c4a760a8-dbcf-4d53-bf13-1451c8e7723f",
+        "tags": "В быту",
         "title": "Мягкая тряпка",
-        "desc": "Удобная тряпка",
+        "description": "Удобная тряпка",
         "price": "100",
-        "address": "Москва, ул. Грачева 12",
+        "closed": false,
         "images": [
             "2-0.jpeg",
             "2-1.jpeg",
@@ -40,11 +43,12 @@
     },
     {
         "id": 3,
-        "category": "Электроника",
+        "userId": "692e1b66-8c50-470d-a05d-9c524c8a4107",
+        "tags": "Электроника",
         "title": "Смартфон",
-        "desc": "Удобный смартфон",
+        "description": "Удобный смартфон",
         "price": "15000",
-        "address": "Москва, ул. Лобаческого 88",
+        "closed": false,
         "images": [
             "3-0.jpeg",
             "3-1.jpeg",
@@ -53,11 +57,12 @@
     },
     {
         "id": 4,
-        "category": "Электроника",
+        "userId": "692e1b66-8c50-470d-a05d-9c524c8a4107",
+        "tags": "Электроника",
         "title": "Монитор",
-        "desc": "Удобный монитор",
+        "description": "Удобный монитор",
         "price": "5000",
-        "address": "Москва, ул. Лобаческого 88",
+        "closed": false,
         "images": [
             "4-0.jpeg",
             "4-1.jpeg",
@@ -66,11 +71,12 @@
     },
     {
         "id": 5,
-        "category": "Спорт",
+        "userId": "692e1b66-8c50-470d-a05d-9c524c8a4107",
+        "tags": "Спорт",
         "title": "Мяч",
-        "desc": "Удобный мяч",
+        "description": "Удобный мяч",
         "price": "500",
-        "address": "Москва, ул. Красная 28",
+        "closed": false,
         "images": [
             "5-0.jpeg",
             "5-1.jpeg",

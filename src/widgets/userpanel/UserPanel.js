@@ -46,10 +46,11 @@ export const UserPanel = (parent) => {
         const invert = (theme === 'light') ? false : true;
 
         // задаем элемeнты боковой панели
+        console.log(user);
         const elements = {
             elem0 : Icon(userPanel, {
                 id: "user",
-                src: user.avatar,
+                src: user.pathtoavatar,
                 size: "large",
                 invert: user ? false : invert,
                 link: user ? '/profile' : null,
