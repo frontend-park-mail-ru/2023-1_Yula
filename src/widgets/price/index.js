@@ -36,12 +36,9 @@ export const Price = (parent) => {
         const money = document.createElement('h3');
         money.classList.add('prc-money');
 
-        const purchases = await purchApi.getPurchases();
-
         const cnt = localStorage.length;
         purchaseCounter.innerHTML = cnt != 0 ? cnt + ' товаров' : 'Корзина пуста.';
 
-        // const totalPrice = purchases.reduce((acc, curr) => acc + parseInt(curr.price), 0);
         const totalPrice = Object.values(localStorage).reduce((acc, val) => {
             const obj = JSON.parse(val);
             return acc + parseInt(obj.price);
@@ -57,6 +54,7 @@ export const Price = (parent) => {
             id: "buy",
             type: "Submit",
             text: "Купить",
+            disabled: cnt == 0,
         });
         btn.setActions({
             click: () => { modal.render() },

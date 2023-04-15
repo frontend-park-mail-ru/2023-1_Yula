@@ -1,4 +1,5 @@
 import { baseUrl } from '../config';
+import { deleteCookie } from '../lib';
 
 export class userApi {
     static async getMe() {
@@ -9,14 +10,6 @@ export class userApi {
 
             const imageUrl = `${baseUrl}/static/images/users/${user.pathtoavatar}`;
             user.pathtoavatar = imageUrl;
-
-            // const anns = await fetch(`${baseUrl}/api/me/anns`);
-            // user.anns = await anns.json();
-
-            // user.anns = user.anns.map(ann => {
-            //     ann.images = ann.images.map(img => `${baseUrl}/static/images/anns/${img}`);
-            //     return ann;
-            // });
 
             const purchs = await fetch(`${baseUrl}/api/me/purchs`);
             user.purchs = await purchs.json();
@@ -60,11 +53,16 @@ export class userApi {
     /**
      * Авторизация
      * @param {object} data
-     * @param {string} data.email
+     * @param {string} data.login
      * @param {string} data.password
      */
-    static async loginByEmail(data) {
-        return await fetch(`${baseUrl}/api/login`, {
+    static async authByLogin(data) {
+        // data = Object.entries(data).reduce((acc, [key, value]) => {
+        //     acc[key[0].toUpperCase() + key.slice(1)] = value;
+        //     return acc;
+        // }, {});
+
+        return await fetch(`${baseUrl}/api/auth/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -77,7 +75,9 @@ export class userApi {
      * Выход из аккаунта
      */
     static async logout() {
-        return await fetch(`${baseUrl}/api/logout`, { method: 'POST' });
+        // return await fetch(`${baseUrl}/api/logout`, { method: 'POST' });
+
+        deleteCookie('jwt');
     }
 
     /**

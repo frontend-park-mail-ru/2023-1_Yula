@@ -1,4 +1,4 @@
-import { Icon } from "@shared/ui/index.js";
+import { Icon, Alert } from "@shared/ui/index.js";
 import { goTo } from "@shared/lib/history";
 import store from "@modules/state-manager.js";
 
@@ -67,6 +67,12 @@ export const MenuPanelMobile = (parent) => {
                             goTo('/bucket');
                         } else {
                             actions.login();
+
+                            Alert(parent, {
+                                title: "Упс!",
+                                text: "Для просмотра корзины нужна авторизация",
+                                timeout: 3000,
+                            }).render();
                         }
                     }
                 }
@@ -85,6 +91,12 @@ export const MenuPanelMobile = (parent) => {
                             goTo('/create');
                         } else {
                             actions.login();
+
+                            Alert(parent, {
+                                title: "Упс!",
+                                text: "Для создания объявления нужна авторизация",
+                                timer: 3000,
+                            }).render();
                         }
                     }
                 }
@@ -102,6 +114,12 @@ export const MenuPanelMobile = (parent) => {
                             goTo('/seller');
                         } else {
                             actions.login();
+
+                            Alert(parent, {
+                                title: "Упс!",
+                                text: "Для просмотра кабинета продавца нужна авторизация",
+                                timer: 3000,
+                            }).render();
                         }
                     }
                 }

@@ -1,4 +1,4 @@
-import { Button, Form } from '@shared/ui';
+import { Button, Form, Alert } from '@shared/ui';
 import { validation } from '../lib/validation';
 import { readFileAsDataURL } from '../lib/utils'
 import { goTo } from '@shared/lib/history';
@@ -75,17 +75,24 @@ export const CreateAnn = (parent) => {
         form.setActions({
             submit: async (fields) => {
                 fields.image = imges;
+                fields.price = fields.price.replace(/\s/g, '');
 
                 const data = {
                     ...fields,
                     close: false,
                 }
 
-                console.log(data);
                 let res = await annApi.create(data);
 
                 if (res.ok) {
                     goTo('/seller');
+
+                    Alert(document.body, {
+                        id: "createAnn",
+                        title: "Успешно",
+                        text: "Объявление создано",
+                        timer: 3000,
+                    }).render();
                 } else {
                     let message = await res.json(); 
                     const error = {};

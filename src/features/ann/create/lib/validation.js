@@ -1,5 +1,5 @@
 export const validation = (fields) => {
-    let { title, description, tags, price } = fields;
+    let { title, description, tags, price, image } = fields;
     const errors = {};
 
     if (title.trim() === '') {
@@ -9,13 +9,20 @@ export const validation = (fields) => {
         errors.description = 'Введите пароль';
     }
 
-    console.log(price);
     if (price.trim() === '') {
         errors.price = 'Введите цену';
-    } else if (!+price) {
+    } else if (!+(price.replace(/\s/g, ''))) {
         errors.price = 'Цена должна быть целым числом';
-    } else if (+price < 0) {
+    } else if (+(price.replace(/\s/g, '')) < 0) {
         errors.price = 'Цена не может быть отрицательной';
+    }
+
+    if (tags.trim() === '') {
+        errors.tags = 'Введите теги';
+    }
+
+    if (!image.size) {
+        errors.image = 'Добавьте изображение';
     }
     
     return errors;

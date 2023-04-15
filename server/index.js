@@ -59,19 +59,20 @@ app.post('/api/user', (req, res) => {
     return res.status(201).json({ id });
 });
 
-app.post('/api/login', (req, res) => {
-    const { password, email } = req.body;
-    if (!password || !email) {
-        return res.status(400).json({ error: 'Не указан E-Mail или пароль' });
+app.post('/api/auth/login', (req, res) => {
+
+    const { password, login } = req.body;
+    if (!password || !login) {
+        return res.status(400).json({ message: 'Не указан логин или пароль' });
     }
 
-    const user = users.find((user) => user.email === email);
+    const user = users.find((user) => user.login === login);
     if (!user || user.password !== password) {
-        return res.status(400).json({ error: 'Неверный E-Mail и/или пароль' });
+        return res.status(400).json({ message: 'Неверный логин и/или пароль' });
     }
 
     const id = uuid();
-    ids[id] = email;
+    ids[id] = user.email;
 
     res.cookie('appuniq', id, { expires: new Date(Date.now() + 1000 * 60 * 10) });
     return res.status(200).json({ id });

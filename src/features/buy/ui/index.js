@@ -1,4 +1,4 @@
-import { Button, Modal, Form } from '@shared/ui/index.js';
+import { Button, Modal, Form, Alert } from '@shared/ui/index.js';
 import { validation } from '../lib/validation.js';
 import template from './Form/Form.handlebars';
 import store from '@modules/state-manager.js';
@@ -40,9 +40,16 @@ export const buyModal = (parent) => {
             });
 
             submitBtn.setActions({
-                "click": ()=>{
+                "click": () => {
                     store.setState('bucket', 'clear');
                     localStorage.clear();
+
+                    Alert(document.body, {
+                        id: "buy",
+                        title: "Успешно",
+                        text: "Покупка прошла успешно",
+                        timer: 3000,
+                    }).render();
                 },
             });
 

@@ -26,9 +26,10 @@ export const loginModal = (parent) => {
 
             form.setActions({
                 submit: async (fields) => {
-                    let res = await userApi.loginByEmail(fields);
+                    let res = await userApi.authByLogin(fields);
                     
                     if (res.ok) {
+                        document.cookie = `jwt=${await res.json()};`;
                         const user = await userApi.getMe();
                         store.setState('user', user);
                         modal.destroy();
@@ -37,7 +38,7 @@ export const loginModal = (parent) => {
                         let message = await res.json(); 
                         const error = {};
                         
-                        error['email'] = message.error;
+                        error['login'] = message.message;
                         form.showError(error);
                     }
                 },
@@ -64,8 +65,7 @@ export const loginModal = (parent) => {
                 type: "submit",
                 color: "primary",
                 text: "Войти",
-                form: "loginForm",
-                icon: "/icons/favicon.ico"
+                form: "loginForm"
             });
             submitBtn.render();
 

@@ -1,6 +1,6 @@
-import { Icon } from "@shared/ui/index.js";
+import { Icon, Alert} from "@shared/ui";
 import { goTo } from "@shared/lib/history";
-import store from "@modules/state-manager.js";
+import store from "@modules/state-manager";
 
 import createAnnSvg from 'assets/icons/create-ann.svg';
 import userSvg from 'assets/icons/user.svg';
@@ -60,6 +60,12 @@ export const MenuPanelDesktop = (parent) => {
                             goTo('/create');
                         } else {
                             actions.login();
+
+                            Alert(parent, {
+                                title: "Упс!",
+                                text: "Для создания объявления нужна авторизация",
+                                timer: 3000,
+                            }).render();
                         }
                     }
                 }
@@ -84,13 +90,18 @@ export const MenuPanelDesktop = (parent) => {
                 src: basketSvg,
                 size: "large",
                 invert: invert,
-                link: '/bucket',
                 actions: {
                     'click': () => {
                         if (store.getState('user')) {
-                            console.log("перенаправление...");
+                            goTo('/bucket');
                         } else {
                             actions.login();
+
+                            Alert(parent, {
+                                title: "Упс!",
+                                text: "Для просмотра корзины нужна авторизация",
+                                timer: 3000,
+                            }).render();
                         }
                     }
                 }
@@ -100,13 +111,17 @@ export const MenuPanelDesktop = (parent) => {
                 src: sellerSvg,
                 size: "large",
                 invert: invert,
-                // link: '/seller',
                 actions: {
                     'click': () => {
                         if (store.getState('user')) {
                             goTo('/seller');
                         } else {
                             actions.login();
+                            Alert(parent, {
+                                title: "Упс!",
+                                text: "Для просмотра личного кабинета продавца нужна авторизация",
+                                timer: 3000,
+                            }).render();
                         }
                     }
                 }

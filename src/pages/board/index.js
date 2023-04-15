@@ -2,7 +2,6 @@ import { AnnCard } from "@entities/announcement/ui";
 import { annApi } from "@shared/api/anns";
 import { Navbar } from "@widgets/navbar";
 import { AuthWidget } from "@widgets/auth";
-import { Alert } from "@shared/ui";
 import store from "@modules/state-manager";
 
 export const boardPage = (parent) => {
@@ -23,11 +22,6 @@ export const boardPage = (parent) => {
 
     const contentFilling = async () => {
         content.innerHTML = '';
-
-        Alert(content, {
-            text: 'Добро пожаловать на наш сайт!',
-            type: 'success',
-            }).render();
 
         const annGroup = document.createElement('div');
         annGroup.classList.add('announcement-group');

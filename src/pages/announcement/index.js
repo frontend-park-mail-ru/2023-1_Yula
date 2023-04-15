@@ -1,8 +1,7 @@
-import { Carousel, Icon } from "@shared/ui";
+import { Carousel, Icon, Alert } from "@shared/ui";
 import { Navbar } from "@widgets/navbar";
 import { AuthWidget } from "@widgets/auth";
 import { annApi } from "@shared/api/anns";
-import { userApi } from "@shared/api/users";
 import store from "@modules/state-manager";
 
 import './layout.scss';
@@ -65,6 +64,13 @@ export const announcementPage = (parent, params) => {
             actions: {
                 'click': () => {
                     localStorage.setItem(ann.id, JSON.stringify(ann));
+
+                    Alert(parent, {
+                        id: 'add-to-cart',
+                        title: 'Успешно',
+                        text: 'Товар добавлен в корзину',
+                        timer: 2000,
+                    }).render();
                 }
             }
         });

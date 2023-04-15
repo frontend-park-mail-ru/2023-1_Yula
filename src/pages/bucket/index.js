@@ -42,6 +42,8 @@ export const bucketPage = (parent) => {
             if (newState === 'clear') {
                 purchGroup.innerHTML = '';
                 localStorage.clear();
+                priceWidget.destroy();
+                priceWidget.render();
             }
         });
 
