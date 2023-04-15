@@ -52,7 +52,6 @@ export const SellerPanel = (parent, user) => {
                 src: (user != null) ? user.pathtoavatar : userSvg,
                 size: "large",
                 invert: user ? false : invert,
-                link: user ? '/profile' : null,
                 circular: user ? true : false,
             }),
             elem1 : PanelElement(userPanel, {
@@ -73,7 +72,7 @@ export const SellerPanel = (parent, user) => {
                 class: 'user_panel_divider',
                 invert: invert,
             }),
-        };
+        }
         
         // рендерим все элементы
         for (let element in elements) {
