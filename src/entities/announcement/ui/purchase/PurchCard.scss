@@ -67,6 +67,12 @@
     margin: 10px 0;
 }
 
+#deletePurchase {
+    margin-top: auto;
+    margin-right: auto;
+    margin-bottom: auto;
+}
+
 @media screen and (max-width: 900px) {
     .purchase-card__content {
         display: grid;
