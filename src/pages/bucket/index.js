@@ -46,28 +46,15 @@ export const bucketPage = (parent) => {
                 priceWidget.render();
             }
             if (newState === 'clearOne') {
-                purchGroup.innerHTML = '';
                 priceWidget.destroy();
                 priceWidget.render();
-                Object.keys(localStorage).forEach(function(key) {
-                    const obj = JSON.parse(localStorage.getItem(key))
-                    const purchCard = PurchCard(purchGroup, {
-                        id: obj.id,
-                        tags: obj.tags,
-                        title: obj.title,
-                        price: obj.price,
-                        address: obj.address,
-                        src: obj.images[0],
-                    });
-                    purchCard.render();
-                });
             }
         });
 
         Object.keys(localStorage).forEach(function(key) {
             const obj = JSON.parse(localStorage.getItem(key))
             const purchCard = PurchCard(purchGroup, {
-                id: obj.id,
+                id: key,
                 tags: obj.tags,
                 title: obj.title,
                 price: obj.price,

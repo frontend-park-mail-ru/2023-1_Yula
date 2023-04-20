@@ -63,14 +63,23 @@ export const announcementPage = (parent, params) => {
             invert: store.getState('theme') === 'dark',
             actions: {
                 'click': () => {
-                    localStorage.setItem(ann.id, JSON.stringify(ann));
+                    if (!localStorage.getItem(`ann${ann.id}`)) {
+                        localStorage.setItem(`ann${ann.id}`, JSON.stringify(ann));
 
-                    Alert(parent, {
-                        id: 'add-to-cart',
-                        title: 'Успешно',
-                        text: 'Товар добавлен в корзину',
-                        timer: 2000,
-                    }).render();
+                        Alert(parent, {
+                            id: 'add-to-cart',
+                            title: 'Успешно',
+                            text: 'Товар добавлен в корзину',
+                            timer: 2000,
+                        }).render();
+                    } else {
+                        Alert(parent, {
+                            id: 'add-to-cart',
+                            title: 'Неудача',
+                            text: 'Товар уже в корзине',
+                            timer: 2000,
+                        }).render();
+                    }
                 }
             }
         });

@@ -1,16 +1,16 @@
 import './PurchCard.scss';
-// import template from './PurchCard.handlebars';
+import template from './PurchCard.handlebars';
 import { Icon } from '@shared/ui';
 import store from "@modules/state-manager";
 import crossSvg from "assets/icons/cross.svg";
 
 export const PurchCard = (parent, config = { id: "" }) => {
-    const localItemID = config.id;
+    const purchId = config.id;
     config.id += "PurchCard";
     const actions = {};
 
     const self = () => {
-        return document.getElementById(config.id);
+        return parent.querySelector(`#${config.id}`);
     }
 
     const destroy = () => {
@@ -34,52 +34,30 @@ export const PurchCard = (parent, config = { id: "" }) => {
     }
 
     const render = () => {
-        // parent.insertAdjacentHTML("beforeEnd", template(config));
-        const wrapper = document.createElement('div');
-        wrapper.classList.add('purchase-card');
-        parent.appendChild(wrapper);
+        parent.insertAdjacentHTML("beforeEnd", template({...config, href: `/ann/${purchId.slice(3)}`}));
 
-        const content = document.createElement('div');
-        content.classList.add('purchase-card__content');
-        wrapper.appendChild(content);
+        const closeButton = self().querySelector('.purchase-card__close');
 
-        const image = document.createElement('img');
-        image.classList.add('purchase-card__img');
-        image.src = config.src;
-        image.alt = "";
-
-        const tags = document.createElement('div');
-        tags.classList.add('purchase-card__tags');
-        tags.textContent = config.tags;
-
-        const title = document.createElement('div');
-        title.classList.add('purchase-card__title');
-        title.textContent = config.title;
-        console.log(config.title);
-
-        const sale = document.createElement('div');
-        sale.classList.add('purchase-card__sale');
-        sale.textContent = config.price + ' ₽';
-        console.log(config.price);
-
-        const deleteIcon = Icon(wrapper, {
+        const deleteIcon = Icon(closeButton, {
             id: "deletePurchase",
             src: crossSvg,
             size: "large",
             direction: "row",
+            invert: store.getState('theme') === 'dark',
             actions: {
                 'click' : () => {
-                    localStorage.removeItem(localItemID);
+                    localStorage.removeItem(purchId);
                     store.setState('bucket', 'clearOne');
+                    self().remove();
                 }
             }
         });
-
-        content.appendChild(image);
-        content.appendChild(tags);
-        content.appendChild(title);
-        content.appendChild(sale);
         deleteIcon.render();
+
+        store.subscribe('theme', (newTheme) => {
+            deleteIcon.changeConfig({invert: newTheme === 'dark'});
+        });
+
         applyActions();
     }
 

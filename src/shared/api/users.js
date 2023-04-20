@@ -36,10 +36,10 @@ export class userApi {
      * @param {string} data.password
      */
     static async signup(data) {
-        data = Object.entries(data).reduce((acc, [key, value]) => {
-            acc[key[0].toUpperCase() + key.slice(1)] = value;
-            return acc;
-        }, {});
+        // data = Object.entries(data).reduce((acc, [key, value]) => {
+        //     acc[key[0].toUpperCase() + key.slice(1)] = value;
+        //     return acc;
+        // }, {});
 
         return await fetch(`${baseUrl}/api/user`, {
             method: 'POST',

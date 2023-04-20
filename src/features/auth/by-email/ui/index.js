@@ -38,7 +38,7 @@ export const loginModal = (parent) => {
                         let message = await res.json(); 
                         const error = {};
                         
-                        error['login'] = message.message;
+                        error['login'] = message.error;
                         form.showError(error);
                     }
                 },
