@@ -1,4 +1,4 @@
-import { Carousel, Icon, Alert } from "@shared/ui";
+import { Carousel, Icon, Button, Alert } from "@shared/ui";
 import { Navbar } from "@widgets/navbar";
 import { AuthWidget } from "@widgets/auth";
 import { annApi } from "@shared/api/anns";
@@ -96,6 +96,18 @@ export const announcementPage = (parent, params) => {
             link: `/sellers/${ann.userId}`,
         });
         userIcon.render();
+
+        const editBtn = Button(annCharacteristics, {
+            id: "edit",
+            type: "Submit",
+            text: "Изменить",
+        });
+
+        editBtn.setActions({
+            click: () => { console.log("asd")},
+        })
+        
+        editBtn.render();
 
         store.subscribe('theme', (theme) => buyIcon.changeConfig({invert: theme === 'dark'}));
     }
