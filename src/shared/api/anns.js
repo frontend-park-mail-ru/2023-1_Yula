@@ -3,6 +3,9 @@ import { baseUrl } from "../config";
 export class annApi {
     static async getAll() {
         let anns = await fetch(`${baseUrl}/api/sort/new/1`);
+        if (!anns.ok) {
+            return []
+        }
         anns = await anns.json();
         
         anns = anns.map(ann => {

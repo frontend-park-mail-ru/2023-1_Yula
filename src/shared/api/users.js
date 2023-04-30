@@ -7,18 +7,20 @@ export class userApi {
 
         if (user.ok) {
             user = await user.json();
+            console.log(user);
 
             const imageUrl = `${baseUrl}/static/images/users/${user.pathtoavatar}`;
             user.pathtoavatar = imageUrl;
 
-            const purchs = await fetch(`${baseUrl}/api/me/purchs`);
-            user.purchs = await purchs.json();
+            // const purchs = await fetch(`${baseUrl}/api/me/purchs`);
+            // console.log(purchs);
+            // user.purchs = await purchs.json();
 
-            user.purchs = user.purchs.map(ann => {
-                const imageUrl = `${baseUrl}/static/images/anns/${ann.images[0]}`;
-                ann.images = [imageUrl];
-                return ann;
-            });
+            // user.purchs = user.purchs.map(ann => {
+            //     const imageUrl = `${baseUrl}/static/images/anns/${ann.images[0]}`;
+            //     ann.images = [imageUrl];
+            //     return ann;
+            // });
 
             return user;
         } else {

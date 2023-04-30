@@ -26,7 +26,7 @@ app.get('/api/user/:id', (req, res) => {
     const { id } = req.params;
     const user = users.find((user) => user.id === id);
     if (!user) {
-        return res.status(404).json({ error: 'Пользователь не найден' });
+        return res.status(404).json({ message: 'Пользователь не найден' });
     }
     const { password, checkPassword, ...rest } = user;
     return res.json(rest);
@@ -35,16 +35,16 @@ app.get('/api/user/:id', (req, res) => {
 app.post('/api/user', (req, res) => {
     const { password, login, email } = req.body;
     if (!login || login.length < 4) {
-        return res.status(400).json({ error: 'Логин не менее 4 символов', errorFill: 'username' });
+        return res.status(400).json({ message: 'Логин не менее 4 символов', errorFill: 'username' });
     }
     if (!password || !password.match(/^\S{4,}$/)) {
-        return res.status(400).json({ error: 'Минимальная длина пароля 4 символа', errorFill: 'password' });
+        return res.status(400).json({ message: 'Минимальная длина пароля 4 символа', errorFill: 'password' });
     }
     if (!email) {
-        return res.status(400).json({ error: 'Невалидные данные пользователя', errorFill: 'email' });
+        return res.status(400).json({ message: 'Невалидные данные пользователя', errorFill: 'email' });
     }
     if (users.find((user) => user.email === email)) {
-        return res.status(400).json({ error: 'Пользователь уже существует', errorFill: 'username' });
+        return res.status(400).json({ message: 'Пользователь уже существует', errorFill: 'username' });
     }
 
     const id = uuid();
@@ -91,20 +91,6 @@ app.post('/api/logout', (req, res) => {
     return res.end();
 });
 
-app.get('/api/board', (req, res) => {
-    const id = req.cookies.appuniq;
-    const emailSession = ids[id];
-
-    const user = users.find((user) => user.email === emailSession);
-
-    if (!emailSession || !user) {
-        return res.json(anns);
-    } else {
-        const result = anns.filter((_, i) => !user.anns.includes(i));
-        return res.json(result);
-    }
-});
-
 app.get('/api/sort/new/:page', (req, res) => {
     const id = req.cookies.appuniq;
     const emailSession = ids[id];
@@ -115,7 +101,7 @@ app.get('/api/sort/new/:page', (req, res) => {
     if (!emailSession || !user) {
         return res.json(anns.slice((page - 1) * 12, page * 12));
     } else {
-        const result = anns.filter((_, i) => !user.anns.includes(i));
+        const result = anns.filter(ann => ann.userId !== user.id);
         return res.json(result.slice((page - 1) * 12, page * 12));
     }
 });
@@ -144,7 +130,7 @@ app.post('/api/post', (req, res) => {
     } else {
         const { title, description, price, tags, image, close } = req.body;
         if (!title || !description || !price || !tags || !image || close === undefined) {
-            return res.status(400).json({ error: 'Не все поля заполнены' });
+            return res.status(400).json({ message: 'Не все поля заполнены' });
         }
 
         // типа сохранение файла
@@ -173,7 +159,7 @@ app.get('/api/post/:id', (req, res) => {
     const id = req.params.id;
 
     if (!anns[id]) {
-        return res.status(404).json({ error: 'Объявление не найдено' });
+        return res.status(404).json({ message: 'Объявление не найдено' });
     } else {
         return res.json(anns[id]);
     }
@@ -184,7 +170,7 @@ app.get('/api/post/user/:id', (req, res) => {
     const user = users.find(user => user.id === id);
 
     if (!user) {
-        return res.status(404).json({ error: 'Пользователь не найден' });   
+        return res.status(404).json({ message: 'Пользователь не найден' });   
     } else {
         return res.json(anns.filter(ann => ann.userId === id));
     }
@@ -201,7 +187,7 @@ app.get('/seller', (req, res) => {
     const user = users.find((user) => user.email === emailSession);
 
     if (!emailSession || !user) {
-        return res.status(401).json({error: 'Пользователь не найден'});
+        return res.status(401).json({message: 'Пользователь не найден'});
     }
 
     return res.json({
@@ -243,7 +229,7 @@ app.get('/api/user', (req, res) => {
     const user = users.find((user) => user.email === emailSession);
 
     if (!emailSession || !user) {
-        return res.status(401).json({error: 'Пользователь не найден'});
+        return res.status(401).json({message: 'Пользователь не найден'});
     }
 
     return res.json({ ...user });
@@ -254,7 +240,7 @@ app.get('/api/anns/:id', (req, res) => {
     const user = users[id];
 
     if (!user) {
-        return res.status(401).json({error: 'Пользователь не найден'});
+        return res.status(401).json({message: 'Пользователь не найден'});
     }
 
     const result = anns.filter((_, i) => user.anns.includes(i));
@@ -267,7 +253,7 @@ app.get('/api/me/anns', (req, res) => {
     const user = users.find((user) => user.email === emailSession);
 
     if (!emailSession || !user) {
-        return res.status(401).json({error: 'Пользователь не найден'});
+        return res.status(401).json({message: 'Пользователь не найден'});
     }
 
     const result = anns.filter((_, i) => user.anns.includes(i));
@@ -280,7 +266,7 @@ app.get('/api/me/purchs', (req, res) => {
     const user = users.find((user) => user.email === emailSession);
 
     if (!emailSession || !user) {
-        return res.status(401).json({error: 'Пользователь не найден'});
+        return res.status(401).json({message: 'Пользователь не найден'});
     }
 
     const result = anns.filter((_, i) => user.purchs.includes(i));
