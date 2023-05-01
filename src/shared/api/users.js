@@ -1,9 +1,22 @@
 import { baseUrl } from '../config';
 import { deleteCookie } from '../lib';
 
+function capitalizeKeys(obj) {
+    return Object.entries(obj).reduce((acc, [key, value]) => {
+        acc[key[0].toUpperCase() + key.slice(1)] = value;
+        return acc;
+    }, {});
+}
+
 export class userApi {
     static async getMe() {
-        let user = await fetch(`${baseUrl}/api/user`);
+        const token = localStorage.getItem('token');
+        let user = await fetch(`${baseUrl}/api/user`, {
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `bearer ${token}`
+            }
+        });
 
         if (user.ok) {
             user = await user.json();
@@ -11,16 +24,6 @@ export class userApi {
 
             const imageUrl = `${baseUrl}/static/images/users/${user.pathtoavatar}`;
             user.pathtoavatar = imageUrl;
-
-            // const purchs = await fetch(`${baseUrl}/api/me/purchs`);
-            // console.log(purchs);
-            // user.purchs = await purchs.json();
-
-            // user.purchs = user.purchs.map(ann => {
-            //     const imageUrl = `${baseUrl}/static/images/anns/${ann.images[0]}`;
-            //     ann.images = [imageUrl];
-            //     return ann;
-            // });
 
             return user;
         } else {
@@ -79,7 +82,7 @@ export class userApi {
     static async logout() {
         // return await fetch(`${baseUrl}/api/logout`, { method: 'POST' });
 
-        deleteCookie('jwt');
+        localStorage.removeItem('token');
     }
 
     /**
@@ -93,7 +96,7 @@ export class userApi {
         if (user.ok) {
             user = await user.json();
             user.pathtoavatar = `${baseUrl}/static/images/users/${user.pathtoavatar}`;
-             
+
             return user;
         } else {
             user = null;
