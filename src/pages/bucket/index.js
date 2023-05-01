@@ -4,6 +4,8 @@ import { PurchCard } from "@entities/announcement/ui";
 import store from "@modules/state-manager";
 import { Price } from "@widgets/price";
 
+import './layout.scss';
+
 export const bucketPage = (parent) => {
     const self = () => {
         return parent.querySelector('.purchase-group');
@@ -87,6 +89,8 @@ export const bucketPage = (parent) => {
     }
 
     return {
+        self,
+        destroy,
         render,
     }
 }
