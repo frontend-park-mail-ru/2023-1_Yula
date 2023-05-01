@@ -39,13 +39,13 @@ export const Price = (parent) => {
         const cnt = localStorage.length;
         purchaseCounter.innerHTML = cnt != 0 ? cnt + ' товаров' : 'Корзина пуста.';
 
-        const totalPrice = Object.values(localStorage).reduce((acc, val) => {
-            const obj = JSON.parse(val);
-            return acc + parseInt(obj.price);
-        }, 0);
+        // const totalPrice = Object.values(localStorage).reduce((acc, val) => {
+        //     const obj = JSON.parse(val);
+        //     return acc + parseInt(obj.price);
+        // }, 0);
 
-        console.log(totalPrice);
-        money.innerHTML = 'Итого: ' + totalPrice + ' ₽';
+        // console.log(totalPrice);
+        // money.innerHTML = 'Итого: ' + totalPrice + ' ₽';
 
 
         const modal = buyModal(prc);
