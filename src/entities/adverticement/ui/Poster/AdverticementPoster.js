@@ -1,17 +1,16 @@
-import './CategoryCard.scss';
-import template from './CategoryCard.handlebars';
+import './AdverticementPoster.scss';
+import template from './AdverticementPoster.handlebars';
 
 /**
  * Карточка объявления
  * @param {HTMLElement} parent - родительский элемент
  * @param {Object} config - конфигурация
- * @param {string} config.id - id карточки
- * @param {string} config.link - ссылка на категорию
- * @param {string} config.title - заголовок категории
+ * @param {string} config.id - id рекламы
+ * @param {string} config.link - ссылка на рекламу
  * @param {string} config.image - изображение
  */
-export const CategoryCard = (parent, config) => {
-    config.id += "CategoryCard";
+export const AdverticementPoster = (parent, config) => {
+    config.id += "adverticementPoster";
     config.link = config.link || "#";
 
     const actions = {};
@@ -49,7 +48,7 @@ export const CategoryCard = (parent, config) => {
         wrapper.innerHTML += template(config);
         const elem = wrapper.firstElementChild;
 
-        // Carousel(elem.querySelector('.announcement-card__carousel'), {
+        // Carousel(elem.querySelector('.announcement-poster__carousel'), {
         //     images: config.images,
         // }).render();
 
