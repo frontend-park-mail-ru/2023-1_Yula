@@ -1,11 +1,12 @@
 import './PurchCard.scss';
 import template from './PurchCard.handlebars';
 import { Icon } from '@shared/ui';
+import { basketApi } from '@shared/api/basket';
 import store from "@modules/state-manager";
 import crossSvg from "assets/icons/cross.svg";
 
 export const PurchCard = (parent, config = { id: "" }) => {
-    const purchId = config.id;
+    const purchId = config.id.slice(3);
     config.id += "PurchCard";
     const actions = {};
 
@@ -34,7 +35,7 @@ export const PurchCard = (parent, config = { id: "" }) => {
     }
 
     const render = () => {
-        parent.insertAdjacentHTML("beforeEnd", template({...config, href: `/ann/${purchId.slice(3)}`}));
+        parent.insertAdjacentHTML("beforeEnd", template({...config, href: `/ann/${purchId}`}));
 
         const closeButton = self().querySelector('.purchase-card__close');
 
@@ -45,9 +46,10 @@ export const PurchCard = (parent, config = { id: "" }) => {
             direction: "row",
             invert: store.getState('theme') === 'dark',
             actions: {
-                'click' : () => {
-                    localStorage.removeItem(purchId);
-                    store.setState('bucket', 'clearOne');
+                'click': async () => {
+                    await basketApi.deleteFromBasket(purchId);
+                    const basket = store.getState('basket');
+                    store.setState('basket', basket.filter((item) => item.id !== purchId));
                     self().remove();
                 }
             }

@@ -1,5 +1,4 @@
 import { PricePanel } from "./ui/price-panel/PricePanel";
-import { purchApi } from "../../shared/api/purch.js"
 import { Button } from "../../shared/ui";
 import store from "@modules/state-manager.js"
 import "./index.scss";
@@ -36,13 +35,12 @@ export const Price = (parent) => {
         const money = document.createElement('h3');
         money.classList.add('prc-money');
 
-        const cnt = localStorage.length;
+        const basket = store.getState('basket');
+        const cnt = basket.length;
         purchaseCounter.innerHTML = cnt != 0 ? cnt + ' товаров' : 'Корзина пуста.';
 
-        const totalPrice = Object.values(localStorage).reduce((acc, val) => {
-            const obj = JSON.parse(val);
-            return acc + parseInt(obj.price);
-        }, 0);
+        const prices = basket.map(item => +item.price);
+        const totalPrice = prices.reduce((acc, val) => acc + val, 0);
 
         console.log(totalPrice);
         money.innerHTML = 'Итого: ' + totalPrice + ' ₽';

@@ -17,6 +17,7 @@ app.use(body.urlencoded({ limit: '500mb', extended: true }));
 
 const users = require('./static/jsonData/users.json');
 const anns = require('./static/jsonData/anns.json');
+const basket = require('./static/jsonData/basket.json');
 
 /** session identificators */
 const ids = {};
@@ -174,53 +175,6 @@ app.get('/api/post/user/:id', (req, res) => {
     }
 });
 
-// app.get('/api/sellers/:id', (req, res) => {
-//     const sellerId = req.params.id;
-//     res.json(users[sellerId]);
-// });
-
-// app.get('/seller', (req, res) => {
-//     const id = req.cookies.appuniq;
-//     const emailSession = ids[id];
-//     const user = users.find((user) => user.email === emailSession);
-
-//     if (!emailSession || !user) {
-//         return res.status(401).json({message: 'Пользователь не найден'});
-//     }
-
-//     return res.json({
-//         id: user.id,
-//         username: user.username,
-//         phone: user.phone,
-//     });
-// });
-
-// // get seller of announcement
-// app.get('/api/getseller/:id', (req, res) => {
-//     let sellerId = -1;
-//     for (let User in users) {
-//         if (users[User].anns.find(elem => elem == req.params.id)) {
-//             sellerId = users[User].id;
-//             break;
-//         };
-//     }
-//     // console.log("getseller output: ", sellerId);
-//     res.json({id: users[sellerId].id});
-// });
-
-// app.get('/api/bucket', (req, res) => {
-//     const id = req.cookies.appuniq;
-//     const emailSession = ids[id];
-//     const user = users.find((user) => user.email === emailSession);
-
-//     if (!emailSession || !user) {
-//         return res.status(401).json({error: 'Пользователь не найден'});
-//     } else {
-//         const result = anns.filter((_, i) => user.purchs.includes(i));
-//         return res.json(result);
-//     }
-// })
-
 app.get('/api/user', checkToken, (req, res) => {
     const emailSession = ids[req.token];
 
@@ -231,6 +185,105 @@ app.get('/api/user', checkToken, (req, res) => {
     }
 
     return res.json({ ...user });
+});
+
+app.get('/api/basket', checkToken, (req, res) => {
+    const emailSession = ids[req.token];
+
+    const user = users.find(user => user.email === emailSession);
+
+    if (!emailSession || !user) {
+        return res.status(401).json({ message: 'Пользователь не найден' });
+    }
+
+    const userBasket = basket.find(item => item.userId === user.id);
+    if (!userBasket) {
+        return res.status(404).json([]);
+    }
+
+    const userBasketAnns = anns.filter(ann => userBasket.anns.includes(ann.id));
+
+    return res.json(userBasketAnns);
+});
+
+app.post('/api/basket', checkToken, (req, res) => {
+    const emailSession = ids[req.token];
+
+    const user = users.find(user => user.email === emailSession);
+
+    if (!emailSession || !user) {
+        return res.status(401).json({ message: 'Пользователь не найден' });
+    }
+
+    const { annId } = req.body;
+    if (annId === undefined) {
+        return res.status(400).json({ message: 'Не указан id объявления' });
+    }
+
+    const ann = anns.find(ann => ann.id === annId);
+    if (!ann) {
+        return res.status(404).json({ message: 'Объявление не найдено' });
+    }
+
+    const userBasket = basket.find(item => item.userId === user.id);
+    if (!userBasket) {
+        basket.push({
+            userId: user.id,
+            anns: [ann.id],
+        });
+    } else {
+        userBasket.anns.push(ann.id);
+    }
+
+    return res.status(201).end();
+});
+
+app.delete('api/basket', checkToken, (req, res) => {
+    const emailSession = ids[req.token];
+
+    const user = users.find(user => user.email === emailSession);
+    
+    if (!emailSession || !user) {
+        return res.status(401).json({ message: 'Пользователь не найден' });
+    }
+
+    const { annId } = req.body;
+    if (!annId) {
+        return res.status(400).json({ message: 'Не указан id объявления' });
+    }
+
+    const userBasket = basket.find(item => item.userId === user.id);
+    if (!userBasket) {
+        return res.status(404).json({ message: 'Корзина не найдена' });
+    }
+
+    const inBasket = userBasket.anns.includes(annId);
+    if (!inBasket) {
+        return res.status(404).json({ message: 'Объявление не найдено' });
+    }
+
+    userBasket.anns.remove(annId);
+
+    return res.status(200).end();
+});
+
+app.delete('/api/basket/clear', checkToken, (req, res) => {
+    const emailSession = ids[req.token];
+
+    const user = users.find(user => user.email === emailSession);
+
+    if (!emailSession || !user) {
+        return res.status(401).json({ message: 'Пользователь не найден' });
+    }
+
+    const userBasket = basket.find(item => item.userId === user.id);
+    if (!userBasket) {
+        return res.status(404).json({ message: 'Корзина не найдена' });
+    }
+
+    userBasket.anns = [];
+
+    return res.status(200).end();
 });
 
 /** port to listen */

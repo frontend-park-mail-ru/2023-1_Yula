@@ -40,7 +40,8 @@ export const Carousel = (parent, config) => {
     }
 
     const slideTo = (index) => {
-        if (index < 0 || index >= config.images.length) {
+        if (index < 0 || index >= config.images.length ||
+            index === config.current) {
             return;
         }
 

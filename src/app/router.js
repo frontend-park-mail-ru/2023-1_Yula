@@ -1,4 +1,5 @@
 import { userApi } from "../shared/api/users.js";
+import { basketApi } from "../shared/api/basket.js";
 import store from "../modules/state-manager.js";
 
 export const Router = (parent) => {
@@ -67,6 +68,15 @@ export const Router = (parent) => {
         // проверяем авторизацию пользователя
         const user = await userApi.getMe();
         store.setState('user', user);
+
+        // получаем корзину пользователя
+        if (user) {
+            const basket = await basketApi.getBasket();
+            console.log(basket);
+            store.setState('basket', basket);
+        } else {
+            store.setState('basket', []);
+        }
 
         // изменяем историю браузера при клике по ссылке
         parent.addEventListener('click', (event) => {

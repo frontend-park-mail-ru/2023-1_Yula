@@ -2,6 +2,7 @@ import { Carousel, Icon, Button, Alert } from "@shared/ui";
 import { Navbar } from "@widgets/navbar";
 import { AuthWidget } from "@widgets/auth";
 import { annApi } from "@shared/api/anns";
+import { basketApi } from "@shared/api/basket";
 import store from "@modules/state-manager";
 
 import './layout.scss';
@@ -41,6 +42,7 @@ export const announcementPage = (parent, params) => {
         annCarousel.classList.add('announcement-carousel');
         content.appendChild(annCarousel);
 
+        const basket = store.getState("basket");
         const ann = await annApi.getById(params.id);
 
         const carousel = Carousel(annCarousel, { images: ann.images });
@@ -62,28 +64,35 @@ export const announcementPage = (parent, params) => {
             direction: 'row',
             invert: store.getState('theme') === 'dark',
             actions: {
-                'click': () => {
-                    if (!localStorage.getItem(`ann${ann.id}`)) {
-                        localStorage.setItem(`ann${ann.id}`, JSON.stringify(ann));
+                'click': async () => {
+                    if (!basket.find(item => item.id === ann.id)) {
+                        const response = await basketApi.addToBasket(ann.id);
 
-                        Alert(parent, {
-                            id: 'add-to-cart',
-                            title: 'Успешно',
-                            text: 'Товар добавлен в корзину',
-                            timer: 2000,
-                        }).render();
-                    } else {
-                        Alert(parent, {
-                            id: 'add-to-cart',
-                            title: 'Неудача',
-                            text: 'Товар уже в корзине',
-                            timer: 2000,
-                        }).render();
+                        if (response.ok) {
+                            Alert(parent, {
+                                id: 'add-to-cart',
+                                title: 'Успешно',
+                                text: 'Товар добавлен в корзину',
+                                timer: 2000,
+                            }).render();
+                            store.setState("basket", [...basket, ann]);
+                            buyIcon.destroy();
+                        } else {
+                            const { message } = await response.json();
+                            Alert(parent, {
+                                id: 'add-to-cart',
+                                title: 'Неудача',
+                                text: message,
+                                timer: 2000,
+                            }).render();
+                        }
                     }
                 }
             }
         });
-        buyIcon.render();
+        if (!basket.find(item => item.id === ann.id)) {
+            buyIcon.render();
+        }
 
         const userIcon = Icon(annCharacteristics, {
             id: "user",
