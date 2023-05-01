@@ -1,5 +1,5 @@
 import { MenuPanelDesktop, MenuPanelMobile } from "./ui";
-import { Button, Input, Icon } from "@shared/ui/index.js";
+import { Button, Input, Icon, Alert } from "@shared/ui/index.js";
 import { toggleTheme } from "@features/theme";
 import store from "@modules/state-manager";
 import { goTo } from "@shared/lib/history";
@@ -89,7 +89,7 @@ export const Navbar = (parent) => {
                 if (store.getState('user')) {
                     goTo('/create');
                 } else {
-                    actions.login();
+                    actions.auth();
 
                     Alert(parent, {
                         title: "Упс!",
