@@ -2,7 +2,6 @@ const express = require('express');
 const body = require('body-parser');
 const cookie = require('cookie-parser');
 const morgan = require('morgan');
-const uuid = require('uuid').v4;
 const path = require('path');
 const fs = require('fs');
 
@@ -21,6 +20,21 @@ const anns = require('./static/jsonData/anns.json');
 
 /** session identificators */
 const ids = {};
+
+/** session tokens */
+const checkToken = (req, res, next) => {
+    const header = req.headers.authorization;
+  
+    if (typeof header !== "undefined") {
+      const bearer = header.split(" ");
+      const token = bearer[1];
+  
+      req.token = token;
+      next();
+    } else {
+      res.sendStatus(403);
+    }
+  };
 
 app.get('/api/user/:id', (req, res) => {
     const { id } = req.params;
@@ -47,16 +61,17 @@ app.post('/api/user', (req, res) => {
         return res.status(400).json({ message: 'Пользователь уже существует', errorFill: 'username' });
     }
 
-    const id = uuid();
     const user = {
-        ...req.body, purchs: [], anns: [], avatar: '/default.jpg',
+        ...req.body, avatar: '/default.jpg',
     };
 
-    ids[id] = email;
+    const token = Math.random().toString(36).substring(2);
+    ids[token] = user.email;
     users.push(user);
 
-    res.cookie('appuniq', id, { expires: new Date(Date.now() + 1000 * 60 * 10) });
-    return res.status(201).json({ id });
+    fs.writeFileSync(path.resolve(__dirname, 'static/jsonData/users.json'), JSON.stringify(users, null, 4));
+
+    return res.status(201).json(token);
 });
 
 app.post('/api/auth/login', (req, res) => {
@@ -71,57 +86,34 @@ app.post('/api/auth/login', (req, res) => {
         return res.status(400).json({ message: 'Неверный логин и/или пароль' });
     }
 
-    const id = uuid();
-    ids[id] = user.email;
+    // генерируем токен
+    const token = Math.random().toString(36).substring(2);
+    ids[token] = user.email;
 
-    res.cookie('appuniq', id, { expires: new Date(Date.now() + 1000 * 60 * 10) });
-    return res.status(200).json({ id });
-});
-
-app.post('/api/logout', (req, res) => {
-    const id = req.cookies.appuniq;
-    const emailSession = ids[id];
-    const user = users.find((user) => user.email === emailSession);
-
-    if (!emailSession || !user) {
-        return res.status(401).end();
-    }
-
-    res.clearCookie('appuniq');
-    return res.end();
+    return res.status(200).json(token);
 });
 
 app.get('/api/sort/new/:page', (req, res) => {
-    const id = req.cookies.appuniq;
-    const emailSession = ids[id];
-
-    const page = req.params.page;
-    const user = users.find((user) => user.email === emailSession);
-
-    if (!emailSession || !user) {
-        return res.json(anns.slice((page - 1) * 12, page * 12));
-    } else {
-        const result = anns.filter(ann => ann.userId !== user.id);
-        return res.json(result.slice((page - 1) * 12, page * 12));
-    }
+    let page = req.params.page;
+    const result = anns.sort((a, b) => b.id - a.id);
+    return res.json(result.slice((page - 1) * 12, page * 12));
 });
 
-app.get('/api/post', (req, res) => {
-    const id = req.cookies.appuniq;
-    const emailSession = ids[id];
+app.get('/api/post', checkToken, (req, res) => {
+    const emailSession = ids[req.token];
 
     const user = users.find((user) => user.email === emailSession);
+    const anns = anns.filter((ann) => ann.userId === user.id);
 
     if (!emailSession || !user) {
         return res.status(401).json({ error: 'Пользователь не найден' });
     } else {
-        return res.json(user.anns);
+        return res.json(anns);
     }
 });
 
-app.post('/api/post', (req, res) => {
-    const id = req.cookies.appuniq;
-    const emailSession = ids[id];
+app.post('/api/post', checkToken, (req, res) => {
+    const emailSession = ids[req.token];
 
     const user = users.find((user) => user.email === emailSession);
 
@@ -176,101 +168,63 @@ app.get('/api/post/user/:id', (req, res) => {
     }
 });
 
-app.get('/api/sellers/:id', (req, res) => {
-    const sellerId = req.params.id;
-    res.json(users[sellerId]);
-});
+// app.get('/api/sellers/:id', (req, res) => {
+//     const sellerId = req.params.id;
+//     res.json(users[sellerId]);
+// });
 
-app.get('/seller', (req, res) => {
-    const id = req.cookies.appuniq;
-    const emailSession = ids[id];
-    const user = users.find((user) => user.email === emailSession);
+// app.get('/seller', (req, res) => {
+//     const id = req.cookies.appuniq;
+//     const emailSession = ids[id];
+//     const user = users.find((user) => user.email === emailSession);
 
-    if (!emailSession || !user) {
-        return res.status(401).json({message: 'Пользователь не найден'});
-    }
+//     if (!emailSession || !user) {
+//         return res.status(401).json({message: 'Пользователь не найден'});
+//     }
 
-    return res.json({
-        id: user.id,
-        username: user.username,
-        phone: user.phone,
-    });
-});
+//     return res.json({
+//         id: user.id,
+//         username: user.username,
+//         phone: user.phone,
+//     });
+// });
 
-// get seller of announcement
-app.get('/api/getseller/:id', (req, res) => {
-    let sellerId = -1;
-    for (let User in users) {
-        if (users[User].anns.find(elem => elem == req.params.id)) {
-            sellerId = users[User].id;
-            break;
-        };
-    }
-    // console.log("getseller output: ", sellerId);
-    res.json({id: users[sellerId].id});
-});
+// // get seller of announcement
+// app.get('/api/getseller/:id', (req, res) => {
+//     let sellerId = -1;
+//     for (let User in users) {
+//         if (users[User].anns.find(elem => elem == req.params.id)) {
+//             sellerId = users[User].id;
+//             break;
+//         };
+//     }
+//     // console.log("getseller output: ", sellerId);
+//     res.json({id: users[sellerId].id});
+// });
 
-app.get('/api/bucket', (req, res) => {
-    const id = req.cookies.appuniq;
-    const emailSession = ids[id];
-    const user = users.find((user) => user.email === emailSession);
+// app.get('/api/bucket', (req, res) => {
+//     const id = req.cookies.appuniq;
+//     const emailSession = ids[id];
+//     const user = users.find((user) => user.email === emailSession);
 
-    if (!emailSession || !user) {
-        return res.status(401).json({error: 'Пользователь не найден'});
-    } else {
-        const result = anns.filter((_, i) => user.purchs.includes(i));
-        return res.json(result);
-    }
-})
+//     if (!emailSession || !user) {
+//         return res.status(401).json({error: 'Пользователь не найден'});
+//     } else {
+//         const result = anns.filter((_, i) => user.purchs.includes(i));
+//         return res.json(result);
+//     }
+// })
 
-app.get('/api/user', (req, res) => {
-    const id = req.cookies.appuniq;
-    const emailSession = ids[id];
-    const user = users.find((user) => user.email === emailSession);
+app.get('/api/user', checkToken, (req, res) => {
+    const emailSession = ids[req.token];
+
+    const user = users.find(user => user.email === emailSession);
 
     if (!emailSession || !user) {
         return res.status(401).json({message: 'Пользователь не найден'});
     }
 
     return res.json({ ...user });
-});
-
-app.get('/api/anns/:id', (req, res) => {
-    const id = req.params.id;
-    const user = users[id];
-
-    if (!user) {
-        return res.status(401).json({message: 'Пользователь не найден'});
-    }
-
-    const result = anns.filter((_, i) => user.anns.includes(i));
-    return res.json(result);
-});
-
-app.get('/api/me/anns', (req, res) => {
-    const id = req.cookies.appuniq;
-    const emailSession = ids[id];
-    const user = users.find((user) => user.email === emailSession);
-
-    if (!emailSession || !user) {
-        return res.status(401).json({message: 'Пользователь не найден'});
-    }
-
-    const result = anns.filter((_, i) => user.anns.includes(i));
-    return res.json(result);
-});
-
-app.get('/api/me/purchs', (req, res) => {
-    const id = req.cookies.appuniq;
-    const emailSession = ids[id];
-    const user = users.find((user) => user.email === emailSession);
-
-    if (!emailSession || !user) {
-        return res.status(401).json({message: 'Пользователь не найден'});
-    }
-
-    const result = anns.filter((_, i) => user.purchs.includes(i));
-    return res.json(result);
 });
 
 /** port to listen */

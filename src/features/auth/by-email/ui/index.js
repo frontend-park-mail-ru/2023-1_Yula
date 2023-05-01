@@ -29,7 +29,9 @@ export const loginModal = (parent) => {
                     let res = await userApi.authByLogin(fields);
                     
                     if (res.ok) {
-                        document.cookie = `jwt=${await res.json()};`;
+                        const token = await res.json();
+                        localStorage.setItem('token', token);
+
                         const user = await userApi.getMe();
                         store.setState('user', user);
                         modal.destroy();

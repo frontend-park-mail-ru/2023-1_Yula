@@ -7,7 +7,7 @@
         "password": "123456",
         "passwordCheck": "123456",
         "pathtoavatar": "0.jpeg",
-        "phoneNumber" : "+79999999977"
+        "phoneNumber": "+79999999977"
     },
     {
         "id": "692e1b66-8c50-470d-a05d-9c524c8a4107",
@@ -17,16 +17,6 @@
         "password": "1234578",
         "passwordCheck": "1234578",
         "pathtoavatar": "1.png",
-        "phoneNumber" : "+79999994499"
-    },
-    {
-        "id": "1c2736c8-74f0-4630-89eb-53be2e1748a7",
-        "name": "Иван",
-        "login": "Tester",
-        "email": "test@mail.ru",
-        "password": "000000",
-        "passwordCheck": "000000",
-        "pathtoavatar": "default.jpg",
-        "phoneNumber" : "+79995559999"
+        "phoneNumber": "+79999994499"
     }
 ]
