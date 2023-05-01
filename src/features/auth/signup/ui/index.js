@@ -25,13 +25,13 @@ export const signupModal = (parent) => {
             form.setActions({
                 submit: async (fields) => {
                     const { accept, ...data } = fields;
-                    data['avatar'] = 'default.jpeg';
+                    data['pathtoavatar'] = 'default.jpeg';
                     let res = await userApi.signup(data);
                     
                     if (res.ok) {
                         const token = await res.json();
                         localStorage.setItem('token', token);
-                        
+
                         let user = await userApi.getMe();
                         store.setState('user', user);
                         modal.destroy();
