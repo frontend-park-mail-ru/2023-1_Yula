@@ -43,7 +43,7 @@
 
 .announcement-card__content {
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-areas: "title title" "price view-count";
     justify-content: space-between;
     padding: 8px 12px 12px 12px;
     align-items: center;
@@ -52,6 +52,7 @@
 }
 
 .announcement-card__title {
+    grid-area: title;
     font-size: 16px;
     text-decoration: none;
     color: var(--fg-color);
@@ -59,6 +60,7 @@
 }
 
 .announcement-card__sale {
+    grid-area: price;
     font-family: 'Roboto VK bold';
     font-style: normal;
     font-weight: 400;
@@ -66,9 +68,17 @@
     color: var(--fg-color);
 }
 
-// .announcement-card__view-count {
+.announcement-card__view-count {
+    grid-area: view-count;
+    font-family: 'Roboto VK';
+    color: var(--secondary-color);
 
-// }
+    &::before {
+        content: "👁";
+        font-size: 15px;
+        margin-right: 2px;
+    }
+}
 
 .announcement-group {
     display: grid;

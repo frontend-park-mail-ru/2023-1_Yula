@@ -18,5 +18,27 @@
         "passwordCheck": "1234578",
         "pathtoavatar": "1.png",
         "phoneNumber": "+79999994499"
+    },
+    {
+        "id": "1c2736c8-74f0-4630-89eb-53be2e1748a7",
+        "name": "Иван",
+        "login": "Tester",
+        "email": "test@mail.ru",
+        "password": "000000",
+        "passwordCheck": "000000",
+        "pathtoavatar": "default.jpg",
+        "phoneNumber": "+79995559999"
+    },
+    {
+        "login": "1111",
+        "secondName": "Lobanov",
+        "firstName": "Igor",
+        "patronimic": "Kar",
+        "phoneNumber": "1234567890",
+        "email": "az.bilalov@mail.ru1",
+        "password": "123456",
+        "passwordCheck": "123456",
+        "pathtoavatar": "default.jpg",
+        "id": "32b1ad36-38be-48ee-8594-dbf70648ce64"
     }
 ]

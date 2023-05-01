@@ -37,6 +37,7 @@ export const boardPage = (parent) => {
                 price: ann.price,
                 images: ann.images,
                 link: `/ann/${ann.id}`,
+                viewCount: 10, // TODO: сделать нормальный подсчет просмотров
             });
             annCard.render();
         });

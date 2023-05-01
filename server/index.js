@@ -24,17 +24,17 @@ const ids = {};
 /** session tokens */
 const checkToken = (req, res, next) => {
     const header = req.headers.authorization;
-  
+
     if (typeof header !== "undefined") {
-      const bearer = header.split(" ");
-      const token = bearer[1];
-  
-      req.token = token;
-      next();
+        const bearer = header.split(" ");
+        const token = bearer[1];
+
+        req.token = token;
+        next();
     } else {
-      res.sendStatus(403);
+        res.sendStatus(403);
     }
-  };
+};
 
 app.get('/api/user/:id', (req, res) => {
     const { id } = req.params;
@@ -62,7 +62,13 @@ app.post('/api/user', (req, res) => {
     }
 
     const user = {
-        ...req.body, avatar: '/default.jpg',
+        ...req.body,
+        pathtoavatar: 'default.jpg',
+        id: 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0,
+                v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        })
     };
 
     const token = Math.random().toString(36).substring(2);
@@ -162,7 +168,7 @@ app.get('/api/post/user/:id', (req, res) => {
     const user = users.find(user => user.id === id);
 
     if (!user) {
-        return res.status(404).json({ message: 'Пользователь не найден' });   
+        return res.status(404).json({ message: 'Пользователь не найден' });
     } else {
         return res.json(anns.filter(ann => ann.userId === id));
     }
@@ -221,7 +227,7 @@ app.get('/api/user', checkToken, (req, res) => {
     const user = users.find(user => user.email === emailSession);
 
     if (!emailSession || !user) {
-        return res.status(401).json({message: 'Пользователь не найден'});
+        return res.status(401).json({ message: 'Пользователь не найден' });
     }
 
     return res.json({ ...user });

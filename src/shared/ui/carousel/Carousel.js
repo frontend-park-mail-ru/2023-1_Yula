@@ -9,13 +9,15 @@ import template from './Carousel.handlebars';
  * @param {number} config.visibleCount - количество видимых изображений
  * @param {number} config.current - индекс текущего изображения
  * @param {number} config.interval - интервал смены изображений
- * @param {boolean} config.large - карусель большого размера
+ * @param {boolean} config.outbound - слайдер на 20% превышает слайды
  * @param {Function} config.onSlideChange - функция, вызываемая при изменении изображения
  * @returns 
  */
 export const Carousel = (parent, config) => {
     config.images = config.images || [];
     config.current = config.current || 0;
+    config.visibleCount = config.visibleCount || 3;
+    config.outbound = config.outbound || true;
     config.onSlideChange = config.onSlideChange || (() => {});
 
     const self = () => {
@@ -42,11 +44,22 @@ export const Carousel = (parent, config) => {
             return;
         }
 
-        config.current = index;
-
         // смена изображения
         const slider = self().querySelector('.carousel__slider');
-        slider.style.transform = `translateX(-${config.current * 100}%)`;
+
+        // коэффициент смещения слайдера
+        let offset = 0;
+        if (config.outbound) {
+            if (config.current === 0 && index === 1 ||
+                config.current === 1 && index === 0 ||
+                config.current === config.images.length - 2 && index === config.images.length - 1 ||
+                config.current === config.images.length - 1 && index === config.images.length - 2) {
+                offset = 10;
+            }
+        }
+
+        slider.style.transform = `translateX(-${index * (100 - offset)}%)`;
+        config.current = index;
     }
 
     const prevSlide = () => {
@@ -59,14 +72,24 @@ export const Carousel = (parent, config) => {
     }
 
     const applyActions = () => {
-        // смена слайда при промотке мыши вдоль слайдера
-        const slider = self().querySelector('.carousel__slider');
-        slider.addEventListener('mousemove', (event) => {
-            if (event.target.classList.contains('carousel__slide')) {
-                let index = parseInt(event.offsetX / event.target.offsetWidth * config.images.length);
-                slideTo(index);
-            }
-        });
+        if (config.outbound) {
+            // смена слайда при клике на слайд
+            const slides = self().querySelectorAll('.carousel__slide');
+            slides.forEach((slide, index) => {
+                slide.addEventListener('click', () => {
+                    slideTo(index);
+                });
+            });
+        } else {
+            // смена слайда при промотке мыши вдоль слайдера
+            const slider = self().querySelector('.carousel__slider');
+            slider.addEventListener('mousemove', (event) => {
+                if (event.target.classList.contains('carousel__slide')) {
+                    let index = parseInt(event.offsetX / event.target.offsetWidth * config.images.length);
+                    slideTo(index);
+                }
+            });
+        }
 
     }
 
