@@ -36,6 +36,7 @@ export const Navbar = (parent) => {
         }
     }
 
+
     const render = async () => {
         const nav = document.createElement('nav');
         nav.classList.add('nav');

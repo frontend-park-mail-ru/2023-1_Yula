@@ -74,6 +74,10 @@ body {
     background-color: var(--bg-color);
 }
 
+main {
+    padding-left: 2%;
+    padding-right: 2%;
+}
 
 @media screen and (max-width: 900px) {
     main {
