@@ -55,28 +55,7 @@ export const MenuPanelMobile = (parent) => {
                 link: "/",
             }),
 
-            basket: Icon(menu, {
-                id: "basket",
-                src: basketSvg,
-                size: "large",
-                invert: invert,
-                // link: "/bucket",
-                actions: {
-                    'click': () => {
-                        if (store.getState('user')) {
-                            goTo('/bucket');
-                        } else {
-                            actions.login();
-
-                            Alert(parent, {
-                                title: "Упс!",
-                                text: "Для просмотра корзины нужна авторизация",
-                                timeout: 3000,
-                            }).render();
-                        }
-                    }
-                }
-            }),
+            // сюда добавить иконку с страницей поиска и категориями
 
             createAnn: Icon(menu, {
                 id: "createAnn",
@@ -102,23 +81,23 @@ export const MenuPanelMobile = (parent) => {
                 }
             }),
 
-            seller: Icon(menu, {
-                id: "seller",
-                src: sellerSvg,
+            basket: Icon(menu, {
+                id: "basket",
+                src: basketSvg,
                 size: "large",
                 invert: invert,
-                // link: '/seller',
+                // link: "/bucket",
                 actions: {
                     'click': () => {
                         if (store.getState('user')) {
-                            goTo('/seller');
+                            goTo('/bucket');
                         } else {
                             actions.login();
 
                             Alert(parent, {
                                 title: "Упс!",
-                                text: "Для просмотра кабинета продавца нужна авторизация",
-                                timer: 3000,
+                                text: "Для просмотра корзины нужна авторизация",
+                                timeout: 3000,
                             }).render();
                         }
                     }

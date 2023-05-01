@@ -1,4 +1,4 @@
-import { Icon, Alert} from "@shared/ui";
+import { Button, Icon, Alert} from "@shared/ui";
 import { goTo } from "@shared/lib/history";
 import store from "@modules/state-manager";
 
@@ -46,45 +46,31 @@ export const MenuPanelDesktop = (parent) => {
         const user = store.getState('user');
 
         const Icons = {
-            createAnn: Icon(menu, {
-                id: "createAnn",
-                src: createAnnSvg,
-                size: "large",
-                direction: "row",
-                text: "Создать объявление",
-                textColor: "fg",
-                invert: invert,
-                actions: {
-                    'click': () => {
-                        if (store.getState('user')) {
-                            goTo('/create');
-                        } else {
-                            actions.login();
+            // Icon(menu, {
+            //     id: "createAnn",
+            //     src: createAnnSvg,
+            //     size: "large",
+            //     direction: "row",
+            //     text: "Создать объявление",
+            //     textColor: "fg",
+            //     // invert: invert,
+            //     actions: {
+            //         'click': () => {
+            //             if (store.getState('user')) {
+            //                 goTo('/create');
+            //             } else {
+            //                 actions.login();
 
-                            Alert(parent, {
-                                title: "Упс!",
-                                text: "Для создания объявления нужна авторизация",
-                                timer: 3000,
-                            }).render();
-                        }
-                    }
-                }
-            }),
-            user: Icon(menu, {
-                id: "user",
-                src: user ? user.pathtoavatar : userSvg,
-                size: "large",
-                invert: user ? false : invert,
-                link: user ? '/profile' : null,
-                circular: user ? true : false,
-                actions: {
-                    'click': () => {
-                        if (!store.getState('user')) {
-                            actions.login();
-                        }
-                    }
-                }
-            }),
+            //                 Alert(parent, {
+            //                     title: "Упс!",
+            //                     text: "Для создания объявления нужна авторизация",
+            //                     timer: 3000,
+            //                 }).render();
+            //             }
+            //         }
+            //     }
+            // }),
+            ///////////////////////////////////////////
             basket: Icon(menu, {
                 id: "basket",
                 src: basketSvg,
@@ -106,22 +92,17 @@ export const MenuPanelDesktop = (parent) => {
                     }
                 }
             }),
-            seller: Icon(menu, {
-                id: "seller",
-                src: sellerSvg,
+            user: Icon(menu, {
+                id: "user",
+                src: user ? user.pathtoavatar : userSvg,
                 size: "large",
-                invert: invert,
+                invert: user ? false : invert,
+                link: user ? '/profile' : null,
+                circular: user ? true : false,
                 actions: {
                     'click': () => {
-                        if (store.getState('user')) {
-                            goTo('/seller');
-                        } else {
+                        if (!store.getState('user')) {
                             actions.login();
-                            Alert(parent, {
-                                title: "Упс!",
-                                text: "Для просмотра личного кабинета продавца нужна авторизация",
-                                timer: 3000,
-                            }).render();
                         }
                     }
                 }

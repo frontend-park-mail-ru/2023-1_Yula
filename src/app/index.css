@@ -27,6 +27,8 @@
 
     --text-color: #000000;
     --panel-text-color: #000000;
+
+    --white-color: #ffffff;
 }
 
 body.dark {
@@ -54,6 +56,8 @@ body.dark {
 
     --text-color: #ffffff;
     --panel-text-color: #000000;
+
+    --white-color: #ffffff;
 }
 
 @font-face {
@@ -69,6 +73,7 @@ body.dark {
 body {
     background-color: var(--bg-color);
 }
+
 
 @media screen and (max-width: 900px) {
     main {

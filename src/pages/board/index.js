@@ -3,6 +3,7 @@ import { annApi } from "@shared/api/anns";
 import { Navbar } from "@widgets/navbar";
 import { AuthWidget } from "@widgets/auth";
 import store from "@modules/state-manager";
+// import { CategoryCard } from "@entities/category/ui"
 
 export const boardPage = (parent) => {
     const header = document.createElement('header');
