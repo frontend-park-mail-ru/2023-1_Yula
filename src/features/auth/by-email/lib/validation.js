@@ -1,16 +1,12 @@
 export const validation = (fields) => {
-    let { email, password } = fields;
+    let { login, password } = fields;
     const errors = {};
 
-    if (email.trim() === '') {
+    if (login.trim() === '') {
         errors.login = 'Введите логин';
     }
     if (password.trim() === '') {
         errors.password = 'Введите пароль';
-    }
-
-    if (email.indexOf('@') === -1) {
-        errors.email = 'Email должен содержать символ "@"';
     }
 
     if (password.length < 6) {

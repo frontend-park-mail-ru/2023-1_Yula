@@ -1,15 +1,40 @@
+.announcement-card__link {
+    text-decoration: none;
+}
+
 .announcement-card {
-    background: #FFFFFF;
+    background: var(--bg-color-strong);
     box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.08), 0px 4px 16px rgba(0, 0, 0, 0.08);
-    border-radius: 8px;
+    border-radius: 10px;
     gap: 5px;
 }
 
 .announcement-card__img {
     height: 200px;
+    // filter: brightness(75%);
+    border-radius: inherit;
 
-    // временное решение
     & > img {
+        height: 100%;
+        width: 100%;
+        object-fit: contain;
+        border-radius: inherit;
+    }
+
+    @media screen and (max-width: 768px) {
+        // height: fit-content;
+        width: 100%;
+    }
+}
+
+.announcement-card__carousel {
+    height: 200px;
+
+    & .carousel {
+        border-radius: 10px;
+    }
+    
+    & .carousel__slide  {
         height: 100%;
         width: 100%;
         object-fit: contain;
@@ -18,50 +43,42 @@
 
 .announcement-card__content {
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr 2fr;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
     padding: 8px 12px 12px 12px;
     align-items: center;
-}
-
-.announcement-card__category {
-    text-transform: uppercase;
-    font-size: 11px;
-    font-family: "Roboto VK Bold";
-    color: #818C99;
+    background-color: var(--bg-color-strong);
+    border-radius: 10px;
 }
 
 .announcement-card__title {
     font-size: 16px;
-    color: #000;
-    font-family: "Roboto VK Bold";
+    text-decoration: none;
+    color: var(--fg-color);
+    font-family: "Roboto VK";
 }
 
 .announcement-card__sale {
-    font-family: 'Roboto VK';
+    font-family: 'Roboto VK bold';
     font-style: normal;
     font-weight: 400;
-    font-size: 15px;
+    font-size: 20px;
+    color: var(--fg-color);
 }
 
-.announcement-card__address {
-    font-family: 'Roboto VK';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 13px;
-    line-height: 16px;
-    letter-spacing: 0.2px;
-    color: #818C99;
+// .announcement-card__view-count {
 
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;  
-    overflow: hidden;
-}
+// }
 
 .announcement-group {
     display: grid;
     grid-gap: 10px;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    justify-items: center;
+    // justify-items: center;
     margin: 10px 0;
+
+    @media screen and (max-width: 768px) {
+        justify-items: stretch;
+        justify-content: center;
+    }
 }

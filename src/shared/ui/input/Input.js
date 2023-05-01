@@ -1,4 +1,5 @@
 import './Input.scss';
+import template from './Input.handlebars';
 
 /**
  * @param {HTMLElement} parent
@@ -50,10 +51,9 @@ export const Input = (parent, config = {id: ""}) => {
 
     const render = () => {
         if (self()) {
-            throw new Error(`Объект с id="${config.id}" уже есть на странице`);
+            self().remove();
         }
 
-        const template = Handlebars.templates["shared/ui/input/Input"];
         parent.insertAdjacentHTML("beforeEnd", template(config));
 
         applyActions();

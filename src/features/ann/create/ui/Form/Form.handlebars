@@ -1,0 +1,34 @@
+<form id="{{id}}">
+    <section class="form__input-group">
+        <label class="form__text" for="title">Что будем продавать?</label>
+        <input type="text" class="input" name="title" placeholder="Картина Ван Гога" required>
+        <span class="form__text_error" id="titleMessage"></span>
+    </section>
+    <section class="form__input-group">
+        <label class="form__text" for="description">Опишите продукт</label>
+        <textarea class="input input_type_textarea" name="description" placeholder="Картина славится своей...." required></textarea>
+        <span class="form__text_error" id="descriptionMessage"></span>
+    </section>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10%;">
+        <section class="form__input-group">
+            <label class="form__text" for="price">Цена</label>
+            <input type="text" class="input" name="price" placeholder="1 000 000" required>
+            <span class="form__text_error" id="priceMessage"></span>
+        </section>
+        <section class="form__input-group">
+            <label class="form__text" for="category">Тег</label>
+            <select class="input" name="tags" required>
+                <option value="Живопись">Живопись</option>
+                <option value="В быту">В быту</option>
+                <option value="Электроника">Электроника</option>
+                <option value="Музыка">Музыка</option>
+            </select>
+            <span class="form__text_error" id="tagsMessage"></span>
+        </section>
+    </div>
+    <section class="form__input-group">
+        <div class="input_type_file" onclick="{{id}}.image.click();">Переместите сюда изображения</div>
+        <input type="file" name="image" style="display: none;" multiple>
+        <span class="form__text_error" id="imageMessage"></span>
+    </section>
+</form>

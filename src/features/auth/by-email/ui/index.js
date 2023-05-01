@@ -1,7 +1,8 @@
-import { Button, Modal, Form } from '../../../../shared/ui/index.js';
+import { Button, Modal, Form } from '@shared/ui/index.js';
 import { validation } from '../lib/validation.js';
-import { userApi } from '../../../../shared/api/users.js';
-import store from '../../../../modules/state-manager.js';
+import { userApi } from '@shared/api/users.js';
+import template from './Form/Form.handlebars';
+import store from '@modules/state-manager.js';
 
 export const loginModal = (parent) => {
     const modal = Modal(parent, {
@@ -20,17 +21,16 @@ export const loginModal = (parent) => {
             // заполняем тело
             const form = Form(modal.body(), {
                 id: "login",
-                template: 'features/auth/by-email/ui/Form/Form',
+                template,
             });
 
             form.setActions({
                 submit: async (fields) => {
-                    let res = await userApi.loginByEmail(fields);
+                    let res = await userApi.authByLogin(fields);
                     
                     if (res.ok) {
-                        res = await userApi.getMe(); // под вопросом
-                        const user = await res.json();
-
+                        document.cookie = `jwt=${await res.json()};`;
+                        const user = await userApi.getMe();
                         store.setState('user', user);
                         modal.destroy();
 
@@ -38,7 +38,7 @@ export const loginModal = (parent) => {
                         let message = await res.json(); 
                         const error = {};
                         
-                        error['email'] = message.error;
+                        error['login'] = message.message;
                         form.showError(error);
                     }
                 },
@@ -65,8 +65,7 @@ export const loginModal = (parent) => {
                 type: "submit",
                 color: "primary",
                 text: "Войти",
-                form: "loginForm",
-                icon: "/icons/favicon.ico"
+                form: "loginForm"
             });
             submitBtn.render();
 

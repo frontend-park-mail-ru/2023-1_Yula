@@ -1,8 +1,14 @@
-import { Button, Input, Icon } from "../../shared/ui/index.js";
-import { UserBar } from "../../entities/user/ui/index.js";
-import store from "../../modules/state-manager.js";
-import { userApi } from "../../shared/api/users.js";
+import { MenuPanelDesktop, MenuPanelMobile } from "./ui";
+import { Button, Input, Icon } from "@shared/ui/index.js";
+import { toggleTheme } from "@features/theme";
+import store from "@modules/state-manager";
+import { goTo } from "@shared/lib/history";
+
 import './index.scss';
+
+import searchSvg from 'assets/icons/search.svg';
+import sunSVG from 'assets/icons/sun.svg';
+import moonSVG from 'assets/icons/moon.svg';
 
 export const Navbar = (parent) => {
     const actions = {
@@ -42,69 +48,85 @@ export const Navbar = (parent) => {
         logo.innerText = 'AppUniq';
         nav.appendChild(logo);
 
+        // переключение темы
+        const theme = store.getState('theme');
+        const themeIcon = Icon(nav, {
+            id: "theme",
+            src: (theme === 'light') ? sunSVG : moonSVG,
+            invert: (theme === 'light') ? false : true,
+            size: "large",
+            actions: {
+                'click': () => {
+                    const newTheme = toggleTheme();
+                    store.setState('theme', newTheme);
+                    themeIcon.changeConfig({
+                        src: (newTheme === 'light') ? sunSVG : moonSVG,
+                        invert: (newTheme === 'light') ? false : true,
+                    });
+                },
+            }
+        });
+        themeIcon.render();
+
         // строка поиска
         const input = Input(nav, {
             id: "search",
             placeholder: "Я ищу...",
             type: "text",
-            leftIcon: "icons/search.svg",
+            leftIcon: searchSvg,
         });
         input.render();
 
-        // кнопка входа
-        const authButton = Button(nav, {
-            id: "login",
+        const createAnn = Button(nav, {
+            id: "createAnn",
             type: "button",
-            text: "Войти",
-            color: "primary"
+            text: "Создать объявление",
+            color: "primary",
+            textColor: "white",
         });
-        authButton.setActions({
-            click: actions.auth
-        });
+        createAnn.setActions({
+            click: () => {
+                if (store.getState('user')) {
+                    goTo('/create');
+                } else {
+                    actions.login();
 
-        // account bar
-        const testIcon = Icon(nav, {
-            id: "test",
-            src: "icons/search.svg",
-        });
-
-        // пользовательская панель
-        const userbar = UserBar(nav, {
-            href: "/profile",
-        });
-        userbar.setActions({
-            logout: () => {
-                userApi.logout();
-                store.setState('user', null);
+                    Alert(parent, {
+                        title: "Упс!",
+                        text: "Для создания объявления нужна авторизация",
+                        timer: 3000,
+                    }).render();
+                }
             }
         });
 
-        // событие входа в аккаунт
-        store.subscribe('user', (user) => {
-            if (!user) {
-                userbar.destroy();
-                authButton.render();
-                return;
-            } else {
-                userbar.config.username = user.username; // исправить обращение к конфигу напрямую
-                userbar.config.avatar = user.avatar;
-                userbar.render();
-                authButton.destroy();
-            }
-        });
+        const menuPanelDesktop = MenuPanelDesktop(nav);
+        menuPanelDesktop.setActions({ 'login': actions.auth });
+        
+        const menuPanelMobile = MenuPanelMobile(nav);
+        menuPanelMobile.setActions({ 'login': actions.auth });
 
-
-        // проверка авторизирован ли пользователь
-        if (store.getState('user')) {
-            userbar.config.username = store.getState('user').username; // исправить обращение к конфигу напрямую
-            userbar.config.avatar = store.getState('user').avatar;
-            userbar.render();
-            authButton.destroy();
+        if (window.innerWidth >= 900) {
+            createAnn.render();
+            menuPanelDesktop.render();
         } else {
-            userbar.destroy();
-            authButton.render();
+            menuPanelMobile.render();
         }
 
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 900 && !menuPanelDesktop.self()) {
+                themeIcon.destroy();
+                themeIcon.render();
+                input.render();
+                createAnn.render();
+                menuPanelDesktop.render();
+                menuPanelMobile.destroy();
+            } else if (window.innerWidth < 900 && !menuPanelMobile.self()) {
+                createAnn.destroy();
+                menuPanelMobile.render();
+                menuPanelDesktop.destroy();
+            }
+        });
     }
 
     return {

@@ -2,7 +2,7 @@
     id="{{id}}"
     class="button button_color_{{color}}"
     {{#if disabled}} disabled {{/if}}
-    {{#if form}} form="{{form}}" name="submit" type="submit" {{/if}}>
+    {{#if form}} form="{{form}}" name="submit" type="submit" {{/if}}{{#if autofocus}} autofocus="autofocus" {{/if}}>
     {{#if srcIcon}}
         <img class="button__icon" src="{{icon}}" alt="icon">
     {{/if}}

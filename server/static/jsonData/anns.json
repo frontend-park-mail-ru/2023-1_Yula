@@ -1,23 +1,86 @@
-{
-    "az.bilalov@mail.ru": {
-        "username": "Азат Билалов",
-        "email": "az.bilalov@mail.ru",
-        "password": "123456",
-        "avatar": "/ava1.jpeg",
-        "anns": [
-            {"src": "/ann1.jpeg", "category": "В быту", "title": "Корзина", "desc": "Удобная корзина", "price": "500", "address": "Москва, ул. Лобавческого 88"},
-            {"src": "/ann2.jpeg", "category": "Электроника", "title": "Планшет", "desc": "Удобный планшет", "price": "15000", "address": "Москва, ул. Институтская 43"},
-            {"src": "/ann3.jpeg", "category": "В быту", "title": "Мягкая тряпка", "desc": "Удобная тряпка", "price": "100", "address": "Москва, ул. Грачева 12"},
-            {"src": "/ann4.jpeg", "category": "Электроника", "title": "Смартфон", "desc": "Удобный смартфон", "price": "15000", "address": "Москва, ул. Лобавческого 88"},
-            {"src": "/ann5.jpeg", "category": "Электроника", "title": "Монитор", "desc": "Удобный монитор", "price": "5000", "address": "Москва, ул. Лобавческого 88"}
+[
+    {
+        "id": 0,
+        "userId": "c4a760a8-dbcf-4d53-bf13-1451c8e7723f",
+        "tags": "В быту",
+        "title": "Корзина",
+        "description": "Удобная корзина",
+        "price": "500",
+        "closed": false,
+        "images": [
+            "0-0.jpeg",
+            "0-1.jpeg",
+            "0-2.jpeg"
         ]
     },
-    "test@mail.ru": {
-        "username": "Тестер",
-        "email": "test@mail.ru",
-        "password": "000000",
-        "anns": [
-            {"src": "/ann6.jpeg", "category": "Спорт", "title": "Мяч", "desc": "Удобный мяч", "price": "500", "address": "Москва, ул. Красная 28"}
+    {
+        "id": 1,
+        "userId": "c4a760a8-dbcf-4d53-bf13-1451c8e7723f",
+        "tags": "Электроника",
+        "title": "Планшет",
+        "description": "Удобный планшет",
+        "price": "15000",
+        "closed": false,
+        "images": [
+            "1-0.jpeg",
+            "1-1.jpeg"
+        ]
+    },
+    {
+        "id": 2,
+        "userId": "c4a760a8-dbcf-4d53-bf13-1451c8e7723f",
+        "tags": "В быту",
+        "title": "Мягкая тряпка",
+        "description": "Удобная тряпка",
+        "price": "100",
+        "closed": false,
+        "images": [
+            "2-0.jpeg",
+            "2-1.jpeg",
+            "2-2.jpeg",
+            "2-3.jpeg"
+        ]
+    },
+    {
+        "id": 3,
+        "userId": "692e1b66-8c50-470d-a05d-9c524c8a4107",
+        "tags": "Электроника",
+        "title": "Смартфон",
+        "description": "Удобный смартфон",
+        "price": "15000",
+        "closed": false,
+        "images": [
+            "3-0.jpeg",
+            "3-1.jpeg",
+            "3-2.jpeg"
+        ]
+    },
+    {
+        "id": 4,
+        "userId": "692e1b66-8c50-470d-a05d-9c524c8a4107",
+        "tags": "Электроника",
+        "title": "Монитор",
+        "description": "Удобный монитор",
+        "price": "5000",
+        "closed": false,
+        "images": [
+            "4-0.jpeg",
+            "4-1.jpeg",
+            "4-2.jpeg"
+        ]
+    },
+    {
+        "id": 5,
+        "userId": "692e1b66-8c50-470d-a05d-9c524c8a4107",
+        "tags": "Спорт",
+        "title": "Мяч",
+        "description": "Удобный мяч",
+        "price": "500",
+        "closed": false,
+        "images": [
+            "5-0.jpeg",
+            "5-1.jpeg",
+            "5-2.jpeg"
         ]
     }
-}
+]

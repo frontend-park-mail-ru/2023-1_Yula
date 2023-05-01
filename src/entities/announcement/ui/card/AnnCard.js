@@ -1,7 +1,23 @@
-import './AnnCard.scss';
+import { Carousel } from '@shared/ui';
 
+import './AnnCard.scss';
+import template from './AnnCard.handlebars';
+
+/**
+ * Карточка объявления
+ * @param {HTMLElement} parent - родительский элемент
+ * @param {Object} config - конфигурация
+ * @param {string} config.id - id карточки
+ * @param {string} config.link - ссылка на объявление
+ * @param {string} config.title - заголовок объявления
+ * @param {string} config.price - цена
+ * @param {string} config.tags - тег
+ * @param {string} config.images - массив изображений
+ */
 export const AnnCard = (parent, config = {id: ""}) => {
     config.id += "AnnCard";
+    config.link = config.link || "#";
+
     const actions = {};
 
     const self = () => {
@@ -33,8 +49,15 @@ export const AnnCard = (parent, config = {id: ""}) => {
             throw new Error(`Объект с id="${config.id}" уже есть на странице`);
         }
 
-        const template = Handlebars.templates["entities/announcement/ui/card/AnnCard"];
-        parent.insertAdjacentHTML("beforeEnd", template(config));
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML += template(config);
+        const elem = wrapper.firstElementChild;
+
+        Carousel(elem.querySelector('.announcement-card__carousel'), {
+            images: config.images,
+        }).render();
+
+        parent.insertAdjacentElement("beforeEnd", elem);
 
         applyActions();
     }

@@ -1,1 +1,1 @@
-export { loginModal } from "./ui/index.js"
+export { loginModal } from "./ui/index.js";

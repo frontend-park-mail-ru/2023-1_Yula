@@ -1,4 +1,5 @@
 import { Button } from "../../../../shared/ui/index.js";
+import template from "./Avatar.handlebars";
 
 /**
  * Управление пользователем из навигационной панели
@@ -58,7 +59,6 @@ export const UserBar = (parent, config = {id: ""}) => {
         parent.appendChild(userbar);
 
         // добавление аватара
-        const template = Handlebars.templates["entities/user/ui/user-bar/Avatar"];
         userbar.insertAdjacentHTML("beforeEnd", template(config));
 
         // кнопка разлогина

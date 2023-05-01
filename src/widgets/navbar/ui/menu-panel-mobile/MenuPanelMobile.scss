@@ -1,0 +1,19 @@
+.menu-panel-mobile {
+    display: none;
+}
+
+@media screen and (max-width: 900px) {
+    .menu-panel-mobile {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: var(--bg-color-strong);
+        z-index: 1;
+    }
+}

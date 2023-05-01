@@ -1,7 +1,9 @@
-import { AnnCard } from "../../entities/announcement/ui/card/AnnCard.js";
-import { Navbar } from "../../widgets/navbar/index.js";
-import { AuthWidget } from "../../widgets/auth/index.js";
-import { userApi } from "../../shared/api/users.js";
+import { AnnCard } from "@entities/announcement/ui/card/AnnCard.js";
+import { Navbar } from "@widgets/navbar/index.js";
+import { AuthWidget } from "@widgets/auth/index.js";
+import { UserPanel } from "@widgets/userpanel/UserPanel.js";
+
+import { annApi } from "@shared/api/anns";
 
 export const profilePage = (parent) => {
     const header = document.createElement('header');
@@ -20,27 +22,24 @@ export const profilePage = (parent) => {
     }
 
     const contentFilling = async () => {
-        const user = await (await userApi.getMe()).json();
-
-        const info = document.createElement('h3');
-        info.innerText = `Имя: ${user.username} \n Адрес: ${user.email}`;
+        const userPanel = UserPanel(content);
+        userPanel.render();
 
         const annGroup = document.createElement('div');
         annGroup.classList.add('announcement-group');
 
-        user.anns.forEach(ann => {
+        const anns = await annApi.getAll();
+        anns.forEach(ann => {
             const annCard = AnnCard(annGroup, {
-                id: ann.name,
-                category: ann.category,
+                tags: ann.tags,
                 title: ann.title,
                 price: ann.price,
-                address: ann.address,
-                src: ann.src,
+                images: ann.images,
+                link: `/ann/${ann.id}`,
             });
             annCard.render();
         });
 
-        content.appendChild(info);
         content.appendChild(annGroup);
     }
 
@@ -48,12 +47,12 @@ export const profilePage = (parent) => {
     contentFilling();
 
     const render = () => {
-        // рендерим, если только нет на странице
         if (!parent.querySelector('header')) {
             parent.appendChild(header);
+        } else {
+            parent.querySelector('header').replaceWith(header);
         }
 
-        // если контент есть, заменяем его новым
         if (!parent.querySelector('main')) {
             parent.appendChild(content);
         } else {

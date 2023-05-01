@@ -1,0 +1,57 @@
+.prc {
+    position: fixed;
+    width: 95%;
+    bottom: 12px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 220px;
+    background-color: var(--bg-color-strong);
+    border-radius: 10px;
+    padding: 10px;
+    height: 50px;
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.08), 0px 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.prc-money {
+    color: var(--fg-color);
+    font-family: 'Roboto VK';
+    text-align: right;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.prc-cnt {
+    color: var(--fg-color);
+    font-family: 'Roboto VK';
+    text-align: left;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+#buyButton {
+    width: 200px;
+    margin-left: auto;
+    margin-top: auto;
+    margin-bottom: auto;    
+}
+
+@media screen and (max-width: 900px) {
+    .prc {
+        position: fixed;
+        width: 95%;
+        bottom: 50px;
+        left: 0;
+        right: 0;
+        margin-left: auto;
+        margin-right: auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr 220px;
+        background-color: var(--bg-color-strong);
+        border-radius: 10px;
+        padding: 10px;
+        height: 50px;
+    }
+}

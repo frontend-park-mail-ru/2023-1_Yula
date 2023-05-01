@@ -1,5 +1,4 @@
-import { signupModal } from "../../features/auth/signup/index.js";
-import { loginModal } from "../../features/auth/by-email/index.js";
+import { signupModal, loginModal } from "@features/auth";
 
 export const AuthWidget = (parent) => {
 
@@ -10,6 +9,17 @@ export const AuthWidget = (parent) => {
 
         const signup = signupModal(widget);
         const login = loginModal(widget);
+
+        const self = () => {
+            console.log(parent.querySelector('.auth-widget'));
+            return parent.querySelector('.auth-widget');
+        }
+
+        const destroy = () => {
+            if (self()) {
+                self().remove();
+            }
+        }
 
         signup.setActions({
             back: () => {

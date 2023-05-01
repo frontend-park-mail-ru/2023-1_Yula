@@ -119,7 +119,7 @@ export const Form = (parent, config = {id: ""}) => {
             throw new Error(`Объект с id="${config.id}" уже есть на странице`);
         }
 
-        const template = Handlebars.templates[config.template]
+        const template = config.template;
         parent.insertAdjacentHTML("beforeEnd", template(config));
 
         applyActions();
