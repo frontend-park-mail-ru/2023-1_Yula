@@ -155,12 +155,13 @@ app.post('/api/post', checkToken, (req, res) => {
 });
 
 app.get('/api/post/:id', (req, res) => {
-    const id = req.params.id;
+    const id = +req.params.id;
+    const ann = anns.find(ann => ann.id === id);
 
-    if (!anns[id]) {
+    if (!ann) {
         return res.status(404).json({ message: 'Объявление не найдено' });
     } else {
-        return res.json(anns[id]);
+        return res.json(ann);
     }
 });
 
@@ -285,6 +286,8 @@ app.delete('/api/basket/clear', checkToken, (req, res) => {
 
     return res.status(200).end();
 });
+
+
 
 /** port to listen */
 const port = process.env.PORT || 8080;

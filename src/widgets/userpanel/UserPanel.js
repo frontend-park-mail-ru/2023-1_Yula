@@ -94,6 +94,7 @@ export const UserPanel = (parent) => {
                 actions: {
                     click: async () => {
                         await userApi.logout();
+                        store.setState('basket', []);
                         store.setState('user', null);
                         goTo('/');
                     }

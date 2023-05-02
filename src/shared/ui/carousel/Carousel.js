@@ -17,7 +17,7 @@ export const Carousel = (parent, config) => {
     config.images = config.images || [];
     config.current = config.current || 0;
     config.visibleCount = config.visibleCount || 3;
-    config.outbound = config.outbound || true;
+    config.outbound = config.outbound || false;
     config.onSlideChange = config.onSlideChange || (() => {});
 
     const self = () => {
@@ -79,6 +79,16 @@ export const Carousel = (parent, config) => {
     }
 
     const applyActions = () => {
+        if (config.outbound) {
+            const slider = self().querySelector('.carousel__slider');
+            const slides = self().querySelectorAll('.carousel__slide');
+
+            slider.classList.add('carousel__slider_outbound');
+            slides.forEach((slide) => {
+                slide.classList.add('carousel__slide_outbound');
+            });
+        }
+
         if (config.outbound) {
             // смена слайда при клике на слайд
             const slides = self().querySelectorAll('.carousel__slide');

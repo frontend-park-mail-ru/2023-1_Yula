@@ -2,10 +2,13 @@ import { baseUrl } from "../config";
 
 export class sellerApi {
     static async GetSellerById(id) {
-        let sellerInfo = await fetch(`${baseUrl}/api/sellers/${id}`);
-        console.log(sellerInfo);
+        const seller = await fetch(`${baseUrl}/api/seller/${id}`);
+
+        if (!seller.ok) {
+            return null;
+        }
+
         sellerInfo = await sellerInfo.json();
-        console.log(sellerInfo);
 
         sellerInfo.avatar = `${baseUrl}/static/images/anns/${sellerInfo.avatar}`;
 

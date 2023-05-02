@@ -1,6 +1,7 @@
 .announcement-content {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  // grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-areas: "title none" "carousel characteristics";
   gap: 20px;
   padding-left: 1vw;
   padding-right: 1vw;
@@ -12,48 +13,49 @@
   }
 }
 
-@media screen and (min-width: 1200px) {
-  .announcement-content {
-    grid-template-columns: minmax(0, 500px) 1fr;
-  }
+// @media screen and (min-width: 1200px) {
+//   .announcement-content {
+//     grid-template-columns: minmax(0, 500px) 1fr;
+//   }
+// }
+
+.announcement-title {
+  grid-area: title;
+  font-family: 'Roboto VK bold';
+  font-weight: 500;
+  font-size: calc(18px + 1vw);
+  text-align: center;
+  line-height: 24px;
+  color: var(--fg-color);
+  margin-bottom: 0px;
 }
 
 .announcement-carousel {
-  grid-column: span 1;
-  aspect-ratio: 1/1;
+  grid-area: carousel;
+  // aspect-ratio: 1/1;
   // max-width: 500px;
-
 }
 
 .announcement-characteristics {
-  grid-column: span 1;
+  grid-area: characteristics;
   font-family: 'Roboto VK';
+}
+
+.announcement-avatar {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-weight: 500;
+  font-size: 20px;
+  font-family: 'Roboto VK';
+  text-decoration: none;
+  color: var(--fg-color);
 
-  &__title {
-    font-family: 'Roboto VK bold';
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 20px;
-    color: var(--fg-color);
-  }
-
-  &__key {
-    font-weight: 500;
-    font-size: 14px;
-    font-style: italic;
-    line-height: 18px;
-    color: var(--fg-color-lite);
-    vertical-align: top;
-    text-align: end;
-  }
-
-  &__value {
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 18px;
-    color: var(--fg-color-strong);
-    vertical-align: top;
+  &__img {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 15%;
   }
 }
