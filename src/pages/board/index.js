@@ -86,31 +86,31 @@ export const boardPage = (parent) => {
                 id: "clothes",
                 link: `#`,
                 title: "Одежда и аксессуары",
-                image: `${baseUrl}/static/images/anns/0.jpeg`,
+                image: `${baseUrl}/static/images/anns/clothes-cat.png`,
             }),
             category2: CategoryCard( categoryGroup, {
                 id: "jewelery",
                 link: `#`,
                 title: "Украшения",
-                image: `${baseUrl}/static/images/anns/0.jpeg`,
+                image: `${baseUrl}/static/images/anns/jewelery-cat.png`,
             }),
             category3: CategoryCard( categoryGroup, {
                 id: "house",
                 link: `#`,
                 title: "Дом и интерьер",
-                image: `${baseUrl}/static/images/anns/0.jpeg`,
+                image: `${baseUrl}/static/images/anns/house-cat.png`,
             }),
             category4: CategoryCard( categoryGroup, {
                 id: "gifts",
                 link: `#`,
                 title: "Подарки",
-                image: `${baseUrl}/static/images/anns/0.jpeg`,
+                image: `${baseUrl}/static/images/anns/gifts-cat.png`,
             }),
             category5: CategoryCard( categoryGroup, {
                 id: "electronics",
                 link: `#`,
                 title: "Цифровые устройства",
-                image: `${baseUrl}/static/images/anns/0.jpeg`,
+                image: `${baseUrl}/static/images/anns/electronics-cat.png`,
             }),
         }
 

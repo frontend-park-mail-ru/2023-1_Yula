@@ -18,7 +18,7 @@ import editSVG from 'assets/icons/edit.svg'
 
 export const UserPanel = (parent) => {
     const actions = {
-        logout: () => {},
+        logout: () => { },
     }
 
     const self = () => {
@@ -47,7 +47,7 @@ export const UserPanel = (parent) => {
         const invert = (theme === 'light') ? false : true;
 
         const inputs = {
-            elem0 : Icon(userPanel, {
+            elem0: Icon(userPanel, {
                 id: "user",
                 src: user.pathtoavatar,
                 size: "large",
@@ -55,48 +55,49 @@ export const UserPanel = (parent) => {
                 link: user ? '/profile' : null,
                 circular: user ? true : false,
             }),
-            elem1 : Input(userPanel, {
+            elem1: Input(userPanel, {
                 id: "user-input",
                 text: `${user.firstName} ${user.secondName}`,
                 placeholder: "Имя Фамилия",
             }),
-            elem2 : Input(userPanel, {
+            elem2: Input(userPanel, {
                 id: "login-input",
                 text: `${user.login}`,
                 placeholder: "Логин",
             }),
-            elem3 : Input(userPanel, {
-                id : "email-input",
+            elem3: Input(userPanel, {
+                id: "email-input",
                 text: `${user.email}`,
                 placeholder: "Почта",
             }),
-            elem4 : Input(userPanel, {
-                id : "phone-input",
+            elem4: Input(userPanel, {
+                id: "phone-input",
                 text: `${user.phoneNumber}`,
                 placeholder: "Телефон",
             }),
             elem5: Input(userPanel, {
-                id : "password-input",
+                id: "password-input",
                 text: `${user.password}`,
                 type: "password",
                 placeholder: "Пароль",
             }),
             elem6: Button(userPanel, {
-                id : "button-input-submit",
+                id: "button-input-submit",
                 color: "primary",
                 text: "Принять",
-                actions:  {click: () => {
-                        state = !state;
-                }},
+                actions:
+                {
+                    click: () => {
+
+                    }
+                }
             })
         }
-
-        let state = true;
 
         // задаем элемeнты боковой панели
         console.log(user);
         const elements = {
-            elem0 : Icon(userPanel, {
+            elem0: Icon(userPanel, {
                 id: "user",
                 src: user.pathtoavatar,
                 size: "large",
@@ -104,37 +105,37 @@ export const UserPanel = (parent) => {
                 link: user ? '/profile' : null,
                 circular: user ? true : false,
             }),
-            elem1 : PanelElement(userPanel, {
+            elem1: PanelElement(userPanel, {
                 id: 'fio',
                 imgSource: nameSurnameSVG,
                 text: `${user.firstName} ${user.secondName}`,
                 invert: invert,
             }),
-            elem2 : PanelElement(userPanel, {
+            elem2: PanelElement(userPanel, {
                 id: 'login',
                 imgSource: usernameSVG,
                 text: `${user.login}`,
                 invert: invert,
             }),
-            elem3 : PanelElement(userPanel, {
+            elem3: PanelElement(userPanel, {
                 id: 'email',
                 imgSource: emailSVG,
                 text: `${user.email}`,
                 invert: invert,
             }),
-            elem4 : PanelElement(userPanel, {
+            elem4: PanelElement(userPanel, {
                 id: 'phone',
                 imgSource: phoneSVG,
                 text: `${user.phoneNumber}`,
                 invert: invert,
             }),
-            elem5 : PanelElement(userPanel, {
+            elem5: PanelElement(userPanel, {
                 id: 'password',
                 imgSource: passwordSVG,
                 text: `${'●'.repeat(user.password.length)}`,
                 invert: invert,
             }),
-            elem6 : PanelElement(userPanel, {
+            elem6: PanelElement(userPanel, {
                 id: 'edit-profile',
                 imgSource: editSVG,
                 text: "Изменить",
@@ -145,7 +146,7 @@ export const UserPanel = (parent) => {
                     }
                 }
             }),
-            elem7 : PanelElement(userPanel, {
+            elem7: PanelElement(userPanel, {
                 id: 'exit',
                 imgSource: exitSVG,
                 text: `Выйти`,
@@ -159,23 +160,18 @@ export const UserPanel = (parent) => {
                     }
                 }
             }),
-            elem8 : Divider(userPanel, {
+            elem8: Divider(userPanel, {
                 id: 'bottom_divider',
                 class: 'user_panel_divider',
                 invert: invert,
             }),
         };
-        
+
         // рендерим все элементы
-        if (state) {
-            for (let element in elements) {
-                elements[element].render();
-            }
-        } else {
-            for (let input in inputs) {
-                inputs[input].render();
-            }
+        for (let element in elements) {
+            elements[element].render();
         }
+
 
 
         // событие изменения темы
@@ -183,7 +179,7 @@ export const UserPanel = (parent) => {
             for (let elem in elements) {
                 elements[elem].changeConfig({ invert: (theme === 'light') ? false : true });
             }
-            
+
             if (store.getState('user')) {
                 elements.elem0.changeConfig({ invert: false });
             }

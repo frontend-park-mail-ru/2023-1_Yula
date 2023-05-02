@@ -31,47 +31,31 @@ export const SellerPanel = (parent, user) => {
     }
 
     const render = async () => {
-        const userPanel = document.createElement('div');
-        userPanel.classList.add('seller_panel');
-        parent.appendChild(userPanel);
+        const sellerPanel = document.createElement('div');
+        sellerPanel.classList.add('seller_panel');
+        parent.appendChild(sellerPanel);
 
-        // const user = store.getState('user');
         const theme = store.getState('theme');
         const invert = (theme === 'light') ? false : true;
         
         // задаем элемeнты боковой панели
-        const textInfo = document.createElement("h2");
-        textInfo.innerText = "Продавец";
-        textInfo.style.alignSelf = "center";
-        textInfo.style.color = "var(--text-color)";
-        userPanel.appendChild(textInfo);
+        const sellerPanelInfo = document.createElement('div');
+        sellerPanelInfo.classList.add('seller_panel_info');
+        sellerPanel.appendChild(sellerPanelInfo);
 
         const elements = {
-            elem0 : Icon(userPanel, {
+            elem0 : Icon(sellerPanel, {
                 id: "user",
                 src: (user != null) ? user.pathtoavatar : userSvg,
                 size: "large",
                 invert: user ? false : invert,
                 circular: user ? true : false,
             }),
-            elem1 : PanelElement(userPanel, {
+            elem1 : PanelElement(sellerPanel, {
                 id: 'fio',
-                imgSource: nameSurnameSVG,
-                text: (user != null) ? `${user.firstName} ${user.secondName}` : 'none',
-                invert: invert,
+                text: (user != null) ? `${user.name}` : 'none',
             }),
-            elem2 : PanelElement(userPanel, {
-                id: 'phone',
-                imgSource: phoneSVG,
-                text: (user != null) ? `${user.phoneNumber}` : 'none',
-                invert: invert,
-            }),
-            
-            elem3 : Divider(userPanel, {
-                id: 'bottom_divider',
-                class: 'user_panel_divider',
-                invert: invert,
-            }),
+
         }
         
         // рендерим все элементы
