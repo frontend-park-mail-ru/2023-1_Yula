@@ -1,0 +1,70 @@
+.create-ann-content {
+    display: grid;
+    // grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.announcement-carousel {
+    grid-column: span 1;
+    border-radius: 10px;
+    
+    & > .carousel {
+        border-radius: 10px;
+    }
+}
+
+.ann-characteristics {
+    grid-column: span 1;
+    font-family: 'Roboto VK';
+    color: var(--fg-color);
+}
+
+.announcement-title {
+    grid-area: title;
+    font-family: 'Roboto VK bold';
+    font-weight: 500;
+    font-size: calc(18px + 1vw);
+    text-align: center;
+    line-height: 24px;
+    color: var(--fg-color);
+    margin-bottom: 10px;
+  }
+  
+  .announcement-carousel {
+    grid-area: carousel;
+  }
+
+//   .announcement-price {
+//     font-family: "Roboto VK bold";
+//   }
+  
+  .announcement-avatar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    font-size: 20px;
+    font-family: 'Roboto VK';
+    text-decoration: none;
+    color: var(--fg-color);
+  
+    &__img {
+      width: 64px;
+      height: 64px;
+      object-fit: cover;
+      border-radius: 15%;
+    }
+  }
+  
+  .announcement-description {
+    font-family: 'Roboto VK';
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--fg-color-lite);
+    margin-bottom: 10px;
+  }
+  

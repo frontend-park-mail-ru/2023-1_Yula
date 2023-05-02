@@ -1,28 +1,8 @@
-<h3 class="announcement-preview__title">{{title}}</h3>
-
-<table style="border-spacing: 2vw;">
-    <tr>
-        <td class="announcement-preview__key">
-            Тег
-        </td>
-        <td class="announcement-preview__tags">
-            {{tags}}
-        </td>
-    </tr>
-    <tr>
-        <td class="announcement-preview__key">
-            Описание
-        </td>
-        <td class="announcement-preview__description">
-            {{description}}
-        </td>
-    </tr>
-    <tr>
-        <td class="announcement-preview__key">
-            Цена
-        </td>
-        <td class="announcement-preview__price">
-            {{price}}
-        </td>
-    </tr>
-</table>
+<h1 class="announcement-price">{{price}} ₽</h1>
+<a href="/seller/{{sellerId}}" class="announcement-avatar">
+    <img src="{{sellerAvatar}}" alt="" class="announcement-avatar__img">
+    {{sellerName}}
+</a>
+<p class="address">{{address}}</p>
+<div class="basket-button"></div>
+<pre style="white-space: pre-wrap"><p class="announcement-description">{{description}}</p></pre>
