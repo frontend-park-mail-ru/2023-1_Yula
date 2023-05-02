@@ -146,6 +146,7 @@ export const announcementPage = (parent, params) => {
         if (store.getState('user')?.id !== ann.userId &&
             !basket.find(item => item.id === ann.id)) {
             buyButton.render();
+            buyButton.self().style.marginLeft = 0;
         }
 
         if (store.getState('user')?.id === ann.userId) {
@@ -161,8 +162,6 @@ export const announcementPage = (parent, params) => {
             
             editBtn.render();
         }
-
-        store.subscribe('theme', (theme) => buyIcon.changeConfig({invert: theme === 'dark'}));
     }
 
     headerFilling();

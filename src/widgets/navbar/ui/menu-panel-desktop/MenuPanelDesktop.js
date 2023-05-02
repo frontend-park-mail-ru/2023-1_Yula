@@ -74,7 +74,9 @@ export const MenuPanelDesktop = (parent) => {
             basket: Icon(menu, {
                 id: "basket",
                 src: basketSvg,
-                size: "large",
+                size: "medium",
+                text: "Корзина",
+                textColor: "fg",
                 invert: invert,
                 actions: {
                     'click': () => {
@@ -95,7 +97,9 @@ export const MenuPanelDesktop = (parent) => {
             user: Icon(menu, {
                 id: "user",
                 src: user ? user.pathtoavatar : userSvg,
-                size: "large",
+                size: "medium",
+                text: user ? "Профиль" : "Войти",
+                textColor: "fg",
                 invert: user ? false : invert,
                 link: user ? '/profile' : null,
                 circular: user ? true : false,

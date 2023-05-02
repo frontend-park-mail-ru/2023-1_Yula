@@ -14,11 +14,16 @@
     &:focus {
         outline: none;
         // background: var(--bg-color); /* убрать */
+        border: 0.5px solid var(--primary-color);
     }
 
     &::placeholder {
         color: #818C99;
         font-family: "Roboto VK";
+    }
+
+    &_focus {
+        border: 0.5px solid var(--primary-color);
     }
 }
 

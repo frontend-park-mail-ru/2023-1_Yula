@@ -1,0 +1,86 @@
+[
+    {
+        "id": 0,
+        "userId": "c4a760a8-dbcf-4d53-bf13-1451c8e7723f",
+        "category": "В быту",
+        "title": "Корзина",
+        "description": "Удобная корзина",
+        "price": "500",
+        "closed": false,
+        "images": [
+            "0-0.jpeg",
+            "0-1.jpeg",
+            "0-2.jpeg"
+        ]
+    },
+    {
+        "id": 1,
+        "userId": "c4a760a8-dbcf-4d53-bf13-1451c8e7723f",
+        "category": "Электроника",
+        "title": "Планшет",
+        "description": "Удобный планшет",
+        "price": "15000",
+        "closed": false,
+        "images": [
+            "1-0.jpeg",
+            "1-1.jpeg"
+        ]
+    },
+    {
+        "id": 2,
+        "userId": "c4a760a8-dbcf-4d53-bf13-1451c8e7723f",
+        "category": "В быту",
+        "title": "Мягкая тряпка",
+        "description": "Удобная тряпка",
+        "price": "100",
+        "closed": false,
+        "images": [
+            "2-0.jpeg",
+            "2-1.jpeg",
+            "2-2.jpeg",
+            "2-3.jpeg"
+        ]
+    },
+    {
+        "id": 3,
+        "userId": "692e1b66-8c50-470d-a05d-9c524c8a4107",
+        "category": "Электроника",
+        "title": "Смартфон",
+        "description": "Удобный смартфон",
+        "price": "15000",
+        "closed": false,
+        "images": [
+            "3-0.jpeg",
+            "3-1.jpeg",
+            "3-2.jpeg"
+        ]
+    },
+    {
+        "id": 4,
+        "userId": "692e1b66-8c50-470d-a05d-9c524c8a4107",
+        "category": "Электроника",
+        "title": "Монитор",
+        "description": "Удобный монитор",
+        "price": "5000",
+        "closed": false,
+        "images": [
+            "4-0.jpeg",
+            "4-1.jpeg",
+            "4-2.jpeg"
+        ]
+    },
+    {
+        "id": 5,
+        "userId": "692e1b66-8c50-470d-a05d-9c524c8a4107",
+        "category": "Спорт",
+        "title": "Мяч",
+        "description": "Удобный мяч",
+        "price": "500",
+        "closed": false,
+        "images": [
+            "5-0.jpeg",
+            "5-1.jpeg",
+            "5-2.jpeg"
+        ]
+    }
+]
