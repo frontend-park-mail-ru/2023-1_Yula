@@ -1,21 +1,12 @@
-.main-page {
+.seller-content {
     display: grid;
     gap: 20px;
-  }
-
-.main-page__advertise{
-    grid-row: 1;
+    grid-template-columns: 1fr;
+    padding-left: 2%;
+    padding-right: 2%;
 }
 
-.main-page__category{
-    grid-row: 2;
-}
-
-.main-page__anns{
-    grid-row: 3;
-}
-
-.main-page__text {
+.seller-page__text {
     align-self: center;
     justify-content: center;
     font-family: 'Roboto VK';

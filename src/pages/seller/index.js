@@ -1,11 +1,13 @@
 import { userApi } from "@shared/api/users";
 import { Navbar } from "@widgets/navbar/index.js";
 import { AuthWidget } from "@widgets/auth/index.js";
-import { PurchCard } from "@entities/announcement/ui";
+import { AnnCard } from "@entities/announcement/ui";
 import { annApi } from "@shared/api/anns";
 import store from "@modules/state-manager.js";
 
 import { SellerPanel } from "@/widgets/sellerpanel/SellerPanel";
+
+import './layout.scss';
 
 export const sellerPage = (parent, params) => {
     const header = document.createElement('header');
@@ -32,28 +34,55 @@ export const sellerPage = (parent, params) => {
             user = await userApi.getById(params.id);
         };
 
-        const userPanel = SellerPanel(content, user);
+
+        const textInfo = document.createElement("div");
+        textInfo.innerText = "Продавец";
+        textInfo.style.marginLeft  = "45%";
+        textInfo.style.fontWeight  = "bold";
+        textInfo.style.fontSize  = "26px";
+        textInfo.style.color = "var(--text-color)";
+        content.appendChild(textInfo);
+
+        // main grid
+        const mainPageContent = document.createElement('div');
+        mainPageContent.classList.add('seller-content');
+        content.appendChild(mainPageContent);
+
+        const userPanel = SellerPanel(mainPageContent, user);
         userPanel.render();
 
-        const annGroup = document.createElement('div');
-        annGroup.classList.add('purchase-group');
 
-        const purchases = await annApi.getFromUser(user.id);
+        // объявления
+        const mainPageContentAnns = document.createElement('div');
+        mainPageContentAnns.classList.add('seller-page__anns');
+        mainPageContent.appendChild(mainPageContentAnns);
 
-        if (purchases) {
-            purchases.forEach(purch => {
-                const purchCard = PurchCard(annGroup, {
-                    id: purch.name,
-                    tags: purch.tags,
-                    title: purch.title,
-                    price: purch.price,
-                    src: purch.images[0],
+         // Заглавие для объявлений
+         const annsTitle = document.createElement('div');
+         annsTitle.classList.add('seller-page__text');
+         mainPageContentAnns.appendChild(annsTitle);
+         annsTitle.innerText = "Продукты";
+ 
+         // Заполнение объявлениями
+         const annGroup = document.createElement('div');
+         annGroup.classList.add('announcement-group');
+         mainPageContentAnns.appendChild(annGroup);
+ 
+         const anns = await annApi.getAll();
+ 
+         for (let ann in anns) {
+            if (anns[ann].userId == user.id) {
+                const annCard = AnnCard(annGroup, {
+                    tags: anns[ann].tags,
+                    title: anns[ann].title,
+                    price: anns[ann].price,
+                    images: anns[ann].images,
+                    link: `/ann/${anns[ann].id}`,
+                    viewCount: 10,
                 });
-                purchCard.render();
-            });
-        }
-
-        content.appendChild(annGroup);
+                annCard.render();
+            }
+         }
     }
 
     headerFilling();
