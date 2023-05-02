@@ -47,6 +47,13 @@ export const Input = (parent, config = {id: ""}) => {
             const rightIcon = self().querySelectorAll(".input__icon")[1];
             rightIcon.addEventListener("click", actions.rightIcon);
         }
+
+        self().querySelector(".input__field").addEventListener("focus", () => {
+            self().classList.add("input_focus");
+        });
+        self().querySelector(".input__field").addEventListener("blur", () => {
+            self().classList.remove("input_focus");
+        });
     }
 
     const render = () => {

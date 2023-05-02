@@ -7,9 +7,9 @@
   padding-right: 1vw;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 800px) {
   .announcement-content {
-    grid-template-columns: 1fr;
+    grid-template-areas: "title" "carousel" "characteristics";
   }
 }
 
@@ -32,11 +32,12 @@
 
 .announcement-carousel {
   grid-area: carousel;
-  // aspect-ratio: 1/1;
-  // max-width: 500px;
+  aspect-ratio: 1/1;
+  // min-width: 500px;
 }
 
 .announcement-characteristics {
+  color: var(--fg-color);
   grid-area: characteristics;
   font-family: 'Roboto VK';
 }
@@ -58,4 +59,12 @@
     object-fit: cover;
     border-radius: 15%;
   }
+}
+
+.announcement-description {
+  font-family: 'Roboto VK';
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--fg-color-lite);
+  margin-bottom: 10px;
 }
