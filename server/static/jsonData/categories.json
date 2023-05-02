@@ -1,0 +1,47 @@
+[
+    {
+        "id": 1,
+        "name": "Одежда и аксессуары",
+        "parent_id": null
+    },
+    {
+        "id": 2,
+        "name": "Женская одежда",
+        "parent_id": 1
+    },
+    {
+        "id": 3,
+        "name": "Мужская одежда",
+        "parent_id": 1
+    },
+    {
+        "id": 4,
+        "name": "Украшения",
+        "parent_id": null
+    },
+    {
+        "id": 5,
+        "name": "Кольца",
+        "parent_id": 4
+    },
+    {
+        "id": 6,
+        "name": "Ожерелья",
+        "parent_id": 4
+    },
+    {
+        "id": 7,
+        "name": "Дом и интерьер",
+        "parent_id": null
+    },
+    {
+        "id": 8,
+        "name": "Подарки",
+        "parent_id": null
+    },
+    {
+        "id": 9,
+        "name": "Свадьба",
+        "parent_id": null
+    }
+]

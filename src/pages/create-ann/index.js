@@ -65,7 +65,7 @@ export const createAnnPage = (parent) => {
         annCarousel.classList.add('announcement-carousel');
         annCarousel.style.maxWidth = '500px';
         content.appendChild(annCarousel);
-        const carousel = Carousel(annCarousel, { images: [] });
+        const carousel = Carousel(annCarousel, { images: [], outbound: true });
         carousel.render();
     }
 

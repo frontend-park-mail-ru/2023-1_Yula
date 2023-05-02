@@ -17,7 +17,7 @@ export const Carousel = (parent, config) => {
     config.images = config.images || [];
     config.current = config.current || 0;
     config.visibleCount = config.visibleCount || 3;
-    config.outbound = config.outbound || true;
+    config.outbound = config.outbound || false;
     config.onSlideChange = config.onSlideChange || (() => {});
 
     const self = () => {
@@ -40,7 +40,8 @@ export const Carousel = (parent, config) => {
     }
 
     const slideTo = (index) => {
-        if (index < 0 || index >= config.images.length) {
+        if (index < 0 || index >= config.images.length ||
+            index === config.current) {
             return;
         }
 
@@ -48,17 +49,23 @@ export const Carousel = (parent, config) => {
         const slider = self().querySelector('.carousel__slider');
 
         // коэффициент смещения слайдера
-        let offset = 0;
         if (config.outbound) {
-            if (config.current === 0 && index === 1 ||
-                config.current === 1 && index === 0 ||
-                config.current === config.images.length - 2 && index === config.images.length - 1 ||
-                config.current === config.images.length - 1 && index === config.images.length - 2) {
-                offset = 10;
-            }
+            const steps = Array(config.images.length - 1).fill(80);
+            steps[0] = 70;
+            steps[steps.length - 1] = 70;
+
+            const offset = steps.reduce((sum, step, i) => {
+                if (i < index) {
+                    return sum + step + 3;
+                }
+                return sum;
+            }, 0);
+            slider.style.transform = `translateX(-${offset}%)`;
+            slider.style.transition = 'transform 0.5s ease-in-out';
+        } else {
+            slider.style.transform = `translateX(-${index * 100}%)`;
         }
 
-        slider.style.transform = `translateX(-${index * (100 - offset)}%)`;
         config.current = index;
     }
 
@@ -72,6 +79,16 @@ export const Carousel = (parent, config) => {
     }
 
     const applyActions = () => {
+        if (config.outbound) {
+            const slider = self().querySelector('.carousel__slider');
+            const slides = self().querySelectorAll('.carousel__slide');
+
+            slider.classList.add('carousel__slider_outbound');
+            slides.forEach((slide) => {
+                slide.classList.add('carousel__slide_outbound');
+            });
+        }
+
         if (config.outbound) {
             // смена слайда при клике на слайд
             const slides = self().querySelectorAll('.carousel__slide');

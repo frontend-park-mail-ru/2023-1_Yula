@@ -13,7 +13,7 @@ export const App = (parent) => {
     router.register('/profile', profilePage, 'profile', true);
     router.register('/bucket', bucketPage, 'bucket', true);
     router.register('/ann/{id}', announcementPage, 'announcement');
-    router.register('/sellers/{id}', sellerPage, 'seller-page');
+    router.register('/seller/{id}', sellerPage, 'seller-page');
     router.register('/seller', sellerPage, 'my-seller-page', true);
     router.register('/create', createAnnPage, 'create-ann', true);
 
