@@ -72,3 +72,10 @@
   color: var(--fg-color-lite);
   margin-bottom: 10px;
 }
+
+.button-place {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: stretch;
+  gap: 10px;
+}

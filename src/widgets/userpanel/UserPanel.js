@@ -49,7 +49,7 @@ export const UserPanel = (parent) => {
         const inputs = {
             elem0: Icon(userPanel, {
                 id: "user",
-                src: user.pathtoavatar,
+                src: user.avatar,
                 size: "large",
                 invert: user ? false : invert,
                 link: user ? '/profile' : null,
@@ -99,7 +99,7 @@ export const UserPanel = (parent) => {
         const elements = {
             elem0: Icon(userPanel, {
                 id: "user",
-                src: user.pathtoavatar,
+                src: user.avatar,
                 size: "large",
                 invert: user ? false : invert,
                 link: user ? '/profile' : null,

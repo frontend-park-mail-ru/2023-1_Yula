@@ -46,7 +46,7 @@ export const SellerPanel = (parent, user) => {
         const elements = {
             elem0 : Icon(sellerPanel, {
                 id: "user",
-                src: (user != null) ? user.pathtoavatar : userSvg,
+                src: (user != null) ? user.avatar : userSvg,
                 size: "large",
                 invert: user ? false : invert,
                 circular: user ? true : false,

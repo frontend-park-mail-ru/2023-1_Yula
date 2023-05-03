@@ -57,6 +57,18 @@
     }
 }
 
+.button_color_danger {
+    background: var(--danger-color);
+
+    &:hover {
+        background: var(--danger-color-strong);
+    }
+
+    &:disabled {
+        background: var(--danger-color-lite);
+    }
+}
+
 .button__text {
     align-self: center;
     justify-content: center;

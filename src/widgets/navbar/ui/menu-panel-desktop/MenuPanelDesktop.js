@@ -96,7 +96,7 @@ export const MenuPanelDesktop = (parent) => {
             }),
             user: Icon(menu, {
                 id: "user",
-                src: user ? user.pathtoavatar : userSvg,
+                src: user ? user.avatar : userSvg,
                 size: "medium",
                 text: user ? "Профиль" : "Войти",
                 textColor: "fg",
@@ -122,7 +122,8 @@ export const MenuPanelDesktop = (parent) => {
             if (user) {
                 Icons.user.changeConfig({
                     circular: true,
-                    src: user.pathtoavatar,
+                    src: user.avatar,
+                    text: 'Профиль',
                     link: `/profile`,
                     invert: false,
                 });
@@ -130,6 +131,7 @@ export const MenuPanelDesktop = (parent) => {
                 Icons.user.changeConfig({
                     circular: false,
                     src: userSvg,
+                    text: 'Войти',
                     link: null,
                     invert: (store.getState('theme') === 'dark') ? true : false,
                 });

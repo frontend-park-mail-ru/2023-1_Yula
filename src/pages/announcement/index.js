@@ -5,12 +5,10 @@ import { annApi } from "@shared/api/anns";
 import { userApi } from "@shared/api/users";
 import { basketApi } from "@shared/api/basket";
 import store from "@modules/state-manager";
+import { goTo } from "@shared/lib";
 
 import './announcement.scss';
 import charackteristics from "./ann-characteristics.handlebars";
-
-import basketSVG from "assets/icons/basket.svg";
-import userSVG from "assets/icons/user.svg";
 
 /**
  * Страница объявления
@@ -46,7 +44,6 @@ export const announcementPage = (parent, params) => {
         const basket = store.getState("basket");
         const ann = await annApi.getById(params.id);
         const seller = await userApi.getById(ann.userId);
-        console.log(ann, seller);
         
         const title = document.createElement('h1');
         title.classList.add('announcement-title');
@@ -65,52 +62,16 @@ export const announcementPage = (parent, params) => {
         annCharacteristics.innerHTML = charackteristics({
             price: ann.price,
             description: ann.description,
+            views: ann.views,
+            viewDict: ann.views % 10 === 1 && ann.views % 100 !== 11 ? 'человек' : 
+                ann.views % 10 >= 2 && ann.views % 10 <= 4 && (ann.views % 100 < 10 || ann.views % 100 >= 20) ? 'человека' : 'человек',
             sellerName: seller.name,
-            sellerAvatar: seller.pathtoavatar,
+            sellerAvatar: seller.avatar,
             sellerId: seller.id,
         });
         content.appendChild(annCharacteristics);
 
-        // const buyIcon = Icon(content.querySelector('.basket-button'), {
-        //     id: "buy",
-        //     src: basketSVG,
-        //     text: 'В корзину',
-        //     textColor: 'fg',
-        //     size: 'large',
-        //     direction: 'row',
-        //     invert: store.getState('theme') === 'dark',
-        //     actions: {
-        //         'click': async () => {
-        //             if (!basket.find(item => item.id === ann.id)) {
-        //                 const response = await basketApi.addToBasket(ann.id);
-
-        //                 if (response.ok) {
-        //                     Alert(parent, {
-        //                         id: 'add-to-cart',
-        //                         title: 'Успешно',
-        //                         text: 'Товар добавлен в корзину',
-        //                         timer: 2000,
-        //                     }).render();
-        //                     store.setState("basket", [...basket, ann]);
-        //                     buyIcon.destroy();
-        //                 } else {
-        //                     const { message } = await response.json();
-        //                     Alert(parent, {
-        //                         id: 'add-to-cart',
-        //                         title: 'Неудача',
-        //                         text: message,
-        //                         timer: 2000,
-        //                     }).render();
-        //                 }
-        //             }
-        //         }
-        //     }
-        // });
-        // if (!basket.find(item => item.id === ann.id)) {
-        //     buyIcon.render();
-        // }
-
-        const buyButton = Button(content.querySelector('.basket-button'), {
+        const buyButton = Button(content.querySelector('.button-place'), {
             id: "buy",
             text: "В корзину",
             type: "Submit",
@@ -118,8 +79,8 @@ export const announcementPage = (parent, params) => {
 
         buyButton.setActions({
             click: async () => {
-                if (!basket.find(item => item.id === ann.id)) {
-                    const response = await basketApi.addToBasket(ann.id);
+                if (!basket.find(item => item.postId === ann.postId)) {
+                    const response = await basketApi.addToBasket(ann.postId);
 
                     if (response.ok) {
                         Alert(parent, {
@@ -144,23 +105,54 @@ export const announcementPage = (parent, params) => {
         });
 
         if (store.getState('user')?.id !== ann.userId &&
-            !basket.find(item => item.id === ann.id)) {
+            !basket.find(item => item.postId === ann.postId)) {
             buyButton.render();
             buyButton.self().style.marginLeft = 0;
         }
 
         if (store.getState('user')?.id === ann.userId) {
-            const editBtn = Button(annCharacteristics, {
+            const buttonGroup = content.querySelector('.button-place');
+            // buttonGroup.style
+
+            const closeBtn = Button(buttonGroup, {
+                id: "close",
+                text: "Закрыть",
+                color: "tertiary",
+                textColor: "primary",
+            });
+            closeBtn.setActions({
+                click: async () => {
+                    const response = await annApi.close(ann.postId);
+                    closeBtn.destroy();
+                },
+            });
+            if (!ann.close) {
+                closeBtn.render();
+                closeBtn.self().style.outline = "1px solid var(--primary-color)";
+            }
+
+            const editBtn = Button(buttonGroup, {
                 id: "edit",
                 type: "Submit",
                 text: "Изменить",
             });
-
             editBtn.setActions({
                 click: () => { console.log("asd")},
-            })
-            
+            });
             editBtn.render();
+
+            const deleteBtn = Button(buttonGroup, {
+                id: "delete",
+                text: "Удалить",
+                color: "danger"
+            });
+            deleteBtn.setActions({
+                click: async () => {
+                    const response = await annApi.delete(ann.postId);
+                    goTo('/profile');
+                }
+            });
+            deleteBtn.render();
         }
     }
 

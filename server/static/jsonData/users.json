@@ -1,44 +1,32 @@
 [
     {
-        "id": "c4a760a8-dbcf-4d53-bf13-1451c8e7723f",
-        "name": "Азат Билалов",
-        "login": "Azat",
-        "email": "az.bilalov@mail.ru",
-        "password": "123456",
-        "passwordCheck": "123456",
-        "pathtoavatar": "0.jpeg",
-        "phoneNumber": "+79999999977"
+        "ID": "c4a760a8-dbcf-4d53-bf13-1451c8e7723f",
+        "Name": "Азат Билалов",
+        "Login": "Azat",
+        "Email": "az.bilalov@mail.ru",
+        "Password": "123456",
+        "PasswordCheck": "123456",
+        "Avatar": "0.jpeg",
+        "PhoneNumber": "+79999999977"
     },
     {
-        "id": "692e1b66-8c50-470d-a05d-9c524c8a4107",
-        "name": "Тимур Аюшиев",
-        "login": "Timur",
-        "email": "tayushiev@gmail.com",
-        "password": "1234578",
-        "passwordCheck": "1234578",
-        "pathtoavatar": "1.png",
-        "phoneNumber": "+79999994499"
+        "ID": "692e1b66-8c50-470d-a05d-9c524c8a4107",
+        "Name": "Тимур Аюшиев",
+        "Login": "Timur",
+        "Email": "tayushiev@gmail.com",
+        "Password": "1234578",
+        "PasswordCheck": "1234578",
+        "Avatar": "1.png",
+        "PhoneNumber": "+79999994499"
     },
     {
-        "id": "1c2736c8-74f0-4630-89eb-53be2e1748a7",
-        "name": "Иван",
-        "login": "Tester",
-        "email": "test@mail.ru",
-        "password": "000000",
-        "passwordCheck": "000000",
-        "pathtoavatar": "default.jpg",
-        "phoneNumber": "+79995559999"
-    },
-    {
-        "login": "1111",
-        "secondName": "Lobanov",
-        "firstName": "Igor",
-        "patronimic": "Kar",
-        "phoneNumber": "1234567890",
-        "email": "az.bilalov@mail.ru1",
-        "password": "123456",
-        "passwordCheck": "123456",
-        "pathtoavatar": "default.jpg",
-        "id": "32b1ad36-38be-48ee-8594-dbf70648ce64"
+        "ID": "1c2736c8-74f0-4630-89eb-53be2e1748a7",
+        "Name": "Иван",
+        "Login": "Tester",
+        "Email": "test@mail.ru",
+        "Password": "000000",
+        "PasswordCheck": "000000",
+        "Avatar": "default.jpg",
+        "PhoneNumber": "+79995559999"
     }
 ]

@@ -6,7 +6,7 @@ import store from "@modules/state-manager";
 import crossSvg from "assets/icons/cross.svg";
 
 export const PurchCard = (parent, config = { id: "" }) => {
-    const purchId = config.id.slice(3);
+    const purchId = +config.id.slice(3);
     config.id += "PurchCard";
     const actions = {};
 
@@ -49,7 +49,7 @@ export const PurchCard = (parent, config = { id: "" }) => {
                 'click': async () => {
                     await basketApi.deleteFromBasket(purchId);
                     const basket = store.getState('basket');
-                    store.setState('basket', basket.filter((item) => item.id !== purchId));
+                    store.setState('basket', basket.filter((item) => item.postId !== purchId));
                     self().remove();
                 }
             }
