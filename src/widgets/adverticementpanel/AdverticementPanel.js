@@ -9,7 +9,7 @@ import userSvg from 'assets/icons/user.svg';
 import nameSurnameSVG from 'assets/icons/user_02.svg';
 import phoneSVG from 'assets/icons/phone.svg';
 
-export const SellerPanel = (parent, user) => {
+export const AdverticementPanel = (parent, user) => {
     const actions = {
         logout: () => {},
     }
