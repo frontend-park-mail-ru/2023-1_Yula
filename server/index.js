@@ -539,7 +539,7 @@ app.get('/api/search', (req, res) => {
         return queryWords.every(word => {
 
             // return ((annWords.indexOf(word) > -1));
-            return ((annWords.indexOf(word) > -1) || (annTag == word));
+            return ((annWords.indexOf(word) > -1) || (annTag.includes(word)));
         });
     });
 
