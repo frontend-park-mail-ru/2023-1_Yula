@@ -52,7 +52,7 @@ app.get('/api/user', checkToken, (req, res) => {
 });
 
 app.post('/api/user', (req, res) => {
-    const { Password, Login, Email, Avatar, PhoneNumber } = req.body;
+    const { Password, Login, Email, Avatar } = req.body;
     if (!Login || Login.length < 4) {
         return res.status(400).json({ message: 'Логин не менее 4 символов' });
     }
@@ -68,6 +68,8 @@ app.post('/api/user', (req, res) => {
     if (users.find((user) => user.Email === Email)) {
         return res.status(400).json({ message: 'Пользователь уже существует' });
     }
+
+    console.log(req.body);
 
     const user = {
         ...req.body,
