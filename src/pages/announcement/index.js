@@ -4,6 +4,7 @@ import { AuthWidget } from "@widgets/auth";
 import { annApi } from "@shared/api/anns";
 import { userApi } from "@shared/api/users";
 import { basketApi } from "@shared/api/basket";
+import { favoritesApi } from "@shared/api/favorites";
 import store from "@modules/state-manager";
 import { goTo } from "@shared/lib";
 
@@ -43,6 +44,7 @@ export const announcementPage = (parent, params) => {
 
         const basket = store.getState("basket");
         const ann = await annApi.getById(params.id);
+        console.log(ann);
         const seller = await userApi.getById(ann.userId);
         
         const title = document.createElement('h1');
@@ -65,6 +67,7 @@ export const announcementPage = (parent, params) => {
             views: ann.views,
             viewDict: ann.views % 10 === 1 && ann.views % 100 !== 11 ? 'человек' : 
                 ann.views % 10 >= 2 && ann.views % 10 <= 4 && (ann.views % 100 < 10 || ann.views % 100 >= 20) ? 'человека' : 'человек',
+            close: ann.close,
             sellerName: seller.name,
             sellerAvatar: seller.avatar,
             sellerId: seller.id,
@@ -73,8 +76,7 @@ export const announcementPage = (parent, params) => {
 
         const buyButton = Button(content.querySelector('.button-place'), {
             id: "buy",
-            text: "В корзину",
-            type: "Submit",
+            text: "В корзину"
         });
 
         buyButton.setActions({
@@ -110,6 +112,65 @@ export const announcementPage = (parent, params) => {
             buyButton.self().style.marginLeft = 0;
         }
 
+        const addFavButton = Button(content.querySelector('.button-place'), {
+            id: "addFav",
+            color: "success",
+            text: "В избранное",
+        });
+        addFavButton.setActions({
+            click: async () => {
+                const response = await favoritesApi.addToFavorites(ann.postId);
+
+                if (response.ok) {
+                    delFavButton.render();
+                    addFavButton.destroy();
+                } else {
+                    const { message } = await response.json();
+                    Alert(parent, {
+                        id: 'add-to-fav',
+                        title: 'Неудача',
+                        text: message,
+                        timer: 2000,
+                    }).render();
+                }
+            }
+        });
+
+        const delFavButton = Button(content.querySelector('.button-place'), {
+            id: "delFav",
+            text: "Удалить из избранного",
+            color: "danger",
+        });
+        delFavButton.setActions({
+            click: async () => {
+                const response = await favoritesApi.deleteFromFavorites(ann.postId);
+                
+                if (response.ok) {
+                    addFavButton.render();
+                    delFavButton.destroy();
+                } else {
+                    const { message } = await response.json();
+                    Alert(parent, {
+                        id: 'del-from-fav',
+                        title: 'Неудача',
+                        text: message,
+                        timer: 2000,
+                    }).render();
+                }
+            }
+        });
+
+        if (store.getState('user')?.id !== ann.userId) {
+            const favorites = await favoritesApi.getFavorites();
+            if (!favorites.find(item => item.postId === ann.postId)) {
+                addFavButton.render();
+                addFavButton.self().style.marginLeft = 0;
+            } else {
+                delFavButton.render();
+                delFavButton.self().style.marginLeft = 0;
+            }
+        }
+
         if (store.getState('user')?.id === ann.userId) {
             const buttonGroup = content.querySelector('.button-place');
             // buttonGroup.style
@@ -137,7 +198,7 @@ export const announcementPage = (parent, params) => {
                 text: "Изменить",
             });
             editBtn.setActions({
-                click: () => { console.log("asd")},
+                click: () => goTo(`/edit/${ann.postId}`),
             });
             editBtn.render();
 

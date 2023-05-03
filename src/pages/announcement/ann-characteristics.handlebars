@@ -1,6 +1,7 @@
-{{#if close}}
+{{#unless close}}
 <h1 class="announcement-price">{{price}} ₽</h1>
-{{else}}
+{{/unless}}
+{{#if close}}
 <h1 class="announcement-price">Объявление закрыто</h1>
 {{/if}}
 <a href="/seller/{{sellerId}}" class="announcement-avatar">

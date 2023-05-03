@@ -18,6 +18,7 @@ app.use(body.urlencoded({ limit: '500mb', extended: true }));
 const users = require('./static/jsonData/users.json');
 const anns = require('./static/jsonData/anns.json');
 const basket = require('./static/jsonData/basket.json');
+const favorites = require('./static/jsonData/favorites.json');
 
 /** session identificators */
 const ids = {};
@@ -441,6 +442,85 @@ app.delete('/api/cart/:id', checkToken, (req, res) => {
     }
 
     userBasket.anns.splice(userBasket.anns.indexOf(annId), 1);
+
+    return res.status(200).end();
+});
+
+// FAVORITES API
+app.get('/api/favorites', checkToken, (req, res) => {
+    const emailSession = ids[req.token];
+
+    const user = users.find(user => user.Email === emailSession);
+
+    if (!emailSession || !user) {
+        return res.status(401).json({ message: 'Пользователь не найден' });
+    }
+
+    const userFavorites = favorites.find(item => item.UserId === user.ID);
+
+    if (!userFavorites) {
+        return res.status(404).json([]);
+    }
+
+    const userFavoritesAnns = anns.filter(ann => userFavorites.anns.includes(ann.PostId));
+
+    return res.json(userFavoritesAnns);
+});
+
+app.post('/api/favorites/:id', checkToken, (req, res) => {
+    const emailSession = ids[req.token];
+
+    const user = users.find(user => user.Email === emailSession);
+
+    if (!emailSession || !user) {
+        return res.status(401).json({ message: 'Пользователь не найден' });
+    }
+
+    const annId = +req.params.id;
+
+    if (annId === undefined) {
+        return res.status(400).json({ message: 'Не указан id объявления' });
+    }
+
+    if (!anns.find(ann => ann.PostId === annId)) {
+        return res.status(404).json({ message: 'Объявление не найдено' });
+    }
+
+    const userFavorites = favorites.find(item => item.UserId === user.ID);
+    if (!userFavorites) {
+        favorites.push({ UserId: user.ID, anns: [annId] });
+    } else {
+        userFavorites.anns.push(annId);
+    }
+
+    return res.status(200).end();
+});
+
+app.delete('/api/favorites/:id', checkToken, (req, res) => {
+    const emailSession = ids[req.token];
+
+    const user = users.find(user => user.Email === emailSession);
+
+    if (!emailSession || !user) {
+        return res.status(401).json({ message: 'Пользователь не найден' });
+    }
+
+    const annId = +req.params.id;
+    if (annId === undefined) {
+        return res.status(400).json({ message: 'Не указан id объявления' });
+    }
+
+    const userFavorites = favorites.find(item => item.UserId === user.ID);
+    if (!userFavorites) {
+        return res.status(404).json({ message: 'Избранное не найдено' });
+    }
+
+    const inFavorites = userFavorites.anns.includes(annId);
+    if (!inFavorites) {
+        return res.status(404).json({ message: 'Объявление не найдено' });
+    }
+
+    userFavorites.anns.splice(userFavorites.anns.indexOf(annId), 1);
 
     return res.status(200).end();
 });

@@ -48,7 +48,7 @@ export const bucketPage = (parent) => {
                     tags: ann.tag,
                     title: ann.title,
                     price: ann.price,
-                    src: ann.images[0],
+                    images: ann.images,
                 });
                 purchCard.render();
             });
@@ -62,7 +62,7 @@ export const bucketPage = (parent) => {
                 tags: ann.tag,
                 title: ann.title,
                 price: ann.price,
-                src: ann.images[0],
+                images: ann.images,
             });
             purchCard.render();
         });

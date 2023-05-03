@@ -31,7 +31,7 @@ export const createAnnPage = (parent, params) => {
         const contentCreater = document.createElement('div');
         content.appendChild(contentCreater);
 
-        const createAnn = CreateAnn(contentCreater, params.id ? { editId: params.id } : {});
+        const createAnn = CreateAnn(contentCreater, params ? { editId: params.id } : {});
 
         createAnn.setActions({
             titleChange: (e) => {
