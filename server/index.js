@@ -533,27 +533,14 @@ app.get('/api/search', (req, res) => {
         return res.status(400).json({ message: 'Не указан поисковый запрос' });
     }
 
-    // const queryWords = query.toLowerCase();
-    // console.log(queryWords);
-    // const result = anns.filter(ann => {
-    //     const annWords = ann.Title.toLowerCase();
-    //     console.log(annWords);
-    //     console.log((annWords.indexOf(queryWords) > -1));
-    //     return (annWords.toUpperCase().indexOf(queryWords) > -1);
-    // });
-
-
-
     const queryWords = query.toLowerCase().split(' ');
-    console.log(queryWords);
     const result = anns.filter(ann => {
         const annWords = ann.Title.toLowerCase();
-        console.log(annWords);
-
+        const annTag = ann.Tag;
         return queryWords.every(word => {
-            console.log(annWords.indexOf(word) > -1);
-            return (annWords.indexOf(word) > -1);
-            // return annWords.includes(word);
+
+            // return ((annWords.indexOf(word) > -1));
+            return ((annWords.indexOf(word) > -1) || (annTag == word));
         });
     });
 

@@ -72,7 +72,7 @@ export const Router = (parent) => {
         // получаем корзину пользователя
         if (user) {
             const basket = await basketApi.getBasket();
-            console.log(basket);
+
             store.setState('basket', basket);
         } else {
             store.setState('basket', []);
