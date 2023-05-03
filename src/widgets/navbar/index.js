@@ -36,8 +36,7 @@ export const Navbar = (parent) => {
         }
     }
 
-
-    const render = async () => {
+        const render = async () => {
         const nav = document.createElement('nav');
         nav.classList.add('nav');
         parent.appendChild(nav);

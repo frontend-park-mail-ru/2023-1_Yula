@@ -2,8 +2,10 @@ import { AnnCard } from "@entities/announcement/ui/card/AnnCard.js";
 import { Navbar } from "@widgets/navbar/index.js";
 import { AuthWidget } from "@widgets/auth/index.js";
 import { UserPanel } from "@widgets/userpanel/UserPanel.js";
-
 import { annApi } from "@shared/api/anns";
+import { favoritesApi } from "@shared/api/favorites";
+import { Button } from "@shared/ui";
+import store from "@modules/state-manager";
 
 export const profilePage = (parent) => {
     const header = document.createElement('header');
@@ -21,6 +23,49 @@ export const profilePage = (parent) => {
         navbar.render();
     }
 
+    const renderAnn = async () => {
+        const annGroup = content.querySelector('.announcement-group');
+        annGroup.innerHTML = '';
+
+        const user = await store.getState('user');
+        const anns = await annApi.getFromUser(user.id);
+        console.log(anns);
+
+        anns.forEach(ann => {
+            const annCard = AnnCard(annGroup, {
+                tag: ann.tag,
+                title: ann.title,
+                price: ann.price,
+                images: ann.images,
+                link: `/ann/${ann.postId}`,
+            });
+            annCard.render();
+        });
+
+        content.appendChild(annGroup);
+    }
+
+    const renderFavAnn = async () => {
+        const annGroup = content.querySelector('.announcement-group');
+        annGroup.innerHTML = '';
+
+        const anns = await favoritesApi.getFavorites();
+        console.log(anns);
+
+        anns.forEach(ann => {
+            const annCard = AnnCard(annGroup, {
+                tag: ann.tag,
+                title: ann.title,
+                price: ann.price,
+                images: ann.images,
+                link: `/ann/${ann.postId}`,
+            });
+            annCard.render();
+        });
+
+        content.appendChild(annGroup);
+    }
+
     const contentFilling = async () => {
         const userPanel = UserPanel(content);
         userPanel.render();
@@ -28,19 +73,63 @@ export const profilePage = (parent) => {
         const annGroup = document.createElement('div');
         annGroup.classList.add('announcement-group');
 
-        const anns = await annApi.getAll();
-        anns.forEach(ann => {
-            const annCard = AnnCard(annGroup, {
-                tags: ann.tags,
-                title: ann.title,
-                price: ann.price,
-                images: ann.images,
-                link: `/ann/${ann.id}`,
-            });
-            annCard.render();
-        });
+        const buttonGroup = document.createElement('div');
+        buttonGroup.style.display = 'flex';
+        buttonGroup.style.justifyContent = 'space-around';
+        buttonGroup.style.margin = '20px';
 
+        content.appendChild(buttonGroup);
         content.appendChild(annGroup);
+
+        const myAnnBtn = Button(buttonGroup, {
+            id: 'myAnn',
+            text: 'Мои объявления',
+        });
+        myAnnBtn.setActions({
+            click: () => {
+                myAnnBtn.self().disabled = true;
+                myAnnBtn.self().style.outline = 'none';
+                myAnnBtn.self().style.backgroundColor = 'var(--primary-color)';
+                myAnnBtn.self().querySelector('.button__text').style.color = 'var(--bg-color)';
+
+                favAnnBtn.self().disabled = false;
+                favAnnBtn.self().style.outline = 'solid 1px var(--success-color)';
+                favAnnBtn.self().style.backgroundColor = 'var(--bg-color)';
+                favAnnBtn.self().querySelector('.button__text').style.color = 'var(--success-color)';
+
+                annGroup.innerHTML = '';
+                renderAnn();
+            }
+        });
+        myAnnBtn.render();
+        myAnnBtn.self().disabled = true;
+
+        const favAnnBtn = Button(buttonGroup, {
+            id: 'favAnn',
+            text: 'Избранные объявления',
+            color: 'tertiary',
+            textColor: 'success',
+        });
+        favAnnBtn.setActions({
+            click: () => {
+                favAnnBtn.self().disabled = true;
+                favAnnBtn.self().style.outline = 'none';
+                favAnnBtn.self().style.backgroundColor = 'var(--success-color)';
+                favAnnBtn.self().querySelector('.button__text').style.color = 'var(--bg-color)';
+
+                myAnnBtn.self().disabled = false;
+                myAnnBtn.self().style.outline = 'solid 1px var(--primary-color)';
+                myAnnBtn.self().style.backgroundColor = 'var(--bg-color)';
+                myAnnBtn.self().querySelector('.button__text').style.color = 'var(--primary-color)';
+
+                annGroup.innerHTML = '';
+                renderFavAnn();
+            }
+        });
+        favAnnBtn.render();
+        favAnnBtn.self().style.outline = 'solid 1px var(--success-color)'
+
+        renderAnn();
     }
 
     headerFilling();

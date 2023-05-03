@@ -4,13 +4,12 @@ import { AuthWidget } from "@widgets/auth";
 import { annApi } from "@shared/api/anns";
 import { userApi } from "@shared/api/users";
 import { basketApi } from "@shared/api/basket";
+import { favoritesApi } from "@shared/api/favorites";
 import store from "@modules/state-manager";
+import { goTo } from "@shared/lib";
 
-import './layout.scss';
+import './announcement.scss';
 import charackteristics from "./ann-characteristics.handlebars";
-
-import basketSVG from "assets/icons/basket.svg";
-import userSVG from "assets/icons/user.svg";
 
 /**
  * Страница объявления
@@ -45,8 +44,8 @@ export const announcementPage = (parent, params) => {
 
         const basket = store.getState("basket");
         const ann = await annApi.getById(params.id);
+        console.log(ann);
         const seller = await userApi.getById(ann.userId);
-        console.log(ann, seller);
         
         const title = document.createElement('h1');
         title.classList.add('announcement-title');
@@ -65,61 +64,25 @@ export const announcementPage = (parent, params) => {
         annCharacteristics.innerHTML = charackteristics({
             price: ann.price,
             description: ann.description,
+            views: ann.views,
+            viewDict: ann.views % 10 === 1 && ann.views % 100 !== 11 ? 'человек' : 
+                ann.views % 10 >= 2 && ann.views % 10 <= 4 && (ann.views % 100 < 10 || ann.views % 100 >= 20) ? 'человека' : 'человек',
+            close: ann.close,
             sellerName: seller.name,
-            sellerAvatar: seller.pathtoavatar,
+            sellerAvatar: seller.avatar,
             sellerId: seller.id,
         });
         content.appendChild(annCharacteristics);
 
-        // const buyIcon = Icon(content.querySelector('.basket-button'), {
-        //     id: "buy",
-        //     src: basketSVG,
-        //     text: 'В корзину',
-        //     textColor: 'fg',
-        //     size: 'large',
-        //     direction: 'row',
-        //     invert: store.getState('theme') === 'dark',
-        //     actions: {
-        //         'click': async () => {
-        //             if (!basket.find(item => item.id === ann.id)) {
-        //                 const response = await basketApi.addToBasket(ann.id);
-
-        //                 if (response.ok) {
-        //                     Alert(parent, {
-        //                         id: 'add-to-cart',
-        //                         title: 'Успешно',
-        //                         text: 'Товар добавлен в корзину',
-        //                         timer: 2000,
-        //                     }).render();
-        //                     store.setState("basket", [...basket, ann]);
-        //                     buyIcon.destroy();
-        //                 } else {
-        //                     const { message } = await response.json();
-        //                     Alert(parent, {
-        //                         id: 'add-to-cart',
-        //                         title: 'Неудача',
-        //                         text: message,
-        //                         timer: 2000,
-        //                     }).render();
-        //                 }
-        //             }
-        //         }
-        //     }
-        // });
-        // if (!basket.find(item => item.id === ann.id)) {
-        //     buyIcon.render();
-        // }
-
-        const buyButton = Button(content.querySelector('.basket-button'), {
+        const buyButton = Button(content.querySelector('.button-place'), {
             id: "buy",
-            text: "В корзину",
-            type: "Submit",
+            text: "В корзину"
         });
 
         buyButton.setActions({
             click: async () => {
-                if (!basket.find(item => item.id === ann.id)) {
-                    const response = await basketApi.addToBasket(ann.id);
+                if (!basket.find(item => item.postId === ann.postId)) {
+                    const response = await basketApi.addToBasket(ann.postId);
 
                     if (response.ok) {
                         Alert(parent, {
@@ -144,23 +107,113 @@ export const announcementPage = (parent, params) => {
         });
 
         if (store.getState('user')?.id !== ann.userId &&
-            !basket.find(item => item.id === ann.id)) {
+            !basket.find(item => item.postId === ann.postId)) {
             buyButton.render();
             buyButton.self().style.marginLeft = 0;
         }
 
+        const addFavButton = Button(content.querySelector('.button-place'), {
+            id: "addFav",
+            color: "success",
+            text: "В избранное",
+        });
+        addFavButton.setActions({
+            click: async () => {
+                const response = await favoritesApi.addToFavorites(ann.postId);
+
+                if (response.ok) {
+                    delFavButton.render();
+                    addFavButton.destroy();
+                } else {
+                    const { message } = await response.json();
+                    Alert(parent, {
+                        id: 'add-to-fav',
+                        title: 'Неудача',
+                        text: message,
+                        timer: 2000,
+                    }).render();
+                }
+            }
+        });
+
+        const delFavButton = Button(content.querySelector('.button-place'), {
+            id: "delFav",
+            text: "Удалить из избранного",
+            color: "danger",
+        });
+        delFavButton.setActions({
+            click: async () => {
+                const response = await favoritesApi.deleteFromFavorites(ann.postId);
+                
+                if (response.ok) {
+                    addFavButton.render();
+                    delFavButton.destroy();
+                } else {
+                    const { message } = await response.json();
+                    Alert(parent, {
+                        id: 'del-from-fav',
+                        title: 'Неудача',
+                        text: message,
+                        timer: 2000,
+                    }).render();
+                }
+            }
+        });
+
+        if (store.getState('user')?.id !== ann.userId) {
+            const favorites = await favoritesApi.getFavorites();
+            if (!favorites.find(item => item.postId === ann.postId)) {
+                addFavButton.render();
+                addFavButton.self().style.marginLeft = 0;
+            } else {
+                delFavButton.render();
+                delFavButton.self().style.marginLeft = 0;
+            }
+        }
+
         if (store.getState('user')?.id === ann.userId) {
-            const editBtn = Button(annCharacteristics, {
+            const buttonGroup = content.querySelector('.button-place');
+            // buttonGroup.style
+
+            const closeBtn = Button(buttonGroup, {
+                id: "close",
+                text: "Закрыть",
+                color: "tertiary",
+                textColor: "primary",
+            });
+            closeBtn.setActions({
+                click: async () => {
+                    const response = await annApi.close(ann.postId);
+                    closeBtn.destroy();
+                },
+            });
+            if (!ann.close) {
+                closeBtn.render();
+                closeBtn.self().style.outline = "1px solid var(--primary-color)";
+            }
+
+            const editBtn = Button(buttonGroup, {
                 id: "edit",
                 type: "Submit",
                 text: "Изменить",
             });
-
             editBtn.setActions({
-                click: () => { console.log("asd")},
-            })
-            
+                click: () => goTo(`/edit/${ann.postId}`),
+            });
             editBtn.render();
+
+            const deleteBtn = Button(buttonGroup, {
+                id: "delete",
+                text: "Удалить",
+                color: "danger"
+            });
+            deleteBtn.setActions({
+                click: async () => {
+                    const response = await annApi.delete(ann.postId);
+                    goTo('/profile');
+                }
+            });
+            deleteBtn.render();
         }
     }
 

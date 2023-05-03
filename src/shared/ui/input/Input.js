@@ -64,12 +64,44 @@ export const Input = (parent, config = {id: ""}) => {
         parent.insertAdjacentHTML("beforeEnd", template(config));
 
         applyActions();
+
+        self().addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+              console.log(field().value);
+              searchFunct();
+            }
+        });
     }
+
+    const searchFunct = () => {
+        // Declare variables
+        let input, filter, annGroup, a, i, txtValue;
+        input = document.getElementById('myInput');
+        filter = field().value.toUpperCase();
+        annGroup = document.querySelector(".announcement-group");
+        console.log(annGroup);
+        let li = annGroup.getElementsByClassName('announcement-card');
+        
+        // Loop through all list items, and hide those who don't match the search query
+        for (i = 0; i < li.length; i++) {
+            console.log(li[i]);
+            a = li[i].getElementsByClassName("announcement-card__title")[0];
+            
+            txtValue = a.textContent || a.innerText;
+            console.log(txtValue);
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+            }
+        }
+      }
 
     return {
         self,
         field,
         render,
+        searchFunct,
         setActions,
         destroy,
     }

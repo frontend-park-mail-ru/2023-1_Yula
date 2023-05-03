@@ -3,7 +3,8 @@ export class purchApi {
         let purchs = await fetch('api/bucket');
         purchs = await purchs.json();
         purchs = purchs.map(purch => {
-            purch.images = purch.images.map(img => `http://localhost/static/images/anns/${img}`);
+            // purch.images = purch.images.map(img => `http://localhost/static/images/anns/${img}`);
+            ann.images = ann.PathImages;
             return purch;
         });
 

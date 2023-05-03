@@ -41,25 +41,28 @@ export const bucketPage = (parent) => {
         content.appendChild(purchGroup);
 
         store.subscribe('basket', newState => {
-            if (newState === 'clear') {
-                purchGroup.innerHTML = '';
-                localStorage.clear();
-                priceWidget.destroy();
-                priceWidget.render();
-            }
-            if (newState === 'clearOne') {
-                priceWidget.destroy();
-                priceWidget.render();
-            }
+            purchGroup.innerHTML = '';
+            newState.forEach(ann => {
+                const purchCard = PurchCard(purchGroup, {
+                    id: 'ann' + ann.postId,
+                    tags: ann.tag,
+                    title: ann.title,
+                    price: ann.price,
+                    images: ann.images,
+                });
+                purchCard.render();
+            });
+            priceWidget.destroy();
+            priceWidget.render();
         });
 
         store.getState("basket").forEach(ann => {
             const purchCard = PurchCard(purchGroup, {
-                id: 'ann' + ann.id,
-                tags: ann.tags,
+                id: 'ann' + ann.postId,
+                tags: ann.tag,
                 title: ann.title,
                 price: ann.price,
-                src: ann.images[0],
+                images: ann.images,
             });
             purchCard.render();
         });

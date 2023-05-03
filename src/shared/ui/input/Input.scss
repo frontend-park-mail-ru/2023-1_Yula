@@ -42,9 +42,11 @@
     color: var(--secondary-color);
     background-color: var(--bg-color-lite);
     border-radius: 8px;
-    border: none;
     height: 64px;
     margin: 0 auto;
+
+    // внутренняя рамка
+    border: 0.5px dashed var(--secondary-color);
 
     &:hover {
         background-color: var(--bg-color-strong);

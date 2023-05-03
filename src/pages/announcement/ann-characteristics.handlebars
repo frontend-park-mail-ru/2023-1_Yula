@@ -1,8 +1,13 @@
+{{#unless close}}
 <h1 class="announcement-price">{{price}} ₽</h1>
+{{/unless}}
+{{#if close}}
+<h1 class="announcement-price">Объявление закрыто</h1>
+{{/if}}
 <a href="/seller/{{sellerId}}" class="announcement-avatar">
     <img src="{{sellerAvatar}}" alt="" class="announcement-avatar__img">
     {{sellerName}}
 </a>
-<p class="address">{{address}}</p>
-<div class="basket-button"></div>
+<div class="button-place"></div>
+<p class="announcement-views">{{views}} {{viewDict}} <span style="color: var(--success-color)">просмотрели</span> это объявление</p>
 <pre style="white-space: pre-wrap"><p class="announcement-description">{{description}}</p></pre>

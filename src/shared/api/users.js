@@ -1,11 +1,34 @@
 import { baseUrl } from '../config';
 import { deleteCookie } from '../lib';
 
-function capitalizeKeys(obj) {
-    return Object.entries(obj).reduce((acc, [key, value]) => {
-        acc[key[0].toUpperCase() + key.slice(1)] = value;
-        return acc;
-    }, {});
+function lowerKeys(obj) {
+    const keys = Object.keys(obj);
+    const newKeys = keys.map(key => key[0].toLowerCase() + key.slice(1));
+    const newObj = {};
+
+    for (let i = 0; i < keys.length; i++) {
+        if (keys[i] === 'ID') {
+            newKeys[i] = 'id';
+        }
+        newObj[newKeys[i]] = obj[keys[i]];
+    }
+
+    return newObj;
+}
+
+function upperKeys(obj) {
+    const keys = Object.keys(obj);
+    const newKeys = keys.map(key => key[0].toUpperCase() + key.slice(1));
+    const newObj = {};
+
+    for (let i = 0; i < keys.length; i++) {
+        if (keys[i] === 'id') {
+            newKeys[i] = 'ID';
+        }
+        newObj[newKeys[i]] = obj[keys[i]];
+    }
+
+    return newObj;
 }
 
 export class userApi {
@@ -19,11 +42,10 @@ export class userApi {
         });
 
         if (user.ok) {
-            user = await user.json();
-            console.log(user);
+            user = lowerKeys(await user.json());
 
-            const imageUrl = `${baseUrl}/static/images/users/${user.pathtoavatar}`;
-            user.pathtoavatar = imageUrl;
+            // const imageUrl = `${baseUrl}/static/images/users/${user.avatar}`;
+            // user.avatar = imageUrl;
 
             return user;
         } else {
@@ -41,17 +63,12 @@ export class userApi {
      * @param {string} data.password
      */
     static async signup(data) {
-        // data = Object.entries(data).reduce((acc, [key, value]) => {
-        //     acc[key[0].toUpperCase() + key.slice(1)] = value;
-        //     return acc;
-        // }, {});
-
         return await fetch(`${baseUrl}/api/user`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(upperKeys(data))
         });
     }
 
@@ -62,17 +79,12 @@ export class userApi {
      * @param {string} data.password
      */
     static async authByLogin(data) {
-        // data = Object.entries(data).reduce((acc, [key, value]) => {
-        //     acc[key[0].toUpperCase() + key.slice(1)] = value;
-        //     return acc;
-        // }, {});
-
         return await fetch(`${baseUrl}/api/auth/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(upperKeys(data))
         });
     }
 
@@ -94,9 +106,8 @@ export class userApi {
         let user = await fetch(`${baseUrl}/api/user/${id}`);
 
         if (user.ok) {
-            user = await user.json();
-            user.pathtoavatar = `${baseUrl}/static/images/users/${user.pathtoavatar}`;
-
+            user = lowerKeys(await user.json());
+            // user.avatar = `${baseUrl}/static/images/users/${user.avatar}`;
             return user;
         } else {
             user = null;

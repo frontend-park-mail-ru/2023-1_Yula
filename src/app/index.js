@@ -16,6 +16,8 @@ export const App = (parent) => {
     router.register('/seller/{id}', sellerPage, 'seller-page');
     router.register('/seller', sellerPage, 'my-seller-page', true);
     router.register('/create', createAnnPage, 'create-ann', true);
+    router.register('/edit/{id}', createAnnPage, 'edit-ann', true);
+    router.register('/search/{query}', boardPage, 'search');
 
     return {
         render: () => {

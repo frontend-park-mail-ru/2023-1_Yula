@@ -26,7 +26,7 @@ export const signupModal = (parent) => {
             form.setActions({
                 submit: async (fields) => {
                     const { accept, ...data } = fields;
-                    data['pathtoavatar'] = 'default.jpeg';
+                    data['avatar'] = 'default.jpeg';
                     let res = await userApi.signup(data);
                     
                     if (res.ok) {

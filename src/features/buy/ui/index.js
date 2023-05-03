@@ -2,6 +2,7 @@ import { Button, Modal, Form, Alert } from '@shared/ui/index.js';
 import { validation } from '../lib/validation.js';
 import template from './Form/Form.handlebars';
 import store from '@modules/state-manager.js';
+import { basketApi } from '@shared/api/basket.js';
 
 export const buyModal = (parent) => {
     const modal = Modal(parent, {
@@ -41,8 +42,8 @@ export const buyModal = (parent) => {
 
             submitBtn.setActions({
                 "click": () => {
-                    store.setState('bucket', 'clear');
-                    localStorage.clear();
+                    store.setState('basket', []);
+                    basketApi.clearBasket();
 
                     Alert(document.body, {
                         id: "buy",
