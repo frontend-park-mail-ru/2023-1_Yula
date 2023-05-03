@@ -2,8 +2,9 @@ import { CreateAnn } from "@features/ann";
 import { Navbar } from "@widgets/navbar";
 import { AuthWidget } from "@widgets/auth";
 import { Carousel } from "@shared/ui";
+import store from "@modules/state-manager";
 
-import './layout.scss';
+import './create-ann.scss';
 import annPreview from "./ann-preview.handlebars";
 
 export const createAnnPage = (parent) => {
@@ -48,25 +49,37 @@ export const createAnnPage = (parent) => {
             }
         });
         createAnn.render();
+        createAnn.self().style.padding = '10px 30px';
 
         const contentPreview = document.createElement('div');
         contentPreview.classList.add('ann-characteristics');
         content.appendChild(contentPreview);
 
+        const user = store.getState('user');
+
+        const title = document.createElement('h1');
+        title.classList.add('announcement-title');
+        title.innerText = 'Картина Ван Гога';
+        contentPreview.appendChild(title);
+
+        const annCarousel = document.createElement('div');
+        annCarousel.classList.add('announcement-carousel');
+        contentPreview.appendChild(annCarousel);
+        const carousel = Carousel(annCarousel, {
+            images: ['https://artworld.ru/images/cms/content/catalog4/kartina_maslom_van_gogh_kopiay_olivkovye_derevja_na_fone_alp_vg230207.jpg', 'https://zimamagazine.com/wp-content/uploads/2019/05/zvezdnaya-noch-nad-ronoi-600x400.jpg'],
+            outbound: true
+        });
+        carousel.render();
+        
         contentPreview.insertAdjacentHTML('beforeend', annPreview({
             title: 'Картина Ван Гога',
             price: '1 000 000',
             description: 'Картина славится своей...',
-            tags: 'Живопись',
-            images: []
+            category: 'Живопись',
+            sellerId: user.id,
+            sellerName: user.name,
+            sellerAvatar: user.pathtoavatar
         }));
-
-        const annCarousel = document.createElement('div');
-        annCarousel.classList.add('announcement-carousel');
-        annCarousel.style.maxWidth = '500px';
-        content.appendChild(annCarousel);
-        const carousel = Carousel(annCarousel, { images: [], outbound: true });
-        carousel.render();
     }
 
     headerFilling();

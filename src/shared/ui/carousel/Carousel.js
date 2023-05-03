@@ -91,6 +91,7 @@ export const Carousel = (parent, config) => {
 
         if (config.outbound) {
             // смена слайда при клике на слайд
+            self().style.aspectRatio = 125/100;
             const slides = self().querySelectorAll('.carousel__slide');
             slides.forEach((slide, index) => {
                 slide.addEventListener('click', () => {

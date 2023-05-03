@@ -6,7 +6,7 @@ import { userApi } from "@shared/api/users";
 import { basketApi } from "@shared/api/basket";
 import store from "@modules/state-manager";
 
-import './layout.scss';
+import './announcement.scss';
 import charackteristics from "./ann-characteristics.handlebars";
 
 import basketSVG from "assets/icons/basket.svg";
