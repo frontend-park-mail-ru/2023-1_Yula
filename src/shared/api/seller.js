@@ -10,7 +10,7 @@ export class sellerApi {
 
         sellerInfo = await sellerInfo.json();
 
-        sellerInfo.avatar = `${baseUrl}/static/images/anns/${sellerInfo.avatar}`;
+        // sellerInfo.avatar = `${baseUrl}/static/images/anns/${sellerInfo.avatar}`;
 
         return sellerInfo;
     };

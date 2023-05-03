@@ -41,7 +41,8 @@ export class basketApi {
             const anns =  await response.json();
 
             return anns.map(ann => {
-                ann.images = ann.PathImages.map(img => `${baseUrl}/static/images/anns/${img}`);
+                // ann.images = ann.PathImages.map(img => `${baseUrl}/static/images/anns/${img}`);
+                ann.images = ann.PathImages
                 return lowerKeys(ann);
             });
         }

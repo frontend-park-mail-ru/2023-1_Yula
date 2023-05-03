@@ -33,7 +33,8 @@ export class annApi {
         anns = await anns.json();
         
         anns = anns.map(ann => {
-            ann.images = ann.PathImages.map(img => `${baseUrl}/static/images/anns/${img}`);
+            // ann.images = ann.PathImages.map(img => `${baseUrl}/static/images/anns/${img}`);
+            ann.images = ann.PathImages;
             return lowerKeys(ann);
         });
 
@@ -50,7 +51,8 @@ export class annApi {
         anns = await anns.json();
 
         anns = anns.map(ann => {
-            ann.images = ann.PathImages.map(img => `${baseUrl}/static/images/anns/${img}`);
+            // ann.images = ann.PathImages.map(img => `${baseUrl}/static/images/anns/${img}`);
+            ann.images = ann.PathImages;
             return lowerKeys(ann);
         });
 
@@ -65,7 +67,8 @@ export class annApi {
         }
         ann = await ann.json();
     
-        const imageUrls = ann.PathImages.map(img => `${baseUrl}/static/images/anns/${img}`);
+        // const imageUrls = ann.PathImages.map(img => `${baseUrl}/static/images/anns/${img}`);
+        const imageUrls = ann.PathImages;
         ann.images = imageUrls;
     
         return lowerKeys(ann);
@@ -134,7 +137,8 @@ export class annApi {
         anns = await anns.json();
 
         anns = anns.map(ann => {
-            ann.images = ann.PathImages.map(img => `${baseUrl}/static/images/anns/${img}`);
+            // ann.images = ann.PathImages.map(img => `${baseUrl}/static/images/anns/${img}`);
+            ann.images = ann.PathImages;
             return lowerKeys(ann);
         });
 
