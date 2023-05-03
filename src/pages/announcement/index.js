@@ -82,7 +82,7 @@ export const announcementPage = (parent, params) => {
         buyButton.setActions({
             click: async () => {
                 if (!basket.find(item => item.postId === ann.postId)) {
-                    const response = await basketApi.addToBasket(ann.postId);
+                    const response = await basketApi.addToBasket(ann.userId);
 
                     if (response.ok) {
                         Alert(parent, {
@@ -119,7 +119,7 @@ export const announcementPage = (parent, params) => {
         });
         addFavButton.setActions({
             click: async () => {
-                const response = await favoritesApi.addToFavorites(ann.postId);
+                const response = await favoritesApi.addToFavorites(ann.userId);
 
                 if (response.ok) {
                     delFavButton.render();
