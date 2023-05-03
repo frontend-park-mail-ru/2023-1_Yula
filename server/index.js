@@ -52,7 +52,7 @@ app.get('/api/user', checkToken, (req, res) => {
 });
 
 app.post('/api/user', (req, res) => {
-    const { Password, Login, Email } = req.body;
+    const { Password, Login, Email, Avatar, PhoneNumber } = req.body;
     if (!Login || Login.length < 4) {
         return res.status(400).json({ message: 'Логин не менее 4 символов' });
     }
@@ -62,13 +62,15 @@ app.post('/api/user', (req, res) => {
     if (!Email) {
         return res.status(400).json({ message: 'Невалидные данные пользователя' });
     }
+    if (!Avatar) {
+        return res.status(400).json({ message: 'Невалидные данные пользователя' });
+    }
     if (users.find((user) => user.Email === Email)) {
         return res.status(400).json({ message: 'Пользователь уже существует' });
     }
 
     const user = {
         ...req.body,
-        Avatar: 'default.jpg',
         ID: 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
             var r = Math.random() * 16 | 0,
                 v = c == 'x' ? r : (r & 0x3 | 0x8);
@@ -340,6 +342,7 @@ app.put('/api/post/close/:id', checkToken, (req, res) => {
 app.get('/api/post/:tag/:page', (req, res) => {
     const tag = req.params.tag;
     let page = req.params.page;
+    console.log(tag, page);
     const result = anns.filter(ann => ann.Tag === tag);
     return res.json(result.slice((page - 1) * 12, page * 12));
 });
