@@ -1,5 +1,5 @@
 export const validation = (fields) => {
-    let { title, description, tags, price, image } = fields;
+    let { title, description, tag, price, pathImages } = fields;
     const errors = {};
 
     if (title.trim() === '') {
@@ -17,12 +17,12 @@ export const validation = (fields) => {
         errors.price = 'Цена не может быть отрицательной';
     }
 
-    if (tags.trim() === '') {
-        errors.tags = 'Введите теги';
+    if (tag.trim() === '') {
+        errors.tag = 'Введите теги';
     }
 
-    if (!image.size) {
-        errors.image = 'Добавьте изображение';
+    if (!pathImages.size) {
+        errors.pathImages = 'Добавьте изображение';
     }
     
     return errors;

@@ -133,12 +133,11 @@ export const boardPage = (parent) => {
 
         anns.forEach(ann => {
             const annCard = AnnCard(annGroup, {
-                tags: ann.tags,
                 title: ann.title,
                 price: ann.price,
                 images: ann.images,
-                link: `/ann/${ann.id}`,
-                viewCount: 10, // TODO: сделать нормальный подсчет просмотров
+                link: `/ann/${ann.postId}`,
+                viewCount: ann.views, // TODO: сделать нормальный подсчет просмотров
             });
             annCard.render();
         });

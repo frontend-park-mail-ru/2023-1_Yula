@@ -1,45 +1,52 @@
 .create-ann-content {
     display: grid;
     // grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 1fr 1fr;
     gap: 20px;
     padding-left: 2%;
     padding-right: 2%;
 }
 
-.announcement-carousel {
-    grid-column: span 1;
+.ann-characteristics {
+  font-family: 'Roboto VK';
+  color: var(--fg-color);
+  align-items: center;
+  justify-content: center;
+}
+
+.create-ann-carousel {
+    grid-area: carousel;
     border-radius: 10px;
+    min-width: 50vw;
     
     & > .carousel {
         border-radius: 10px;
     }
 }
 
-.ann-characteristics {
-    grid-column: span 1;
-    font-family: 'Roboto VK';
-    color: var(--fg-color);
-}
-
 .announcement-title {
     grid-area: title;
     font-family: 'Roboto VK bold';
     font-weight: 500;
-    font-size: calc(18px + 1vw);
+    font-size: calc(20px);
     text-align: center;
     line-height: 24px;
     color: var(--fg-color);
     margin-bottom: 10px;
   }
-  
-  .announcement-carousel {
-    grid-area: carousel;
+
+  .ann-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 10px;
+    margin: 10px 0;
   }
 
-//   .announcement-price {
-//     font-family: "Roboto VK bold";
-//   }
+  .announcement-price {
+    font-size: 24px;
+    font-family: "Roboto VK bold";
+  }
   
   .announcement-avatar {
     display: flex;
@@ -59,8 +66,14 @@
       border-radius: 15%;
     }
   }
+
+  .announcement-predescription {
+    grid-area: predescription;
+    align-self: start;
+  }
   
   .announcement-description {
+    grid-area: description;
     font-family: 'Roboto VK';
     font-size: 16px;
     line-height: 24px;

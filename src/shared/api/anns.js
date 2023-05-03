@@ -1,5 +1,29 @@
 import { baseUrl } from "../config";
 
+function lowerKeys(obj) {
+    const keys = Object.keys(obj);
+    const newKeys = keys.map(key => key[0].toLowerCase() + key.slice(1));
+    const newObj = {};
+
+    for (let i = 0; i < keys.length; i++) {
+        newObj[newKeys[i]] = obj[keys[i]];
+    }
+
+    return newObj;
+}
+
+function upperKeys(obj) {
+    const keys = Object.keys(obj);
+    const newKeys = keys.map(key => key[0].toUpperCase() + key.slice(1));
+    const newObj = {};
+
+    for (let i = 0; i < keys.length; i++) {
+        newObj[newKeys[i]] = obj[keys[i]];
+    }
+
+    return newObj;
+}
+
 export class annApi {
     static async getAll() {
         let anns = await fetch(`${baseUrl}/api/sort/new/1`);
@@ -9,8 +33,8 @@ export class annApi {
         anns = await anns.json();
         
         anns = anns.map(ann => {
-            ann.images = ann.images.map(img => `${baseUrl}/static/images/anns/${img}`);
-            return ann;
+            ann.images = ann.PathImages.map(img => `${baseUrl}/static/images/anns/${img}`);
+            return lowerKeys(ann);
         });
 
         return anns;
@@ -26,8 +50,8 @@ export class annApi {
         anns = await anns.json();
 
         anns = anns.map(ann => {
-            ann.images = ann.images.map(img => `${baseUrl}/static/images/anns/${img}`);
-            return ann;
+            ann.images = ann.PathImages.map(img => `${baseUrl}/static/images/anns/${img}`);
+            return lowerKeys(ann);
         });
 
         return anns;
@@ -41,10 +65,10 @@ export class annApi {
         }
         ann = await ann.json();
     
-        const imageUrls = ann.images.map(img => `${baseUrl}/static/images/anns/${img}`);
+        const imageUrls = ann.PathImages.map(img => `${baseUrl}/static/images/anns/${img}`);
         ann.images = imageUrls;
     
-        return ann;
+        return lowerKeys(ann);
     }
 
     static async create(data) {
@@ -56,14 +80,40 @@ export class annApi {
                 'Content-Type': 'application/json;charset=utf-8',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(upperKeys(data))
         });
     }
 
-    static async getMy() {
+    static async update(id, data) {
         const token = localStorage.getItem('token');
 
-        return await fetch(`${baseUrl}/api/post/my`, {
+        return await fetch(`${baseUrl}/api/post/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(upperKeys(data))
+        });
+    }
+
+    static async delete(id) {
+        const token = localStorage.getItem('token');
+
+        return await fetch(`${baseUrl}/api/post/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+    }
+
+    static async close(id) {
+        const token = localStorage.getItem('token');
+
+        return await fetch(`${baseUrl}/api/post/close/${id}`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
                 'Authorization': `Bearer ${token}`
