@@ -538,8 +538,11 @@ app.get('/api/search', (req, res) => {
     const result = anns.filter(ann => {
         const annWords = ann.Title.toLowerCase();
         const annTag = ann.Tag;
+        
         return queryWords.every(word => {
+            word = word.replace(/['"«»]/g, '');
 
+            console.log((annWords.indexOf(word) > -1));
             // return ((annWords.indexOf(word) > -1));
             return ((annWords.indexOf(word) > -1) || (annTag.includes(word)));
         });
