@@ -40,6 +40,10 @@ export class favoritesApi {
         } else {
             const anns =  await response.json();
 
+            if (!anns) {
+                return [];
+            }
+
             return anns.map(ann => {
                 // ann.images = ann.PathImages.map(img => `${baseUrl}/static/images/anns/${img}`);
                 ann.images = ann.PathImages;

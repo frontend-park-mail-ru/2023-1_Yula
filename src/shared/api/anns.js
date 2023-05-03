@@ -126,7 +126,7 @@ export class annApi {
 
     static async search(query) {
         // const url = new URL(`${baseUrl}/api/search/?query=${query.query}`);
-        const url = `/api/search/?query=${query.query}`;
+        const url = `/api/search?query="${query.query}"`;
         let anns = await fetch(url);
 
         if (!anns.ok) {
@@ -134,6 +134,10 @@ export class annApi {
         }
 
         anns = await anns.json();
+
+        if (!anns) {
+            return [];
+        }
 
         anns = anns.map(ann => {
             // ann.images = ann.PathImages.map(img => `${baseUrl}/static/images/anns/${img}`);
