@@ -44,8 +44,8 @@ export class userApi {
         if (user.ok) {
             user = lowerKeys(await user.json());
 
-            const imageUrl = `${baseUrl}/static/images/users/${user.avatar}`;
-            user.avatar = imageUrl;
+            // const imageUrl = `${baseUrl}/static/images/users/${user.avatar}`;
+            // user.avatar = imageUrl;
 
             return user;
         } else {
@@ -107,7 +107,7 @@ export class userApi {
 
         if (user.ok) {
             user = lowerKeys(await user.json());
-            user.avatar = `${baseUrl}/static/images/users/${user.avatar}`;
+            // user.avatar = `${baseUrl}/static/images/users/${user.avatar}`;
             return user;
         } else {
             user = null;
