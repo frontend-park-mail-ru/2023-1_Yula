@@ -10,7 +10,7 @@ import { AdverticementPanel } from "@/widgets/adverticementpanel/AdverticementPa
 
 import './layout.scss';
 
-export const SearchPage = (parent) => {
+export const searchPage = (parent, query) => {
     const header = document.createElement('header');
     const content = document.createElement('main');
 
@@ -73,14 +73,14 @@ export const SearchPage = (parent) => {
         const annsTitle = document.createElement('div');
         annsTitle.classList.add('search-page__text');
         mainPageContentAnns.appendChild(annsTitle);
-        annsTitle.innerText = "Популярные объявления";
+        annsTitle.innerText = "Найденные объявления";
 
         // Заполнение объявлениями
         const annGroup = document.createElement('div');
         annGroup.classList.add('announcement-group');
         mainPageContentAnns.appendChild(annGroup);
 
-        const anns = await annApi.getAll();
+        const anns = await annApi.search(query);
 
         anns.forEach(ann => {
             const annCard = AnnCard(annGroup, {

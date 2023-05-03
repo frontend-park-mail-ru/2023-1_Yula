@@ -122,9 +122,7 @@ export class annApi {
     }
 
     static async search(query) {
-        const url = new URL(`${baseUrl}/api/search`);
-        url.searchParams.append('query', query);
-
+        const url = new URL(`${baseUrl}/api/search/?query=${query.query}`);
         let anns = await fetch(url);
 
         if (!anns.ok) {
