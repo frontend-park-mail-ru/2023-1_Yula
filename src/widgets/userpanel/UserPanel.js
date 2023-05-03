@@ -57,8 +57,8 @@ export const UserPanel = (parent) => {
             }),
             elem1: Input(userPanel, {
                 id: "user-input",
-                text: `${user.firstName} ${user.secondName}`,
-                placeholder: "Имя Фамилия",
+                text: `${user.name}`,
+                placeholder: "Имя",
             }),
             elem2: Input(userPanel, {
                 id: "login-input",
@@ -106,9 +106,9 @@ export const UserPanel = (parent) => {
                 circular: user ? true : false,
             }),
             elem1: PanelElement(userPanel, {
-                id: 'fio',
+                id: 'name',
                 imgSource: nameSurnameSVG,
-                text: `${user.firstName} ${user.secondName}`,
+                text: `${user.name}`,
                 invert: invert,
             }),
             elem2: PanelElement(userPanel, {

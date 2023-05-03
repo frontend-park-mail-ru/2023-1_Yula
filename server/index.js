@@ -397,6 +397,25 @@ app.post('/api/cart/:id', checkToken, (req, res) => {
     return res.status(200).end();
 });
 
+app.delete('/api/cart/clear', checkToken, (req, res) => {
+    const emailSession = ids[req.token];
+
+    const user = users.find(user => user.Email === emailSession);
+
+    if (!emailSession || !user) {
+        return res.status(401).json({ message: 'Пользователь не найден' });
+    }
+
+    const userBasket = basket.find(item => item.UserId === user.ID);
+    if (!userBasket) {
+        return res.status(404).json({ message: 'Корзина не найдена' });
+    }
+
+    userBasket.anns = [];
+
+    return res.status(200).end();
+});
+
 app.delete('/api/cart/:id', checkToken, (req, res) => {
     const emailSession = ids[req.token];
 
@@ -422,25 +441,6 @@ app.delete('/api/cart/:id', checkToken, (req, res) => {
     }
 
     userBasket.anns.splice(userBasket.anns.indexOf(annId), 1);
-
-    return res.status(200).end();
-});
-
-app.delete('/api/cart/clear', checkToken, (req, res) => {
-    const emailSession = ids[req.token];
-
-    const user = users.find(user => user.Email === emailSession);
-
-    if (!emailSession || !user) {
-        return res.status(401).json({ message: 'Пользователь не найден' });
-    }
-
-    const userBasket = basket.find(item => item.UserId === user.ID);
-    if (!userBasket) {
-        return res.status(404).json({ message: 'Корзина не найдена' });
-    }
-
-    userBasket.anns = [];
 
     return res.status(200).end();
 });

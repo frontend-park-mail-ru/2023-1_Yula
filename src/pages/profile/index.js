@@ -30,12 +30,13 @@ export const profilePage = (parent) => {
 
         const user = await store.getState('user');
         const anns = await annApi.getFromUser(user.id);
-
+        
         anns.forEach(ann => {
             const annCard = AnnCard(annGroup, {
                 tags: ann.tags,
                 title: ann.title,
                 price: ann.price,
+                views: ann.views,
                 images: ann.images,
                 link: `/ann/${ann.postId}`,
             });
