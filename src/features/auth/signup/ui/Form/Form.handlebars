@@ -40,6 +40,12 @@
         <span class="form__text_error" id="passwordCheckMessage"></span>
     </section>
     <section class="form__input-group">
+        <label class="modal__text" for="avatar">Аватар *</label>
+        <div class="input_type_file" onclick="{{id}}.avatar.click();">Переместите сюда изображения</div>
+        <input type="file" name="avatar" style="display: none;" accept="image/jpeg,image/png,image/gif">
+        <span class="form__text_error" id="avatarMessage"></span>
+    </section>
+    <section class="form__input-group">
         <label class="grid-left modal__text" for="accept">
             <input type="checkbox" name="accept">
             Я принимаю

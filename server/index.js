@@ -188,12 +188,6 @@ app.post('/api/post', checkToken, (req, res) => {
             return res.status(400).json({ message: 'Не все поля заполнены' });
         }
 
-        // типа сохранение файла
-        const images = PathImages.map((img) => {
-            const path = `0.jpeg`;
-            return path;
-        });
-
         const ann = {
             PostId: anns.length,
             UserId: user.ID,
@@ -201,7 +195,7 @@ app.post('/api/post', checkToken, (req, res) => {
             Description,
             Price,
             Tag,
-            PathImages: images,
+            PathImages,
             Close: false,
         };
 
