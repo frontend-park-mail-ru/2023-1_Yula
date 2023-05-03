@@ -85,15 +85,20 @@ export const UserPanel = (parent) => {
                 id: "button-input-submit",
                 color: "primary",
                 text: "Принять",
-                actions:
-                {
-                    click: () => {
-
-                    }
-                }
             })
         }
 
+        inputs.elem6.setActions({
+            click: () => {
+                console.log("inputs");
+                for (let input in inputs) {
+                    inputs[input].destroy();
+                }
+                for (let element in elements) {
+                    elements[element].render();
+                }
+            }
+        });
         // задаем элемeнты боковой панели
         console.log(user);
         const elements = {
@@ -135,16 +140,11 @@ export const UserPanel = (parent) => {
                 text: `${'●'.repeat(user.password.length)}`,
                 invert: invert,
             }),
-            elem6: PanelElement(userPanel, {
+            elem6: Button(userPanel, {
                 id: 'edit-profile',
-                imgSource: editSVG,
+                // srcIcon: editSVG,
                 text: "Изменить",
                 invert: invert,
-                actions: {
-                    click: () => {
-                        state = !state;
-                    }
-                }
             }),
             elem7: PanelElement(userPanel, {
                 id: 'exit',
@@ -167,12 +167,34 @@ export const UserPanel = (parent) => {
             }),
         };
 
-        // рендерим все элементы
+        
+        elements.elem6.setActions({
+            click: () => {
+                console.log("inputs");
+                for (let input in inputs) {
+                    inputs[input].render();
+                }
+                for (let element in elements) {
+                    elements[element].destroy();
+                }
+            }
+        });
+
+        // store.subscribe('edit_profile', (showEdit) => {
+        //     if (!showEdit) {
+        //         for (let element in elements) {
+        //             elements[element].render();
+        //         }
+        //     } else {
+        //         for (let input in inputs) {
+        //             inputs[input].render();
+        //         }
+        //     }
+        // });
+
         for (let element in elements) {
             elements[element].render();
         }
-
-
 
         // событие изменения темы
         store.subscribe('theme', (theme) => {
