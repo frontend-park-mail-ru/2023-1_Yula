@@ -35,7 +35,7 @@ export class favoritesApi {
             }
         });
 
-        if (!response.ok) {
+        if (!response) {
             return []
         } else {
             const anns =  await response.json();

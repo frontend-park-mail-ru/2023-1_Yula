@@ -119,6 +119,7 @@ export const announcementPage = (parent, params) => {
         });
         addFavButton.setActions({
             click: async () => {
+                ///
                 const response = await favoritesApi.addToFavorites(ann.userId);
 
                 if (response.ok) {
