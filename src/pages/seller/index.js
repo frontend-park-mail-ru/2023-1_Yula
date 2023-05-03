@@ -6,7 +6,7 @@ import { annApi } from "@shared/api/anns";
 import store from "@modules/state-manager.js";
 
 import { SellerPanel } from "@/widgets/sellerpanel/SellerPanel";
-import { AdverticementPanel } from "@/widgets/adverticementpanel/AdverticementPanel";
+
 import './layout.scss';
 
 export const sellerPage = (parent, params) => {
