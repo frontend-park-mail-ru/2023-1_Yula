@@ -28,7 +28,7 @@ export class favoritesApi {
     static async getFavorites() {
         const token = localStorage.getItem('token');
 
-        const response = await fetch(`${baseUrl}/api/favorites`, {
+        const response = await fetch(`${baseUrl}/api/favorite`, {
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
                 Authorization: `Bearer ${token}`
@@ -50,7 +50,7 @@ export class favoritesApi {
     static async addToFavorites(id) {
         const token = localStorage.getItem('token');
 
-        return await fetch(`${baseUrl}/api/favorites/${id}`, {
+        return await fetch(`${baseUrl}/api/favorite/${id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
@@ -62,7 +62,7 @@ export class favoritesApi {
     static async deleteFromFavorites(id) {
         const token = localStorage.getItem('token');
 
-        return await fetch(`${baseUrl}/api/favorites/${id}`, {
+        return await fetch(`${baseUrl}/api/favorite/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',

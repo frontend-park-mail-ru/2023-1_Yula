@@ -120,4 +120,26 @@ export class annApi {
             }
         });
     }
+
+    static async search(query) {
+        const url = new URL(`${baseUrl}/api/search`);
+        url.searchParams.append('query', query);
+
+        let anns = await fetch(url);
+
+        if (!anns.ok) {
+            return [];
+        }
+
+        anns = await anns.json();
+
+        anns = anns.map(ann => {
+            ann.images = ann.PathImages.map(img => `${baseUrl}/static/images/anns/${img}`);
+            return lowerKeys(ann);
+        });
+
+        return anns;
+    }
+
+
 }

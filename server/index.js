@@ -447,7 +447,7 @@ app.delete('/api/cart/:id', checkToken, (req, res) => {
 });
 
 // FAVORITES API
-app.get('/api/favorites', checkToken, (req, res) => {
+app.get('/api/favorite', checkToken, (req, res) => {
     const emailSession = ids[req.token];
 
     const user = users.find(user => user.Email === emailSession);
@@ -467,7 +467,7 @@ app.get('/api/favorites', checkToken, (req, res) => {
     return res.json(userFavoritesAnns);
 });
 
-app.post('/api/favorites/:id', checkToken, (req, res) => {
+app.post('/api/favorite/:id', checkToken, (req, res) => {
     const emailSession = ids[req.token];
 
     const user = users.find(user => user.Email === emailSession);
@@ -496,7 +496,7 @@ app.post('/api/favorites/:id', checkToken, (req, res) => {
     return res.status(200).end();
 });
 
-app.delete('/api/favorites/:id', checkToken, (req, res) => {
+app.delete('/api/favorite/:id', checkToken, (req, res) => {
     const emailSession = ids[req.token];
 
     const user = users.find(user => user.Email === emailSession);
@@ -523,6 +523,24 @@ app.delete('/api/favorites/:id', checkToken, (req, res) => {
     userFavorites.anns.splice(userFavorites.anns.indexOf(annId), 1);
 
     return res.status(200).end();
+});
+
+// SEARCH API
+app.get('/api/search', (req, res) => {
+    const query = req.query.query;
+
+    if (!query) {
+        return res.status(400).json({ message: 'Не указан поисковый запрос' });
+    }
+
+    const queryWords = query.toLowerCase().split(' ');
+
+    const result = anns.filter(ann => {
+        const annWords = ann.Title.toLowerCase().split(' ');
+        return queryWords.every(word => annWords.includes(word));
+    });
+
+    return res.json(result);
 });
 
 /** port to listen */
