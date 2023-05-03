@@ -32,7 +32,7 @@ export class annApi {
         }
         anns = await anns.json();
 
-        if (anns) {
+        if (!anns) {
             return [];
         }
         
@@ -162,6 +162,10 @@ export class annApi {
         }
 
         anns = await anns.json();
+
+        if (!anns) {
+            return [];
+        }
 
         anns = anns.map(ann => {
             ann.images = ann.PathImages;
