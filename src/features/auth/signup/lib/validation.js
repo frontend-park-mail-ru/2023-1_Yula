@@ -6,7 +6,7 @@ export const validation = (fields) => {
         errors.login = 'Введите логин';
     }
     if (name.trim() === '') {
-        errors.firstName = 'Введите имя';
+        errors.Name = 'Введите имя';
     }
     if (phoneNumber.trim() === '') {
         errors.phoneNumber = 'Введите номер телефона';
