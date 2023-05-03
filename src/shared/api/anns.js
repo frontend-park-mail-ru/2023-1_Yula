@@ -143,5 +143,21 @@ export class annApi {
         return anns;
     }
 
+    static async getByTag(tag, pageNum) {
+        const url = new URL(`${baseUrl}/api/post/${tag}/${pageNum}`);
+        let anns = await fetch(url);
+
+        if (!anns.ok) {
+            return [];
+        }
+
+        anns = await anns.json();
+
+        anns = anns.map(ann => {
+            return lowerKeys(ann);
+        });
+
+        return anns;
+    }
 
 }

@@ -26,25 +26,34 @@ export const signupModal = (parent) => {
             form.setActions({
                 submit: async (fields) => {
                     const { accept, ...data } = fields;
-                    data['avatar'] = 'default.jpeg';
-                    let res = await userApi.signup(data);
-                    
-                    if (res.ok) {
-                        const token = await res.json();
-                        localStorage.setItem('token', token);
 
-                        let user = await userApi.getMe();
-                        store.setState('user', user);
+                    // data.avatar to base64
+                    if (data.avatar) {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(data.avatar);
+                        reader.onload = async () => {
+                            data.avatar = reader.result;
 
-                        const basket = await basketApi.getBasket();
-                        store.setState('basket', basket);
+                            let res = await userApi.signup(data);
 
-                        modal.destroy();
-                    } else {
-                        let message = await res.json(); 
-                        const error = {};
-                        error['email'] = message.message;
-                        form.showError(error);
+                            if (res.ok) {
+                                const token = await res.json();
+                                localStorage.setItem('token', token);
+
+                                let user = await userApi.getMe();
+                                store.setState('user', user);
+
+                                const basket = await basketApi.getBasket();
+                                store.setState('basket', basket);
+
+                                modal.destroy();
+                            } else {
+                                let message = await res.json();
+                                const error = {};
+                                error['email'] = message.message;
+                                form.showError(error);
+                            }
+                        };
                     }
                 },
                 validation: validation,
@@ -54,7 +63,7 @@ export const signupModal = (parent) => {
             });
 
             form.render();
-            
+
             // заполняем футер
             const existsAccountBtn = Button(modal.footer(), {
                 id: "existsAccount",
@@ -80,7 +89,7 @@ export const signupModal = (parent) => {
 
             // добавляем события
             if (actions.back) {
-                modal.setActions({back: actions.back});
+                modal.setActions({ back: actions.back });
             }
         },
 

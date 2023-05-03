@@ -199,6 +199,7 @@ export const UserPanel = (parent) => {
         // событие изменения темы
         store.subscribe('theme', (theme) => {
             for (let elem in elements) {
+                if (elem === 'elem6') continue;
                 elements[elem].changeConfig({ invert: (theme === 'light') ? false : true });
             }
 
