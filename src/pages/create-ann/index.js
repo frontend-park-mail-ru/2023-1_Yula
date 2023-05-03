@@ -60,7 +60,7 @@ export const createAnnPage = (parent, params) => {
         const user = store.getState('user');
 
         let ann;
-        if (params.id !== undefined) {
+        if (params && params.id !== undefined) {
             ann = await annApi.getById(params.id);
             console.log(ann);
 
