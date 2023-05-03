@@ -347,6 +347,16 @@ app.get('/api/post/:tag/:page', (req, res) => {
     console.log(tag, page);
     const result = anns.filter(ann => ann.Tag === tag);
     return res.json(result.slice((page - 1) * 12, page * 12));
+
+    // const result = anns.filter(ann => {
+    //     const annWords = ann.Title.toLowerCase();
+    //     const annTag = ann.Tag;
+    //     return queryWords.every(word => {
+
+    //         // return ((annWords.indexOf(word) > -1));
+    //         return ((annWords.indexOf(word) > -1) || (annTag.includes(word)));
+    //     });
+    // });
 });
 
 app.get('/api/cart', checkToken, (req, res) => {

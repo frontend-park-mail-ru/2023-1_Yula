@@ -79,6 +79,15 @@ export const Navbar = (parent) => {
             leftIcon: searchSvg,
         });
         input.render();
+        input.self().addEventListener('keypress', function (e) {
+            if ((e.key === 'Enter') && (input.field().value !== "")) {
+            //   debugger
+
+            goTo(`/search/${input.field().value}`);
+            // goTo(`/ann/${field().value}`);
+            //   searchFunct();
+            }
+        });
 
         const createAnn = Button(nav, {
             id: "createAnn",

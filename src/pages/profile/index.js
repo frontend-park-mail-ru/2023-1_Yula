@@ -29,7 +29,7 @@ export const profilePage = (parent) => {
 
         const user = await store.getState('user');
         const anns = await annApi.getFromUser(user.id);
-        console.log(anns);
+        // console.log(anns);
 
         anns.forEach(ann => {
             const annCard = AnnCard(annGroup, {

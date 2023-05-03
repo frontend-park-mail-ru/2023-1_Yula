@@ -67,15 +67,6 @@ export const Input = (parent, config = {id: ""}) => {
 
         applyActions();
 
-        self().addEventListener('keypress', function (e) {
-            if ((e.key === 'Enter') && (field().value !== "")) {
-            //   debugger
-
-            goTo(`/search/${field().value}`);
-            // goTo(`/ann/${field().value}`);
-            //   searchFunct();
-            }
-        });
     }
 
     const searchFunct = () => {
