@@ -43,6 +43,15 @@ export const SellerPanel = (parent, user) => {
         sellerPanelInfo.classList.add('seller_panel_info');
         sellerPanel.appendChild(sellerPanelInfo);
 
+        ////
+        const sellerPanelName = document.createElement('div');
+        sellerPanelName.classList.add('user_panel_element_text');
+        sellerPanelName.innerText = ((user != null) ? `${user.name}` : 'none');
+        sellerPanelName.style.alignSelf = "center";
+        sellerPanelName.style.marginLeft = "30px";
+        sellerPanelName.style.fontWeight = "bold";
+        ////
+
         const elements = {
             elem0 : Icon(sellerPanel, {
                 id: "user",
@@ -51,10 +60,10 @@ export const SellerPanel = (parent, user) => {
                 invert: user ? false : invert,
                 circular: user ? true : false,
             }),
-            elem1 : PanelElement(sellerPanel, {
-                id: 'fio',
-                text: (user != null) ? `${user.name}` : 'none',
-            }),
+            // elem1 : PanelElement(sellerPanel, {
+            //     id: 'fio',
+            //     text: (user != null) ? `${user.name}` : 'none',
+            // }),
 
         }
         
@@ -63,6 +72,8 @@ export const SellerPanel = (parent, user) => {
             elements[element].render();
         }
 
+        sellerPanel.insertAdjacentElement("beforeEnd", sellerPanelName);
+        
         // событие изменения темы
         store.subscribe('theme', (theme) => {
             for (let elem in elements) {
