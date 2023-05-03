@@ -31,6 +31,10 @@ export class annApi {
             return []
         }
         anns = await anns.json();
+
+        if (!anns) {
+            return [];
+        }
         
         anns = anns.map(ann => {
             // ann.images = ann.PathImages.map(img => `${baseUrl}/static/images/anns/${img}`);
@@ -81,7 +85,7 @@ export class annApi {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `bearerAuth ${token}`
             },
             body: JSON.stringify(upperKeys(data))
         });
@@ -94,7 +98,7 @@ export class annApi {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `bearerAuth ${token}`
             },
             body: JSON.stringify(upperKeys(data))
         });
@@ -107,7 +111,7 @@ export class annApi {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `bearerAuth ${token}`
             }
         });
     }
@@ -119,13 +123,14 @@ export class annApi {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `bearerAuth ${token}`
             }
         });
     }
 
     static async search(query) {
-        const url = new URL(`${baseUrl}/api/search/?query=${query.query}`);
+        // const url = new URL(`${baseUrl}/api/search/?query=${query.query}`);
+        const url = `/api/search?query="${query.query}"`;
         let anns = await fetch(url);
 
         if (!anns.ok) {
@@ -133,6 +138,10 @@ export class annApi {
         }
 
         anns = await anns.json();
+
+        if (!anns) {
+            return [];
+        }
 
         anns = anns.map(ann => {
             // ann.images = ann.PathImages.map(img => `${baseUrl}/static/images/anns/${img}`);
@@ -144,7 +153,8 @@ export class annApi {
     }
 
     static async getByTag(tag, pageNum) {
-        const url = new URL(`${baseUrl}/api/post/${tag}/${pageNum}`);
+        // const url = new URL(`${baseUrl}/api/post/${tag}/${pageNum}`);
+        const url = `/api/post/${tag}/${pageNum}`;
         let anns = await fetch(url);
 
         if (!anns.ok) {
@@ -153,7 +163,12 @@ export class annApi {
 
         anns = await anns.json();
 
+        if (!anns) {
+            return [];
+        }
+
         anns = anns.map(ann => {
+            ann.images = ann.PathImages;
             return lowerKeys(ann);
         });
 

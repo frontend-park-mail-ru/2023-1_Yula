@@ -1,15 +1,12 @@
 export const validation = (fields) => {
-    let {login, firstName, secondName, phoneNumber, email, password, passwordCheck} = fields;
+    let {login, name, phoneNumber, email, password, passwordCheck} = fields;
     const errors = {};
 
     if (login.trim() === '') {
         errors.login = 'Введите логин';
     }
-    if (firstName.trim() === '') {
-        errors.firstName = 'Введите имя';
-    }
-    if (secondName.trim() === '') {
-        errors.secondName = 'Введите фамилию';
+    if (name.trim() === '') {
+        errors.Name = 'Введите имя';
     }
     if (phoneNumber.trim() === '') {
         errors.phoneNumber = 'Введите номер телефона';
@@ -36,7 +33,6 @@ export const validation = (fields) => {
     if (phoneNumber.length !== 10) {
         errors.phoneNumber = 'Номер телефона должен содержать 10 цифр';
     }
-
 
     if (passwordCheck !== password) {
         errors.passwordCheck = 'Пароли должны совпадать';

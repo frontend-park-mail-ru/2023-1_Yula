@@ -252,14 +252,6 @@ app.put('/api/post/:id', checkToken, (req, res) => {
 
     let { Title, Description, Price, Tag, PathImages, Close } = req.body;
 
-    // типа сохранение файла
-    if (PathImages) {
-        PathImages = PathImages.map(img => {
-            const path = `0.jpeg`;
-            return path;
-        });
-    }
-
     const newAnn = { Title, Description, Price, Tag, PathImages, Close };
     
     anns[anns.indexOf(ann)] = { ...ann, ...newAnn };
@@ -345,7 +337,7 @@ app.get('/api/post/:tag/:page', (req, res) => {
     const tag = req.params.tag;
     let page = req.params.page;
     console.log(tag, page);
-    const result = anns.filter(ann => ann.Tag === tag);
+    const result = anns.filter(ann => ann.Tag.includes(tag) && !ann.Close);
     return res.json(result.slice((page - 1) * 12, page * 12));
 
     // const result = anns.filter(ann => {

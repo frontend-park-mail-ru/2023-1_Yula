@@ -31,7 +31,7 @@ export class favoritesApi {
         const response = await fetch(`${baseUrl}/api/favorite`, {
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
-                Authorization: `Bearer ${token}`
+                'Authorization': `bearerAuth ${token}`
             }
         });
 
@@ -39,6 +39,10 @@ export class favoritesApi {
             return []
         } else {
             const anns =  await response.json();
+
+            if (!anns) {
+                return [];
+            }
 
             return anns.map(ann => {
                 // ann.images = ann.PathImages.map(img => `${baseUrl}/static/images/anns/${img}`);
@@ -55,7 +59,7 @@ export class favoritesApi {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
-                Authorization: `Bearer ${token}`
+                Authorization: `bearerAuth ${token}`
             }
         });
     }
@@ -67,7 +71,7 @@ export class favoritesApi {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
-                Authorization: `Bearer ${token}`
+                Authorization: `bearerAuth ${token}`
             },
         });
     }
