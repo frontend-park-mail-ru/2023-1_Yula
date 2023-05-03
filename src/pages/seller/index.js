@@ -6,7 +6,7 @@ import { annApi } from "@shared/api/anns";
 import store from "@modules/state-manager.js";
 
 import { SellerPanel } from "@/widgets/sellerpanel/SellerPanel";
-
+import { AdverticementPanel } from "@/widgets/adverticementpanel/AdverticementPanel";
 import './layout.scss';
 
 export const sellerPage = (parent, params) => {
@@ -57,20 +57,20 @@ export const sellerPage = (parent, params) => {
         mainPageContentAnns.classList.add('seller-page__anns');
         mainPageContent.appendChild(mainPageContentAnns);
 
-         // Заглавие для объявлений
-         const annsTitle = document.createElement('div');
-         annsTitle.classList.add('seller-page__text');
-         mainPageContentAnns.appendChild(annsTitle);
-         annsTitle.innerText = "Продукты";
- 
-         // Заполнение объявлениями
-         const annGroup = document.createElement('div');
-         annGroup.classList.add('announcement-group');
-         mainPageContentAnns.appendChild(annGroup);
- 
-         const anns = await annApi.getAll();
- 
-         for (let ann in anns) {
+        // Заглавие для объявлений
+        const annsTitle = document.createElement('div');
+        annsTitle.classList.add('seller-page__text');
+        mainPageContentAnns.appendChild(annsTitle);
+        annsTitle.innerText = "Продукты";
+
+        // Заполнение объявлениями
+        const annGroup = document.createElement('div');
+        annGroup.classList.add('announcement-group');
+        mainPageContentAnns.appendChild(annGroup);
+
+        const anns = await annApi.getAll();
+
+        for (let ann in anns) {
             if (anns[ann].userId == user.id) {
                 const annCard = AnnCard(annGroup, {
                     tags: anns[ann].tags,
@@ -82,7 +82,8 @@ export const sellerPage = (parent, params) => {
                 });
                 annCard.render();
             }
-         }
+        }
+        ///////////////////////////////////////////////
     }
 
     headerFilling();
