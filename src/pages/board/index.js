@@ -121,7 +121,7 @@ export const boardPage = (parent) => {
         const annsTitle = document.createElement('div');
         annsTitle.classList.add('main-page__text');
         mainPageContentAnns.appendChild(annsTitle);
-        annsTitle.innerText = "Популярные объявления";
+        annsTitle.innerText = "Новые объявления";
 
         // Заполнение объявлениями
         const annGroup = document.createElement('div');
