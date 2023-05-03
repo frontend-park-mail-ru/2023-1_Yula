@@ -85,7 +85,8 @@ export const CreateAnn = (parent, config) => {
 
         form.setActions({
             submit: async (fields) => {
-                fields.image = imges;
+                // fields.image = imges;
+                fields.pathImages = imges;
                 fields.price = fields.price.replace(/\s/g, '');
 
                 const data = {
@@ -101,7 +102,7 @@ export const CreateAnn = (parent, config) => {
                 }
 
                 if (res.ok) {
-                    goTo('/seller');
+                    goTo('/profile');
 
                     Alert(document.body, {
                         id: "createAnn",
