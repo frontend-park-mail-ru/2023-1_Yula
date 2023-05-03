@@ -136,7 +136,7 @@ export const boardPage = (parent) => {
                 price: ann.price,
                 images: ann.images,
                 link: `/ann/${ann.postId}`,
-                viewCount: ann.views, // TODO: сделать нормальный подсчет просмотров
+                views: ann.views,
             });
             annCard.render();
         });

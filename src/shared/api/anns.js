@@ -31,6 +31,10 @@ export class annApi {
             return []
         }
         anns = await anns.json();
+
+        if (anns) {
+            return [];
+        }
         
         anns = anns.map(ann => {
             // ann.images = ann.PathImages.map(img => `${baseUrl}/static/images/anns/${img}`);

@@ -70,7 +70,7 @@ export const announcementPage = (parent, params) => {
             close: ann.close,
             sellerName: seller.name,
             sellerAvatar: seller.avatar,
-            sellerId: seller.id,
+            sellerId: ann.userId,
         });
         content.appendChild(annCharacteristics);
 
