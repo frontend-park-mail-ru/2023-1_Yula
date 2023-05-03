@@ -1,4 +1,4 @@
-import { boardPage, profilePage, bucketPage, announcementPage, sellerPage, createAnnPage, searchPage } from "@pages/index";
+import { boardPage, profilePage, bucketPage, announcementPage, sellerPage, createAnnPage, searchPage, searchTagPage } from "@pages/index";
 import { Router } from "./router";
 import { setTheme } from "@features/theme";
 import { defaultTheme } from "@shared/config";
@@ -18,6 +18,7 @@ export const App = (parent) => {
     router.register('/create', createAnnPage, 'create-ann', true);
     router.register('/edit/{id}', createAnnPage, 'edit-ann', true);
     router.register('/search/{query}', searchPage, 'search-page', false);
+    router.register('/tag/{query}', searchTagPage, 'search-tag-page', false);
 
     return {
         render: () => {

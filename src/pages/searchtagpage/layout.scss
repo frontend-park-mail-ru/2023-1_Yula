@@ -1,0 +1,24 @@
+.search-page {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 300px 1fr;
+  }
+
+.search-page__advertise{
+    grid-column: 1;
+}
+
+.search-page__anns{
+    grid-column: 2;
+}
+
+.search-page__text {
+    align-self: center;
+    justify-content: center;
+    font-family: 'Roboto VK';
+    font-size: 26px;
+    font-weight: bold;
+    line-height: 18px;
+    text-align: left;
+    color: var(--fg-color);
+}
