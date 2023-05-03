@@ -81,7 +81,7 @@ export class annApi {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `bearerAuth ${token}`
             },
             body: JSON.stringify(upperKeys(data))
         });
@@ -94,7 +94,7 @@ export class annApi {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `bearerAuth ${token}`
             },
             body: JSON.stringify(upperKeys(data))
         });
@@ -107,7 +107,7 @@ export class annApi {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `bearerAuth ${token}`
             }
         });
     }
@@ -119,7 +119,7 @@ export class annApi {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `bearerAuth ${token}`
             }
         });
     }

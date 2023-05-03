@@ -31,7 +31,7 @@ export class basketApi {
         const response = await fetch(`${baseUrl}/api/cart`, {
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
-                Authorization: `Bearer ${token}`
+                'Authorization': `bearerAuth ${token}`
             }
         });
 
@@ -55,7 +55,7 @@ export class basketApi {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
-                Authorization: `Bearer ${token}`
+                'Authorization': `bearerAuth ${token}`
             }
         });
     }
@@ -67,7 +67,7 @@ export class basketApi {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
-                Authorization: `Bearer ${token}`
+                'Authorization': `bearerAuth ${token}`
             },
         });
     }
@@ -79,7 +79,7 @@ export class basketApi {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
-                Authorization: `Bearer ${token}`
+                'Authorization': `bearerAuth ${token}`
             }
         });
     }

@@ -37,7 +37,7 @@ export class userApi {
         let user = await fetch(`${baseUrl}/api/user`, {
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
-                'Authorization': `bearer ${token}`
+                'Authorization': `bearerAuth ${token}`
             }
         });
 
