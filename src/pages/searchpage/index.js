@@ -14,6 +14,8 @@ export const searchPage = (parent, query) => {
     const header = document.createElement('header');
     const content = document.createElement('main');
 
+    console.log("query is :  ", query);
+
     const headerFilling = () => {
         const navbar = Navbar(header);
         const authWidget = AuthWidget(parent);

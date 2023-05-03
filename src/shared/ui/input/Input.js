@@ -1,3 +1,5 @@
+import { goTo } from "@shared/lib/history";
+
 import './Input.scss';
 import template from './Input.handlebars';
 
@@ -66,9 +68,12 @@ export const Input = (parent, config = {id: ""}) => {
         applyActions();
 
         self().addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-              console.log(field().value);
-              searchFunct();
+            if ((e.key === 'Enter') && (field().value !== "")) {
+            //   debugger
+            console.log(`/search/${field().value}`);
+            goTo(`/search/${field().value}`);
+            // goTo(`/ann/${field().value}`);
+            //   searchFunct();
             }
         });
     }

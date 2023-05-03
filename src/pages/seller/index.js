@@ -77,7 +77,7 @@ export const sellerPage = (parent, params) => {
                     title: anns[ann].title,
                     price: anns[ann].price,
                     images: anns[ann].images,
-                    link: `/ann/${anns[ann].id}`,
+                    link: `/ann/${anns[ann].postId}`,
                     viewCount: 10,
                 });
                 annCard.render();
