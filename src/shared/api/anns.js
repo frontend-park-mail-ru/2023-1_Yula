@@ -154,6 +154,7 @@ export class annApi {
         anns = await anns.json();
 
         anns = anns.map(ann => {
+            ann.images = ann.PathImages;
             return lowerKeys(ann);
         });
 

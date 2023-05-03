@@ -80,7 +80,9 @@ export const searchTagPage = (parent, query) => {
         annGroup.classList.add('announcement-group');
         mainPageContentAnns.appendChild(annGroup);
 
-        const anns = await annApi.search(query);
+        // const anns = await annApi.search(query);
+        const anns = await annApi.getByTag(query.query, 1);
+        console.log(anns);
 
         anns.forEach(ann => {
             const annCard = AnnCard(annGroup, {
@@ -88,7 +90,7 @@ export const searchTagPage = (parent, query) => {
                 price: ann.price,
                 images: ann.images,
                 link: `/ann/${ann.postId}`,
-                viewCount: ann.views, // TODO: сделать нормальный подсчет просмотров
+                viewCount: ann.views,
             });
             annCard.render();
         });
