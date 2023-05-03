@@ -69,7 +69,6 @@ export const boardPage = (parent) => {
             adverticements[adv].render();
         }
 
-
         // Заглавие для категорий
         const categoryTitle = document.createElement('div');
         categoryTitle.classList.add('main-page__text');
