@@ -36,9 +36,13 @@ export class basketApi {
         });
 
         if (!response.ok) {
-            return []
+            return [];
         } else {
             const anns =  await response.json();
+
+            if (!anns) {
+                return [];
+            }
 
             return anns.map(ann => {
                 // ann.images = ann.PathImages.map(img => `${baseUrl}/static/images/anns/${img}`);

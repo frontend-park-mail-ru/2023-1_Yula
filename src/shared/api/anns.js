@@ -125,7 +125,8 @@ export class annApi {
     }
 
     static async search(query) {
-        const url = new URL(`${baseUrl}/api/search/?query=${query.query}`);
+        // const url = new URL(`${baseUrl}/api/search/?query=${query.query}`);
+        const url = `/api/search/?query=${query.query}`;
         let anns = await fetch(url);
 
         if (!anns.ok) {
@@ -144,7 +145,8 @@ export class annApi {
     }
 
     static async getByTag(tag, pageNum) {
-        const url = new URL(`${baseUrl}/api/post/${tag}/${pageNum}`);
+        // const url = new URL(`${baseUrl}/api/post/${tag}/${pageNum}`);
+        const url = `/api/post/${tag}/${pageNum}`;
         let anns = await fetch(url);
 
         if (!anns.ok) {
