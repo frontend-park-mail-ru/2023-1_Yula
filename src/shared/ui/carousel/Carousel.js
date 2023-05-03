@@ -9,6 +9,7 @@ import template from './Carousel.handlebars';
  * @param {number} config.visibleCount - количество видимых изображений
  * @param {number} config.current - индекс текущего изображения
  * @param {number} config.interval - интервал смены изображений
+ * @param {boolean} config.large - карусель большого размера
  * @param {Function} config.onSlideChange - функция, вызываемая при изменении изображения
  * @returns 
  */
@@ -46,13 +47,6 @@ export const Carousel = (parent, config) => {
         // смена изображения
         const slider = self().querySelector('.carousel__slider');
         slider.style.transform = `translateX(-${config.current * 100}%)`;
-
-        // смена активной миниатюры
-        const thumbnails = self().querySelector('.carousel__thumbnails');
-        thumbnails.querySelectorAll('.carousel__thumbnail').forEach((thumbnail) => {
-            thumbnail.classList.remove('carousel__thumbnail_active');
-        });
-        thumbnails.querySelector(`[data-index="${config.current}"]`).classList.add('carousel__thumbnail_active');
     }
 
     const prevSlide = () => {
@@ -65,23 +59,12 @@ export const Carousel = (parent, config) => {
     }
 
     const applyActions = () => {
-        // смена слайда на правую и левую часть изображения
+        // смена слайда при промотке мыши вдоль слайдера
         const slider = self().querySelector('.carousel__slider');
-        slider.addEventListener('click', (event) => {
+        slider.addEventListener('mousemove', (event) => {
             if (event.target.classList.contains('carousel__slide')) {
-                if (event.offsetX < event.target.offsetWidth / 2) {
-                    prevSlide();
-                } else {
-                    nextSlide();
-                }
-            }
-        });
-        
-        // смена слайда по клику на миниатюру
-        const thumbnails = self().querySelector('.carousel__thumbnails');
-        thumbnails.addEventListener('click', (event) => {
-            if (event.target.classList.contains('carousel__thumbnail')) {
-                slideTo(+event.target.dataset.index);
+                let index = parseInt(event.offsetX / event.target.offsetWidth * config.images.length);
+                slideTo(index);
             }
         });
 

@@ -1,47 +1,32 @@
 [
     {
-        "id": 0,
-        "firstName": "Азат",
-        "secondName": "Билалов",
-        "patronimic": "Каримович",
+        "id": "c4a760a8-dbcf-4d53-bf13-1451c8e7723f",
+        "name": "Азат Билалов",
         "login": "Azat",
         "email": "az.bilalov@mail.ru",
         "password": "123456",
         "passwordCheck": "123456",
-        "avatar": "0.jpeg",
-        "phoneNumber" : "+7 999 999 99 77",
-        "anns": [ 0, 1, 2 ],
-        "basket": [],
-        "purchs": [ 3, 4 ]
+        "pathtoavatar": "0.jpeg",
+        "phoneNumber" : "+79999999977"
     },
     {
-        "id": 1,
-        "firstName": "Тимур",
-        "secondName": "Аюшиев",
-        "patronimic": "Олегович",
+        "id": "692e1b66-8c50-470d-a05d-9c524c8a4107",
+        "name": "Тимур Аюшиев",
         "login": "Timur",
         "email": "tayushiev@gmail.com",
         "password": "1234578",
         "passwordCheck": "1234578",
-        "avatar": "default.jpg",
-        "phoneNumber" : "+7 999 999 44 99",
-        "anns": [ 3, 4 ],
-        "basket": [ 5 ],
-        "purchs": [ 1, 2 ]
+        "pathtoavatar": "1.png",
+        "phoneNumber" : "+79999994499"
     },
     {
-        "id": 2,
-        "firstName": "Иван",
-        "secondName": "Иванов",
-        "patronimic": "Иванович",
+        "id": "1c2736c8-74f0-4630-89eb-53be2e1748a7",
+        "name": "Иван",
         "login": "Tester",
         "email": "test@mail.ru",
         "password": "000000",
         "passwordCheck": "000000",
-        "avatar": "default.jpg",
-        "phoneNumber" : "+7 999 555 99 99",
-        "anns": [],
-        "basket": [2],
-        "purchs": [ 0, 1 ]
+        "pathtoavatar": "default.jpg",
+        "phoneNumber" : "+79995559999"
     }
 ]

@@ -1,3 +1,7 @@
+.announcement-card__link {
+    text-decoration: none;
+}
+
 .announcement-card {
     background: var(--bg-color-strong);
     box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.08), 0px 4px 16px rgba(0, 0, 0, 0.08);
@@ -39,33 +43,32 @@
 
 .announcement-card__content {
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
     padding: 8px 12px 12px 12px;
     align-items: center;
     background-color: var(--bg-color-strong);
     border-radius: 10px;
 }
 
-.announcement-card__category {
-    text-transform: uppercase;
-    font-size: 11px;
-    font-family: "Roboto VK Bold";
-    color: var(--secondary-color);
-}
-
 .announcement-card__title {
     font-size: 16px;
+    text-decoration: none;
     color: var(--fg-color);
-    font-family: "Roboto VK Bold";
+    font-family: "Roboto VK";
 }
 
 .announcement-card__sale {
-    font-family: 'Roboto VK';
+    font-family: 'Roboto VK bold';
     font-style: normal;
     font-weight: 400;
-    font-size: 15px;
+    font-size: 20px;
     color: var(--fg-color);
 }
+
+// .announcement-card__view-count {
+
+// }
 
 .announcement-group {
     display: grid;

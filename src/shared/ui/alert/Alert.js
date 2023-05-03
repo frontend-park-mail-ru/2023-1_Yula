@@ -11,6 +11,7 @@ import template from './Alert.handlebars';
  * @param {string} config.title
  * @param {string} config.text 
  * @param {boolean} config.textColor
+ * @param {timer} config.timer
  * @returns 
  */
 export const Alert = (parent, config) => {
@@ -25,7 +26,11 @@ export const Alert = (parent, config) => {
     config.textColor = config.textColor || "white";
     config.autofocus = config.autofocus || false;
 
-    const actions = {};
+    const actions = {
+        close: () => {
+            destroy();
+        }
+    };
 
     const self = () => {
         return parent.querySelector('#' + config.id);
@@ -44,16 +49,21 @@ export const Alert = (parent, config) => {
     }
 
     const applyActions = () => {
-        if (self()) {
-            for (let action in actions) {
-                self().addEventListener(action, actions[action]);
-            }
+        if (actions.close) {
+            self().querySelector('.alert__close-btn').addEventListener('click', actions.close);
+        }
+
+        if (config.timer) {
+            setTimeout(() => {
+                destroy();
+            }, config.timer);
         }
     }
 
     const render = () => {
         if (self()) {
-            throw new Error(`Объект с id="${config.id}" уже есть на странице`);
+            // throw new Error(`Объект с id="${config.id}" уже есть на странице`);
+            return;
         }
 
         const templ = template(config).trim();

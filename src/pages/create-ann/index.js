@@ -37,17 +37,13 @@ export const createAnnPage = (parent) => {
             priceChange: (e) => {
                 content.querySelector('.announcement-preview__price').innerText = e.target.value;
             },
-            addressChange: (e) => {
-                content.querySelector('.announcement-preview__address').innerText = e.target.value;
-            },
             descriptionChange: (e) => {
                 content.querySelector('.announcement-preview__description').innerText = e.target.value;
             },
-            categoryChange: (e) => {
-                content.querySelector('.announcement-preview__category').innerText = e.target.value;
+            tagsChange: (e) => {
+                content.querySelector('.announcement-preview__tags').innerText = e.target.value;
             },
             imagesChange: (images) => {
-                annCarousel.style.display = 'block';
                 carousel.changeConfig({ images });
             }
         });
@@ -60,15 +56,13 @@ export const createAnnPage = (parent) => {
         contentPreview.insertAdjacentHTML('beforeend', annPreview({
             title: 'Картина Ван Гога',
             price: '1 000 000',
-            address: 'г.Москва...',
             description: 'Картина славится своей...',
-            category: 'Живопись',
+            tags: 'Живопись',
             images: []
         }));
 
         const annCarousel = document.createElement('div');
         annCarousel.classList.add('announcement-carousel');
-        annCarousel.style.display = 'none';
         annCarousel.style.maxWidth = '500px';
         content.appendChild(annCarousel);
         const carousel = Carousel(annCarousel, { images: [] });

@@ -6,7 +6,7 @@ import template from './Divider.handlebars';
  * @param {HTMLElement} parent - родительский элемент
  * @param {Object} config - конфигурация
  * @param {string} config.id - id элемента
- * @param {string} config.class - путь до изображения
+ * @param {string} config.class - class
  * @returns 
  * @example
  * const elem = UserPanelElement(document.body, {

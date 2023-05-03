@@ -1,6 +1,6 @@
-import { Icon } from "@shared/ui/index.js";
+import { Button, Icon, Alert} from "@shared/ui";
 import { goTo } from "@shared/lib/history";
-import store from "@modules/state-manager.js";
+import store from "@modules/state-manager";
 
 import createAnnSvg from 'assets/icons/create-ann.svg';
 import userSvg from 'assets/icons/user.svg';
@@ -46,27 +46,55 @@ export const MenuPanelDesktop = (parent) => {
         const user = store.getState('user');
 
         const Icons = {
-            createAnn: Icon(menu, {
-                id: "createAnn",
-                src: createAnnSvg,
+            // Icon(menu, {
+            //     id: "createAnn",
+            //     src: createAnnSvg,
+            //     size: "large",
+            //     direction: "row",
+            //     text: "Создать объявление",
+            //     textColor: "fg",
+            //     // invert: invert,
+            //     actions: {
+            //         'click': () => {
+            //             if (store.getState('user')) {
+            //                 goTo('/create');
+            //             } else {
+            //                 actions.login();
+
+            //                 Alert(parent, {
+            //                     title: "Упс!",
+            //                     text: "Для создания объявления нужна авторизация",
+            //                     timer: 3000,
+            //                 }).render();
+            //             }
+            //         }
+            //     }
+            // }),
+            ///////////////////////////////////////////
+            basket: Icon(menu, {
+                id: "basket",
+                src: basketSvg,
                 size: "large",
-                direction: "row",
-                text: "Создать объявление",
-                textColor: "fg",
                 invert: invert,
                 actions: {
                     'click': () => {
                         if (store.getState('user')) {
-                            goTo('/create');
+                            goTo('/bucket');
                         } else {
                             actions.login();
+
+                            Alert(parent, {
+                                title: "Упс!",
+                                text: "Для просмотра корзины нужна авторизация",
+                                timer: 3000,
+                            }).render();
                         }
                     }
                 }
             }),
             user: Icon(menu, {
                 id: "user",
-                src: user ? user.avatar : userSvg,
+                src: user ? user.pathtoavatar : userSvg,
                 size: "large",
                 invert: user ? false : invert,
                 link: user ? '/profile' : null,
@@ -74,38 +102,6 @@ export const MenuPanelDesktop = (parent) => {
                 actions: {
                     'click': () => {
                         if (!store.getState('user')) {
-                            actions.login();
-                        }
-                    }
-                }
-            }),
-            basket: Icon(menu, {
-                id: "basket",
-                src: basketSvg,
-                size: "large",
-                invert: invert,
-                link: '/bucket',
-                actions: {
-                    'click': () => {
-                        if (store.getState('user')) {
-                            console.log("перенаправление...");
-                        } else {
-                            actions.login();
-                        }
-                    }
-                }
-            }),
-            seller: Icon(menu, {
-                id: "seller",
-                src: sellerSvg,
-                size: "large",
-                invert: invert,
-                link: '/seller',
-                actions: {
-                    'click': () => {
-                        if (store.getState('user')) {
-                            goTo('/seller');
-                        } else {
                             actions.login();
                         }
                     }
@@ -122,7 +118,7 @@ export const MenuPanelDesktop = (parent) => {
             if (user) {
                 Icons.user.changeConfig({
                     circular: true,
-                    src: user.avatar,
+                    src: user.pathtoavatar,
                     link: `/profile`,
                     invert: false,
                 });

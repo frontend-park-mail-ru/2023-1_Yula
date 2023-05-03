@@ -51,7 +51,7 @@ export const Input = (parent, config = {id: ""}) => {
 
     const render = () => {
         if (self()) {
-            throw new Error(`Объект с id="${config.id}" уже есть на странице`);
+            self().remove();
         }
 
         parent.insertAdjacentHTML("beforeEnd", template(config));

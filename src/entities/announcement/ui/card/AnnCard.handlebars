@@ -1,13 +1,9 @@
-<div class="announcement-card">
-    {{!-- <div class="announcement-card__img">
-        <img src="{{src}}" alt="">
-    </div> --}}
-    <div class="announcement-card__carousel">
-        
+<a class="announcement-card__link" href="{{link}}">
+    <div class="announcement-card">
+        <div class="announcement-card__carousel"></div>
+        <div class="announcement-card__content">
+            <div class="announcement-card__title">{{title}}</div>
+            <div class="announcement-card__sale">{{price}} ₽</div>
+        </div>
     </div>
-    <div class="announcement-card__content">
-        <div class="announcement-card__category">{{category}}</div>
-        <a href="{{link}}" class="announcement-card__title">{{title}}</a>
-        <div class="announcement-card__sale">{{price}} ₽</div>
-    </div>
-</div>
+</a>

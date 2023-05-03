@@ -24,7 +24,10 @@ export const signupModal = (parent) => {
 
             form.setActions({
                 submit: async (fields) => {
-                    let res = await userApi.signup(fields);
+                    const { accept, ...data } = fields;
+                    data['avatar'] = 'default.jpeg';
+                    console.log(data);
+                    let res = await userApi.signup(data);
                     
                     if (res.ok) {
                         let user = await userApi.getMe();
@@ -33,7 +36,7 @@ export const signupModal = (parent) => {
                     } else {
                         let message = await res.json(); 
                         const error = {};
-                        error['email'] = message.error;
+                        error['email'] = message.message;
                         form.showError(error);
                     }
                 },

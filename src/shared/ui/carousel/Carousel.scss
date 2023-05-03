@@ -10,7 +10,7 @@
         height: 100%;
         white-space: nowrap;
         font-size: 0; // убираем пробелы между блоками
-        transition: transform 0.3s ease;
+        // transition: transform 0.3s ease;
     }
 
     &__slide {
@@ -20,38 +20,5 @@
         display: inline-block;
         background-size: cover;
         background-position: center;
-    }
-
-    &__thumbnails {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        margin: auto;
-        width: 80%;
-        height: 50px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transition: opacity 0.7s ease;
-        opacity: 0;
-    }
-
-    &:hover &__thumbnails {
-        opacity: 1;
-    }
-
-    &__thumbnail {
-        display: inline-block;
-        width: 40px;
-        height: 40px;
-        margin-right: 10px;
-        background-size: cover;
-        background-position: center;
-        cursor: pointer;
-
-        &_active {
-            border: 2px solid #0074d9;
-        }
     }
 }

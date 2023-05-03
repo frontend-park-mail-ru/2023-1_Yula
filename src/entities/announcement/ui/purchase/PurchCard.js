@@ -1,13 +1,16 @@
 import './PurchCard.scss';
 import template from './PurchCard.handlebars';
-import { Button } from '../../../../shared/ui';
+import { Icon } from '@shared/ui';
+import store from "@modules/state-manager";
+import crossSvg from "assets/icons/cross.svg";
 
-export const PurchCard = (parent, config = {id: ""}) => {
+export const PurchCard = (parent, config = { id: "" }) => {
+    const purchId = config.id;
     config.id += "PurchCard";
     const actions = {};
-    
+
     const self = () => {
-        return document.getElementById(config.id);
+        return parent.querySelector(`#${config.id}`);
     }
 
     const destroy = () => {
@@ -31,7 +34,31 @@ export const PurchCard = (parent, config = {id: ""}) => {
     }
 
     const render = () => {
-        parent.insertAdjacentHTML("beforeEnd", template(config));
+        parent.insertAdjacentHTML("beforeEnd", template({...config, href: `/ann/${purchId.slice(3)}`}));
+
+        const closeButton = self().querySelector('.purchase-card__close');
+
+        const deleteIcon = Icon(closeButton, {
+            id: "deletePurchase",
+            src: crossSvg,
+            size: "large",
+            direction: "row",
+            invert: store.getState('theme') === 'dark',
+            actions: {
+                'click' : () => {
+                    localStorage.removeItem(purchId);
+                    store.setState('bucket', 'clearOne');
+                    self().remove();
+                }
+            }
+        });
+        deleteIcon.render();
+
+        store.subscribe('theme', (newTheme) => {
+            deleteIcon.changeConfig({invert: newTheme === 'dark'});
+        });
+
+        applyActions();
     }
 
     return {

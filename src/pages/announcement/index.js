@@ -1,4 +1,4 @@
-import { Carousel, Icon } from "@shared/ui";
+import { Carousel, Icon, Button, Alert } from "@shared/ui";
 import { Navbar } from "@widgets/navbar";
 import { AuthWidget } from "@widgets/auth";
 import { annApi } from "@shared/api/anns";
@@ -42,8 +42,6 @@ export const announcementPage = (parent, params) => {
         content.appendChild(annCarousel);
 
         const ann = await annApi.getById(params.id);
-        // debugger
-        const annSeller = await annApi.getAnnSellerByAnnId(params.id);
 
         const carousel = Carousel(annCarousel, { images: ann.images });
         carousel.render();
@@ -58,34 +56,60 @@ export const announcementPage = (parent, params) => {
         const buyIcon = Icon(annCharacteristics, {
             id: "buy",
             src: basketSVG,
-            text: 'Купить',
+            text: 'В корзину',
             textColor: 'fg',
             size: 'large',
             direction: 'row',
             invert: store.getState('theme') === 'dark',
+            actions: {
+                'click': () => {
+                    if (!localStorage.getItem(`ann${ann.id}`)) {
+                        localStorage.setItem(`ann${ann.id}`, JSON.stringify(ann));
+
+                        Alert(parent, {
+                            id: 'add-to-cart',
+                            title: 'Успешно',
+                            text: 'Товар добавлен в корзину',
+                            timer: 2000,
+                        }).render();
+                    } else {
+                        Alert(parent, {
+                            id: 'add-to-cart',
+                            title: 'Неудача',
+                            text: 'Товар уже в корзине',
+                            timer: 2000,
+                        }).render();
+                    }
+                }
+            }
         });
         buyIcon.render();
-        buyIcon.self().style.alignSelf = 'flex-end';
 
         const userIcon = Icon(annCharacteristics, {
             id: "user",
             src: userSVG,
-            text: 'Продавец',
+            text: 'Профиль продаца',
             textColor: 'fg',
             size: 'large',
             direction: 'row',
             invert: store.getState('theme') === 'dark',
-            link: `/sellers/${annSeller.id}`,
+            link: `/sellers/${ann.userId}`,
         });
         userIcon.render();
-        userIcon.self().style.alignSelf = 'flex-end';
 
-        store.subscribe('theme', (theme) => {
-            buyIcon.changeConfig({
-                invert: theme === 'dark',
-            });
-            buyIcon.self().style.alignSelf = 'flex-end';
+        const editBtn = Button(annCharacteristics, {
+            id: "edit",
+            type: "Submit",
+            text: "Изменить",
         });
+
+        editBtn.setActions({
+            click: () => { console.log("asd")},
+        })
+        
+        editBtn.render();
+
+        store.subscribe('theme', (theme) => buyIcon.changeConfig({invert: theme === 'dark'}));
     }
 
     headerFilling();

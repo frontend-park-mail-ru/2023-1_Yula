@@ -1,15 +1,19 @@
 .create-ann-content {
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
-    padding: 1vw;
+    padding-left: 2%;
+    padding-right: 2%;
 }
 
 .announcement-carousel {
     grid-column: span 1;
     aspect-ratio: 1/1;
-    // max-width: 500px;
-
+    border-radius: 10px;
+    
+    & > .carousel {
+        border-radius: 10px;
+    }
 }
 
 .announcement-preview {
@@ -27,9 +31,28 @@
         color: var(--fg-color);
     }
 
-    &__* {
+    &__description {
+        font-weight: 500;
+        font-family: 'Roboto VK';
+        font-size: 14px;
+        line-height: 18px;
+        color: var(--fg-color-strong);
+        vertical-align: top;
+    }
+
+    &__price {
+        font-weight: 500;
+        font-family: 'Roboto VK';
+        font-size: 14px;
+        line-height: 18px;
+        color: var(--fg-color-strong);
+        vertical-align: top;
+    }
+
+    &__tags {
         font-weight: 500;
         font-size: 14px;
+        font-family: 'Roboto VK';
         line-height: 18px;
         color: var(--fg-color-strong);
         vertical-align: top;
@@ -37,6 +60,10 @@
 
     &__key {
         color: var(--fg-color-lite);
+        font-size: 14px;
         text-align: end;
+        vertical-align: top;
+        font-family: 'Roboto VK';
+        font-style: italic;
     }
 }
