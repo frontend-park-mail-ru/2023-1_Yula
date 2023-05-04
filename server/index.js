@@ -4,6 +4,7 @@ const cookie = require('cookie-parser');
 const morgan = require('morgan');
 const path = require('path');
 const fs = require('fs');
+const jwt = require('jsonwebtoken')
 
 const app = express();
 
@@ -42,11 +43,13 @@ const checkToken = (req, res, next) => {
 app.get('/api/user', checkToken, (req, res) => {
     const emailSession = ids[req.token];
 
-    const user = users.find(user => user.Email === emailSession);
+    let user = users.find(user => user.Email === emailSession);
 
     if (!emailSession || !user) {
         return res.status(401).json({ message: 'Пользователь не найден' });
     }
+
+    delete user.id;
 
     return res.json({ ...user });
 });
@@ -69,8 +72,6 @@ app.post('/api/user', (req, res) => {
         return res.status(400).json({ message: 'Пользователь уже существует' });
     }
 
-    console.log(req.body);
-
     const user = {
         ...req.body,
         ID: 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -80,7 +81,7 @@ app.post('/api/user', (req, res) => {
         })
     };
 
-    const token = Math.random().toString(36).substring(2);
+    const token = jwt.sign({ id: user.id }, 'secret');
     ids[token] = user.Email;
     users.push(user);
 
@@ -166,7 +167,9 @@ app.post('/api/auth/login', (req, res) => {
     }
 
     // генерируем токен
-    const token = Math.random().toString(36).substring(2);
+    // const token = jwt.sign({ id: user.id }, 'signature');
+    const payload = Buffer.from(JSON.stringify({ id: user.ID })).toString('base64');
+    const token = `eyJhbGciOiJFUzI1NiIsImtpZCI6ImtleS1pZCIsInR5cCI6IkpXVCJ9.${payload}.HEwMtMk-X-0zpliKoyo2FO4bf8R4ZQ_k5rZVI_l0T2HQpAWCypd4enH1thWOfOVaEypSVZ5murpM_kOE0CEz0g`;
     ids[token] = user.Email;
 
     return res.status(200).json(token);

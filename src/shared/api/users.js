@@ -31,6 +31,16 @@ function upperKeys(obj) {
     return newObj;
 }
 
+function parseJwt (token) {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+} 
+
 export class userApi {
     static async getMe() {
         const token = localStorage.getItem('token');
@@ -46,7 +56,8 @@ export class userApi {
 
             // const imageUrl = `${baseUrl}/static/images/users/${user.avatar}`;
             // user.avatar = imageUrl;
-
+            user.id = parseJwt(token).id;
+            console.log(user);
             return user;
         } else {
             user = null;
