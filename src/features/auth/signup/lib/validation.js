@@ -18,20 +18,23 @@ export const validation = (fields) => {
         errors.password = 'Введите пароль';
     }
 
-    if (login.indexOf(' ') !== -1) {
-        errors.login = 'Логин не должно содержать пробелов';
+    if (!/^[a-zA-Zа-яА-Я0-9]+$/u.test(login)) {
+        errors.login = 'Логин не валидный';
+    }
+    if (!/^[a-zA-Zа-яА-Я0-9]+$/u.test(name)) {
+        errors.name = 'Имя не валидное';
+    }
+    if (!/^[a-zA-Zа-яА-Я0-9]+$/u.test(password)) {
+        errors.password = 'Пароль не валидный';
     }
 
-    if (email.indexOf('@') === -1) {
-        errors.email = 'Email должен содержать символ "@"';
-    }
 
     if (password.length < 6) {
         errors.password = 'Пароль должен содержать не менее 6 символов';
     }
 
-    if (phoneNumber.length !== 10) {
-        errors.phoneNumber = 'Номер телефона должен содержать 10 цифр';
+    if (phoneNumber.length !== 18) {
+        errors.phoneNumber = 'Номер телефона не валиден';
     }
 
     if (passwordCheck !== password) {

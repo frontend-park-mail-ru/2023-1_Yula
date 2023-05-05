@@ -6,7 +6,7 @@
     height: 32px;
     border-radius: 8px;
     border: none;
-    font-family: "Roboto VK";
+    font-family: var(--text-family);
     background-color: var(--bg-color-lite);
     color: var(--fg-color-lite);  /* убрать */
     padding-left: 5px;
@@ -19,7 +19,7 @@
 
     &::placeholder {
         color: #818C99;
-        font-family: "Roboto VK";
+        font-family: var(--text-family);
     }
 
     &_focus {
@@ -37,7 +37,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Roboto VK';
+    font-family: var(--text-family);
     font-size: 14px;
     color: var(--secondary-color);
     background-color: var(--bg-color-lite);

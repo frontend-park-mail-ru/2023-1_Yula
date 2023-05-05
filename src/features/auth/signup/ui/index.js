@@ -2,8 +2,10 @@ import { Button, Modal, Form } from '@shared/ui/index.js';
 import { validation } from '../lib/validation.js';
 import { userApi } from '@shared/api/users.js';
 import { basketApi } from '@shared/api/basket.js';
-import template from './Form/Form.handlebars';
 import store from '@modules/state-manager.js';
+
+import { phoneMask } from '../lib/phone-mask';
+import template from './Form/Form.handlebars';
 
 export const signupModal = (parent) => {
     const modal = Modal(parent, {
@@ -63,6 +65,7 @@ export const signupModal = (parent) => {
             });
 
             form.render();
+            phoneMask();
 
             // заполняем футер
             const existsAccountBtn = Button(modal.footer(), {

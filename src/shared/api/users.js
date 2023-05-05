@@ -1,35 +1,5 @@
 import { baseUrl } from '../config';
-import { deleteCookie } from '../lib';
-
-function lowerKeys(obj) {
-    const keys = Object.keys(obj);
-    const newKeys = keys.map(key => key[0].toLowerCase() + key.slice(1));
-    const newObj = {};
-
-    for (let i = 0; i < keys.length; i++) {
-        if (keys[i] === 'ID') {
-            newKeys[i] = 'id';
-        }
-        newObj[newKeys[i]] = obj[keys[i]];
-    }
-
-    return newObj;
-}
-
-function upperKeys(obj) {
-    const keys = Object.keys(obj);
-    const newKeys = keys.map(key => key[0].toUpperCase() + key.slice(1));
-    const newObj = {};
-
-    for (let i = 0; i < keys.length; i++) {
-        if (keys[i] === 'id') {
-            newKeys[i] = 'ID';
-        }
-        newObj[newKeys[i]] = obj[keys[i]];
-    }
-
-    return newObj;
-}
+import { upperKeys, lowerKeys } from "../lib";
 
 function parseJwt (token) {
     const base64Url = token.split('.')[1];

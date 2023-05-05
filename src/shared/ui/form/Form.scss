@@ -1,12 +1,12 @@
 .form__text {
-    font-family: 'Roboto VK';
+    font-family: var(--text-family);
     font-size: 14px;
     line-height: 16px;
     color: var(--secondary-color-strong);
 }
 
 .form__text_error {
-    font-family: 'Roboto VK';
+    font-family: var(--text-family);
     font-size: 12px;
     line-height: 14px;
     color: #E64646;

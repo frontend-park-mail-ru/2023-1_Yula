@@ -72,7 +72,7 @@
 .button__text {
     align-self: center;
     justify-content: center;
-    font-family: 'Roboto VK';
+    font-family: var(--text-family);
     font-size: 14px;
     font-weight: 500;
     text-align: center;
@@ -95,7 +95,7 @@
 
 .cell-btn-sm {
     color: #2688EB;
-    font-family: 'Roboto VK';
+    font-family: var(--text-family);
     font-size: 13px;
     background-color: rgba(0, 0, 0, 0);
     border: none;

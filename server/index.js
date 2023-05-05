@@ -218,6 +218,7 @@ app.get('/api/post/:id', (req, res) => {
     if (!ann) {
         return res.status(404).json({ message: 'Объявление не найдено' });
     } else {
+        ann.Views += 1;
         return res.json(ann);
     }
 });

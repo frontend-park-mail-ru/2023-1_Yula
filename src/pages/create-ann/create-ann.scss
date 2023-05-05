@@ -8,7 +8,7 @@
 }
 
 .ann-characteristics {
-  font-family: 'Roboto VK';
+  font-family: var(--text-family);
   color: var(--fg-color);
   align-items: center;
   justify-content: center;
@@ -26,7 +26,7 @@
 
 .announcement-title {
     grid-area: title;
-    font-family: 'Roboto VK bold';
+    font-family: var(--text-family-bold);
     font-weight: 500;
     font-size: calc(20px);
     text-align: center;
@@ -45,7 +45,7 @@
 
   .announcement-price {
     font-size: 24px;
-    font-family: "Roboto VK bold";
+    font-family: var(--text-family-bold);
   }
   
   .announcement-avatar {
@@ -55,7 +55,7 @@
     margin-bottom: 10px;
     font-weight: 500;
     font-size: 20px;
-    font-family: 'Roboto VK';
+    font-family: var(--text-family);
     text-decoration: none;
     color: var(--fg-color);
   
@@ -74,7 +74,7 @@
   
   .announcement-description {
     grid-area: description;
-    font-family: 'Roboto VK';
+    font-family: var(--text-family);
     font-size: 16px;
     line-height: 24px;
     color: var(--fg-color-lite);

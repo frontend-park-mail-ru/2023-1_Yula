@@ -1,4 +1,17 @@
+@font-face {
+    font-family: "Roboto VK";
+    src: url("assets/fonts/Roboto-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Roboto VK Bold";
+    src: url("assets/fonts/Roboto-Bold.ttf");
+}
+
 :root {
+    --text-family: "Roboto VK", sans-serif;
+    --text-family-bold: "Roboto VK Bold", sans-serif;
+
     --primary-color: #2688EB;
     --primary-color-strong: #2C7CDE;
     --primary-color-lite: #2689ebcb;
@@ -58,16 +71,6 @@ body.dark {
     --panel-text-color: #000000;
 
     --white-color: #ffffff;
-}
-
-@font-face {
-    font-family: "Roboto VK";
-    src: url("assets/fonts/Roboto-Regular.ttf");
-}
-
-@font-face {
-    font-family: "Roboto VK Bold";
-    src: url("assets/fonts/Roboto-Bold.ttf");
 }
 
 body {

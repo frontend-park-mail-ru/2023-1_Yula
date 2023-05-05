@@ -36,12 +36,12 @@
     font-size: 16px;
     text-decoration: none;
     color: var(--fg-color);
-    font-family: "Roboto VK";
+    font-family: var(--text-family);
 }
 
 .announcement-card__sale {
     grid-area: price;
-    font-family: 'Roboto VK bold';
+    font-family: var(--text-family-bold);
     font-style: normal;
     font-weight: 400;
     font-size: 20px;
@@ -51,7 +51,7 @@
 
 .announcement-card__view-count {
     grid-area: view-count;
-    font-family: 'Roboto VK';
+    font-family: var(--text-family);
     color: var(--secondary-color);
     align-self: end;
     justify-self: end;

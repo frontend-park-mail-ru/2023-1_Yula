@@ -47,11 +47,11 @@
 .purchase-card__title {
     font-size: 16px;
     color: var(--fg-color);
-    font-family: "Roboto VK Bold";
+    font-family: var(--text-family-bold);
 }
 
 .purchase-card__sale {
-    font-family: 'Roboto VK';
+    font-family: var(--text-family);
     font-style: normal;
     font-weight: 400;
     font-size: 15px;
@@ -108,11 +108,11 @@
     .purchase-card__title {
         font-size: 16px;
         color: var(--fg-color);
-        font-family: "Roboto VK Bold";
+        font-family: var(--text-family-bold);
     }
     
     .purchase-card__sale {
-        font-family: 'Roboto VK';
+        font-family: var(--text-family);
         font-style: normal;
         font-weight: 400;
         font-size: 15px;

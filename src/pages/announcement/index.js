@@ -120,7 +120,7 @@ export const announcementPage = (parent, params) => {
         addFavButton.setActions({
             click: async () => {
                 ///
-                const response = await favoritesApi.addToFavorites(ann.userId);
+                const response = await favoritesApi.addToFavorites(ann.postId);
 
                 if (response.ok) {
                     delFavButton.render();
@@ -174,8 +174,6 @@ export const announcementPage = (parent, params) => {
 
         if (store.getState('user')?.id === ann.userId) {
             const buttonGroup = content.querySelector('.button-place');
-            // buttonGroup.style
-
             const closeBtn = Button(buttonGroup, {
                 id: "close",
                 text: "Закрыть",
@@ -184,7 +182,7 @@ export const announcementPage = (parent, params) => {
             });
             closeBtn.setActions({
                 click: async () => {
-                    const response = await annApi.close(ann.postId);
+                    await annApi.close(ann.postId);
                     closeBtn.destroy();
                 },
             });
@@ -210,7 +208,7 @@ export const announcementPage = (parent, params) => {
             });
             deleteBtn.setActions({
                 click: async () => {
-                    const response = await annApi.delete(ann.postId);
+                    await annApi.delete(ann.postId);
                     goTo('/profile');
                 }
             });
