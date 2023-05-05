@@ -1,4 +1,5 @@
 import { baseUrl } from "../config";
+import { upperKeys, lowerKeys } from "../lib";
 
 export class annApi {
     static async getAll() {
@@ -7,10 +8,15 @@ export class annApi {
             return []
         }
         anns = await anns.json();
+
+        if (!anns) {
+            return [];
+        }
         
         anns = anns.map(ann => {
-            ann.images = ann.images.map(img => `${baseUrl}/static/images/anns/${img}`);
-            return ann;
+            // ann.images = ann.PathImages.map(img => `${baseUrl}/static/images/anns/${img}`);
+            ann.images = ann.PathImages;
+            return lowerKeys(ann);
         });
 
         return anns;
@@ -26,8 +32,9 @@ export class annApi {
         anns = await anns.json();
 
         anns = anns.map(ann => {
-            ann.images = ann.images.map(img => `${baseUrl}/static/images/anns/${img}`);
-            return ann;
+            // ann.images = ann.PathImages.map(img => `${baseUrl}/static/images/anns/${img}`);
+            ann.images = ann.PathImages;
+            return lowerKeys(ann);
         });
 
         return anns;
@@ -39,40 +46,110 @@ export class annApi {
         if (!ann.ok) {
             return null;
         }
-
         ann = await ann.json();
     
-        const imageUrls = ann.images.map(img => `${baseUrl}/static/images/anns/${img}`);
-        
+        // const imageUrls = ann.PathImages.map(img => `${baseUrl}/static/images/anns/${img}`);
+        const imageUrls = ann.PathImages;
         ann.images = imageUrls;
     
-        return ann;
+        return lowerKeys(ann);
     }
 
     static async create(data) {
+        const token = localStorage.getItem('token');
+
         return await fetch(`${baseUrl}/api/post`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `bearerAuth ${token}`
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(upperKeys(data))
         });
     }
 
-    static async getAnnSellerByAnnId(id) {
-        let seller = await fetch(`${baseUrl}/api/getseller/${id}`);
-        seller = await seller.json();
-        return seller;
+    static async update(id, data) {
+        const token = localStorage.getItem('token');
+
+        return await fetch(`${baseUrl}/api/post/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `bearerAuth ${token}`
+            },
+            body: JSON.stringify(upperKeys(data))
+        });
     }
-    
-    static async getAllSellerAnns(id) {
-        let anns = await fetch(`${baseUrl}/api/anns/${id}`);
+
+    static async delete(id) {
+        const token = localStorage.getItem('token');
+
+        return await fetch(`${baseUrl}/api/post/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `bearerAuth ${token}`
+            }
+        });
+    }
+
+    static async close(id) {
+        const token = localStorage.getItem('token');
+
+        return await fetch(`${baseUrl}/api/post/close/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `bearerAuth ${token}`
+            }
+        });
+    }
+
+    static async search(query) {
+        // const url = new URL(`${baseUrl}/api/search/?query=${query.query}`);
+        const url = `/api/search?query="${query.query}"`;
+        let anns = await fetch(url);
+
+        if (!anns.ok) {
+            return [];
+        }
+
         anns = await anns.json();
+
+        if (!anns) {
+            return [];
+        }
+
         anns = anns.map(ann => {
-            ann.images = ann.images.map(img => `${baseUrl}/static/images/anns/${img}`);
-            return ann;
+            // ann.images = ann.PathImages.map(img => `${baseUrl}/static/images/anns/${img}`);
+            ann.images = ann.PathImages;
+            return lowerKeys(ann);
         });
 
         return anns;
     }
+
+    static async getByTag(tag, pageNum) {
+        // const url = new URL(`${baseUrl}/api/post/${tag}/${pageNum}`);
+        const url = `/api/post/${tag}/${pageNum}`;
+        let anns = await fetch(url);
+
+        if (!anns.ok) {
+            return [];
+        }
+
+        anns = await anns.json();
+
+        if (!anns) {
+            return [];
+        }
+
+        anns = anns.map(ann => {
+            ann.images = ann.PathImages;
+            return lowerKeys(ann);
+        });
+
+        return anns;
+    }
+
 }

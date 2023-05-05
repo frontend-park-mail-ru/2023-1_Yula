@@ -1,6 +1,7 @@
 import { Button, Modal, Form } from '@shared/ui/index.js';
 import { validation } from '../lib/validation.js';
 import { userApi } from '@shared/api/users.js';
+import { basketApi } from '@shared/api/basket.js';
 import template from './Form/Form.handlebars';
 import store from '@modules/state-manager.js';
 
@@ -29,9 +30,15 @@ export const loginModal = (parent) => {
                     let res = await userApi.authByLogin(fields);
                     
                     if (res.ok) {
-                        document.cookie = `jwt=${await res.json()};`;
+                        const token = await res.json();
+                        localStorage.setItem('token', token);
+
                         const user = await userApi.getMe();
                         store.setState('user', user);
+
+                        const basket = await basketApi.getBasket();
+                        store.setState('basket', basket);
+
                         modal.destroy();
 
                     } else {

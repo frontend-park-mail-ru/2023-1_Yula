@@ -1,4 +1,4 @@
-import { boardPage, profilePage, bucketPage, announcementPage, sellerPage, createAnnPage } from "@pages/index";
+import { boardPage, profilePage, bucketPage, announcementPage, sellerPage, createAnnPage, searchPage, searchTagPage } from "@pages/index";
 import { Router } from "./router";
 import { setTheme } from "@features/theme";
 import { defaultTheme } from "@shared/config";
@@ -13,9 +13,12 @@ export const App = (parent) => {
     router.register('/profile', profilePage, 'profile', true);
     router.register('/bucket', bucketPage, 'bucket', true);
     router.register('/ann/{id}', announcementPage, 'announcement');
-    router.register('/sellers/{id}', sellerPage, 'seller-page');
+    router.register('/seller/{id}', sellerPage, 'seller-page');
     router.register('/seller', sellerPage, 'my-seller-page', true);
     router.register('/create', createAnnPage, 'create-ann', true);
+    router.register('/edit/{id}', createAnnPage, 'edit-ann', true);
+    router.register('/search/{query}', searchPage, 'search-page', false);
+    router.register('/tag/{query}', searchTagPage, 'search-tag-page', false);
 
     return {
         render: () => {

@@ -74,7 +74,9 @@ export const MenuPanelDesktop = (parent) => {
             basket: Icon(menu, {
                 id: "basket",
                 src: basketSvg,
-                size: "large",
+                size: "medium",
+                text: "Корзина",
+                textColor: "fg",
                 invert: invert,
                 actions: {
                     'click': () => {
@@ -94,8 +96,10 @@ export const MenuPanelDesktop = (parent) => {
             }),
             user: Icon(menu, {
                 id: "user",
-                src: user ? user.pathtoavatar : userSvg,
-                size: "large",
+                src: user ? user.avatar : userSvg,
+                size: "medium",
+                text: user ? "Профиль" : "Войти",
+                textColor: "fg",
                 invert: user ? false : invert,
                 link: user ? '/profile' : null,
                 circular: user ? true : false,
@@ -118,7 +122,8 @@ export const MenuPanelDesktop = (parent) => {
             if (user) {
                 Icons.user.changeConfig({
                     circular: true,
-                    src: user.pathtoavatar,
+                    src: user.avatar,
+                    text: 'Профиль',
                     link: `/profile`,
                     invert: false,
                 });
@@ -126,6 +131,7 @@ export const MenuPanelDesktop = (parent) => {
                 Icons.user.changeConfig({
                     circular: false,
                     src: userSvg,
+                    text: 'Войти',
                     link: null,
                     invert: (store.getState('theme') === 'dark') ? true : false,
                 });

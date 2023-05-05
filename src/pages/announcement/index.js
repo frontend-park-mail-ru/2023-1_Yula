@@ -2,13 +2,14 @@ import { Carousel, Icon, Button, Alert } from "@shared/ui";
 import { Navbar } from "@widgets/navbar";
 import { AuthWidget } from "@widgets/auth";
 import { annApi } from "@shared/api/anns";
+import { userApi } from "@shared/api/users";
+import { basketApi } from "@shared/api/basket";
+import { favoritesApi } from "@shared/api/favorites";
 import store from "@modules/state-manager";
+import { goTo } from "@shared/lib";
 
-import './layout.scss';
+import './announcement.scss';
 import charackteristics from "./ann-characteristics.handlebars";
-
-import basketSVG from "assets/icons/basket.svg";
-import userSVG from "assets/icons/user.svg";
 
 /**
  * Страница объявления
@@ -41,75 +42,177 @@ export const announcementPage = (parent, params) => {
         annCarousel.classList.add('announcement-carousel');
         content.appendChild(annCarousel);
 
+        const basket = store.getState("basket");
         const ann = await annApi.getById(params.id);
+        const seller = await userApi.getById(ann.userId);
+        
+        const title = document.createElement('h1');
+        title.classList.add('announcement-title');
+        title.innerText = ann.title;
+        content.appendChild(title);
 
-        const carousel = Carousel(annCarousel, { images: ann.images });
+        const carousel = Carousel(annCarousel, { 
+            images: ann.images,
+            outbound: true,
+        });
         carousel.render();
 
         const annCharacteristics = document.createElement('div');
         annCharacteristics.classList.add('announcement-characteristics');
 
-        annCharacteristics.innerHTML = charackteristics(ann);
+        annCharacteristics.innerHTML = charackteristics({
+            price: ann.price,
+            description: ann.description,
+            views: ann.views,
+            viewDict: ann.views % 10 === 1 && ann.views % 100 !== 11 ? 'человек' : 
+                ann.views % 10 >= 2 && ann.views % 10 <= 4 && (ann.views % 100 < 10 || ann.views % 100 >= 20) ? 'человека' : 'человек',
+            close: ann.close,
+            sellerName: seller.name,
+            sellerAvatar: seller.avatar,
+            sellerId: ann.userId,
+        });
         content.appendChild(annCharacteristics);
-        annCharacteristics.style.justifySelf = 'flex-start';
 
-        const buyIcon = Icon(annCharacteristics, {
+        const buyButton = Button(content.querySelector('.button-place'), {
             id: "buy",
-            src: basketSVG,
-            text: 'В корзину',
-            textColor: 'fg',
-            size: 'large',
-            direction: 'row',
-            invert: store.getState('theme') === 'dark',
-            actions: {
-                'click': () => {
-                    if (!localStorage.getItem(`ann${ann.id}`)) {
-                        localStorage.setItem(`ann${ann.id}`, JSON.stringify(ann));
+            text: "В корзину"
+        });
 
+        buyButton.setActions({
+            click: async () => {
+                if (!basket.find(item => item.postId === ann.postId)) {
+                    const response = await basketApi.addToBasket(ann.userId);
+
+                    if (response.ok) {
                         Alert(parent, {
                             id: 'add-to-cart',
                             title: 'Успешно',
                             text: 'Товар добавлен в корзину',
                             timer: 2000,
                         }).render();
+                        store.setState("basket", [...basket, ann]);
+                        buyButton.destroy();
                     } else {
-                        Alert(parent, {
+                        const { message } = await response.json();
+                        Alert(parent, { 
                             id: 'add-to-cart',
                             title: 'Неудача',
-                            text: 'Товар уже в корзине',
+                            text: message,
                             timer: 2000,
                         }).render();
                     }
                 }
             }
         });
-        buyIcon.render();
 
-        const userIcon = Icon(annCharacteristics, {
-            id: "user",
-            src: userSVG,
-            text: 'Профиль продаца',
-            textColor: 'fg',
-            size: 'large',
-            direction: 'row',
-            invert: store.getState('theme') === 'dark',
-            link: `/sellers/${ann.userId}`,
+        if (store.getState('user')?.id !== ann.userId &&
+            !basket.find(item => item.postId === ann.postId)) {
+            buyButton.render();
+            buyButton.self().style.marginLeft = 0;
+        }
+
+        const addFavButton = Button(content.querySelector('.button-place'), {
+            id: "addFav",
+            color: "success",
+            text: "В избранное",
         });
-        userIcon.render();
+        addFavButton.setActions({
+            click: async () => {
+                ///
+                const response = await favoritesApi.addToFavorites(ann.postId);
 
-        const editBtn = Button(annCharacteristics, {
-            id: "edit",
-            type: "Submit",
-            text: "Изменить",
+                if (response.ok) {
+                    delFavButton.render();
+                    addFavButton.destroy();
+                } else {
+                    const { message } = await response.json();
+                    Alert(parent, {
+                        id: 'add-to-fav',
+                        title: 'Неудача',
+                        text: message,
+                        timer: 2000,
+                    }).render();
+                }
+            }
         });
 
-        editBtn.setActions({
-            click: () => { console.log("asd")},
-        })
-        
-        editBtn.render();
+        const delFavButton = Button(content.querySelector('.button-place'), {
+            id: "delFav",
+            text: "Удалить из избранного",
+            color: "danger",
+        });
+        delFavButton.setActions({
+            click: async () => {
+                const response = await favoritesApi.deleteFromFavorites(ann.postId);
+                
+                if (response.ok) {
+                    addFavButton.render();
+                    delFavButton.destroy();
+                } else {
+                    const { message } = await response.json();
+                    Alert(parent, {
+                        id: 'del-from-fav',
+                        title: 'Неудача',
+                        text: message,
+                        timer: 2000,
+                    }).render();
+                }
+            }
+        });
 
-        store.subscribe('theme', (theme) => buyIcon.changeConfig({invert: theme === 'dark'}));
+        if (store.getState('user')?.id !== ann.userId) {
+            const favorites = await favoritesApi.getFavorites();
+            if (!favorites.find(item => item.postId === ann.postId)) {
+                addFavButton.render();
+                addFavButton.self().style.marginLeft = 0;
+            } else {
+                delFavButton.render();
+                delFavButton.self().style.marginLeft = 0;
+            }
+        }
+
+        if (store.getState('user')?.id === ann.userId) {
+            const buttonGroup = content.querySelector('.button-place');
+            const closeBtn = Button(buttonGroup, {
+                id: "close",
+                text: "Закрыть",
+                color: "tertiary",
+                textColor: "primary",
+            });
+            closeBtn.setActions({
+                click: async () => {
+                    await annApi.close(ann.postId);
+                    closeBtn.destroy();
+                },
+            });
+            if (!ann.close) {
+                closeBtn.render();
+                closeBtn.self().style.outline = "1px solid var(--primary-color)";
+            }
+
+            const editBtn = Button(buttonGroup, {
+                id: "edit",
+                type: "Submit",
+                text: "Изменить",
+            });
+            editBtn.setActions({
+                click: () => goTo(`/edit/${ann.postId}`),
+            });
+            editBtn.render();
+
+            const deleteBtn = Button(buttonGroup, {
+                id: "delete",
+                text: "Удалить",
+                color: "danger"
+            });
+            deleteBtn.setActions({
+                click: async () => {
+                    await annApi.delete(ann.postId);
+                    goTo('/profile');
+                }
+            });
+            deleteBtn.render();
+        }
     }
 
     headerFilling();

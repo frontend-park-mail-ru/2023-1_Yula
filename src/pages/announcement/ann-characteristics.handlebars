@@ -1,28 +1,13 @@
-<h3 class="announcement-characteristics__title">{{title}}</h3>
-
-<table style="border-spacing: 2vw;">
-    <tr>
-        <td class="announcement-characteristics__key">
-            Теги
-        </td>
-        <td class="announcement-characteristics__value">
-            {{tags}}
-        </td>
-    </tr>
-    <tr>
-        <td class="announcement-characteristics__key">
-            Описание
-        </td>
-        <td class="announcement-characteristics__value">
-            {{description}}
-        </td>
-    </tr>
-    <tr>
-        <td class="announcement-characteristics__key">
-            Цена
-        </td>
-        <td class="announcement-characteristics__value">
-            {{price}}
-        </td>
-    </tr>
-</table>
+{{#unless close}}
+<h1 class="announcement-price">{{price}} ₽</h1>
+{{/unless}}
+{{#if close}}
+<h1 class="announcement-price">Объявление закрыто</h1>
+{{/if}}
+<a href="/seller/{{sellerId}}" class="announcement-avatar">
+    <img src="{{sellerAvatar}}" alt="" class="announcement-avatar__img">
+    {{sellerName}}
+</a>
+<div class="button-place"></div>
+<p class="announcement-views">{{views}} {{viewDict}} <span style="color: var(--success-color)">просмотрели</span> это объявление</p>
+<pre style="white-space: pre-wrap"><p class="announcement-description">{{description}}</p></pre>

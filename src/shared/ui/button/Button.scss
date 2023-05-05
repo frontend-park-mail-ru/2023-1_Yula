@@ -57,13 +57,24 @@
     }
 }
 
+.button_color_danger {
+    background: var(--danger-color);
+
+    &:hover {
+        background: var(--danger-color-strong);
+    }
+
+    &:disabled {
+        background: var(--danger-color-lite);
+    }
+}
+
 .button__text {
     align-self: center;
     justify-content: center;
-    font-family: 'Roboto VK';
+    font-family: var(--text-family);
     font-size: 14px;
     font-weight: 500;
-    line-height: 18px;
     text-align: center;
     color: #FFFFFF;
 }
@@ -84,7 +95,7 @@
 
 .cell-btn-sm {
     color: #2688EB;
-    font-family: 'Roboto VK';
+    font-family: var(--text-family);
     font-size: 13px;
     background-color: rgba(0, 0, 0, 0);
     border: none;

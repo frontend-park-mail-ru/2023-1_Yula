@@ -1,8 +1,11 @@
 import { Button, Modal, Form } from '@shared/ui/index.js';
 import { validation } from '../lib/validation.js';
 import { userApi } from '@shared/api/users.js';
-import template from './Form/Form.handlebars';
+import { basketApi } from '@shared/api/basket.js';
 import store from '@modules/state-manager.js';
+
+import { phoneMask } from '../lib/phone-mask';
+import template from './Form/Form.handlebars';
 
 export const signupModal = (parent) => {
     const modal = Modal(parent, {
@@ -25,19 +28,34 @@ export const signupModal = (parent) => {
             form.setActions({
                 submit: async (fields) => {
                     const { accept, ...data } = fields;
-                    data['avatar'] = 'default.jpeg';
-                    console.log(data);
-                    let res = await userApi.signup(data);
-                    
-                    if (res.ok) {
-                        let user = await userApi.getMe();
-                        store.setState('user', user);
-                        modal.destroy();
-                    } else {
-                        let message = await res.json(); 
-                        const error = {};
-                        error['email'] = message.message;
-                        form.showError(error);
+
+                    // data.avatar to base64
+                    if (data.avatar) {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(data.avatar);
+                        reader.onload = async () => {
+                            data.avatar = reader.result;
+
+                            let res = await userApi.signup(data);
+
+                            if (res.ok) {
+                                const token = await res.json();
+                                localStorage.setItem('token', token);
+
+                                let user = await userApi.getMe();
+                                store.setState('user', user);
+
+                                const basket = await basketApi.getBasket();
+                                store.setState('basket', basket);
+
+                                modal.destroy();
+                            } else {
+                                let message = await res.json();
+                                const error = {};
+                                error['email'] = message.message;
+                                form.showError(error);
+                            }
+                        };
                     }
                 },
                 validation: validation,
@@ -47,7 +65,8 @@ export const signupModal = (parent) => {
             });
 
             form.render();
-            
+            phoneMask();
+
             // заполняем футер
             const existsAccountBtn = Button(modal.footer(), {
                 id: "existsAccount",
@@ -73,7 +92,7 @@ export const signupModal = (parent) => {
 
             // добавляем события
             if (actions.back) {
-                modal.setActions({back: actions.back});
+                modal.setActions({ back: actions.back });
             }
         },
 

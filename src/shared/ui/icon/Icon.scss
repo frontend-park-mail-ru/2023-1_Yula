@@ -99,7 +99,7 @@
 }
 
 .icon__text {
-    font-family: 'Roboto VK';
+    font-family: var(--text-family);
     font-weight: 500;
     line-height: 18px;
     color: var(--grey-color);

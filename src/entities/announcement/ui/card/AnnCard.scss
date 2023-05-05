@@ -1,34 +1,13 @@
-.announcement-card__link {
-    text-decoration: none;
-}
-
 .announcement-card {
+    display: grid;
     background: var(--bg-color-strong);
     box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.08), 0px 4px 16px rgba(0, 0, 0, 0.08);
     border-radius: 10px;
-    gap: 5px;
-}
-
-.announcement-card__img {
-    height: 200px;
-    // filter: brightness(75%);
-    border-radius: inherit;
-
-    & > img {
-        height: 100%;
-        width: 100%;
-        object-fit: contain;
-        border-radius: inherit;
-    }
-
-    @media screen and (max-width: 768px) {
-        // height: fit-content;
-        width: 100%;
-    }
+    text-decoration: none;
 }
 
 .announcement-card__carousel {
-    height: 200px;
+    // height: 200px;
 
     & .carousel {
         border-radius: 10px;
@@ -43,7 +22,7 @@
 
 .announcement-card__content {
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-areas: "title title" "price view-count";
     justify-content: space-between;
     padding: 8px 12px 12px 12px;
     align-items: center;
@@ -52,23 +31,37 @@
 }
 
 .announcement-card__title {
+    grid-area: title;
+    align-self: start;
     font-size: 16px;
     text-decoration: none;
     color: var(--fg-color);
-    font-family: "Roboto VK";
+    font-family: var(--text-family);
 }
 
 .announcement-card__sale {
-    font-family: 'Roboto VK bold';
+    grid-area: price;
+    font-family: var(--text-family-bold);
     font-style: normal;
     font-weight: 400;
     font-size: 20px;
     color: var(--fg-color);
+    align-self: end;
 }
 
-// .announcement-card__view-count {
+.announcement-card__view-count {
+    grid-area: view-count;
+    font-family: var(--text-family);
+    color: var(--secondary-color);
+    align-self: end;
+    justify-self: end;
 
-// }
+    &::before {
+        content: "👁";
+        font-size: 15px;
+        margin-right: 2px;
+    }
+}
 
 .announcement-group {
     display: grid;

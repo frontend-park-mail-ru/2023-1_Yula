@@ -6,7 +6,8 @@ import { annApi } from '@shared/api/anns';
 
 import template from './Form/Form.handlebars';
 
-export const CreateAnn = (parent) => {
+export const CreateAnn = (parent, config) => {
+    config.editId = config.editId || null;
     const actions = {};
     
     // сохраняем картинки
@@ -45,10 +46,10 @@ export const CreateAnn = (parent) => {
             self().price.addEventListener('input', actions.priceChange);
         }
         if (actions.tagsChange) {
-            self().tags.addEventListener('input', actions. tagsChange);
+            self().tag.addEventListener('input', actions.tagsChange);
         }
         if (actions.imagesChange) {
-            self().image.addEventListener('change', function (event) {
+            self().pathImages.addEventListener('change', function (event) {
                 var files = event.target.files;
                 var promises = [];
 
@@ -66,6 +67,16 @@ export const CreateAnn = (parent) => {
         }
     }
 
+    const setAnnouncement = (announcement) => {
+        self().title.value = announcement.title;
+        self().description.value = announcement.description;
+        self().price.value = announcement.price;
+        self().tag.value = announcement.tag;
+
+        parent.querySelector('#createAnnButton>.button__text').innerText = 'Сохранить';
+
+    }
+
     const render = () => {
         const form = Form(parent, {
             id: "createAnn",
@@ -74,7 +85,8 @@ export const CreateAnn = (parent) => {
 
         form.setActions({
             submit: async (fields) => {
-                fields.image = imges;
+                // fields.image = imges;
+                fields.pathImages = imges;
                 fields.price = fields.price.replace(/\s/g, '');
 
                 const data = {
@@ -82,10 +94,15 @@ export const CreateAnn = (parent) => {
                     close: false,
                 }
 
-                let res = await annApi.create(data);
+                let res;
+                if (config.editId) {
+                    res = await annApi.update(config.editId, data);
+                } else {
+                    res = await annApi.create(data);
+                }
 
                 if (res.ok) {
-                    goTo('/seller');
+                    goTo('/profile');
 
                     Alert(document.body, {
                         id: "createAnn",
@@ -124,6 +141,7 @@ export const CreateAnn = (parent) => {
         self,
         destroy,
         setActions,
+        setAnnouncement,
         render,
     };
 }

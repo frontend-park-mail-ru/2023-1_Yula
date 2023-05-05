@@ -69,7 +69,6 @@ export const boardPage = (parent) => {
             adverticements[adv].render();
         }
 
-
         // Заглавие для категорий
         const categoryTitle = document.createElement('div');
         categoryTitle.classList.add('main-page__text');
@@ -84,33 +83,33 @@ export const boardPage = (parent) => {
         const categories = {
             category1: CategoryCard( categoryGroup, {
                 id: "clothes",
-                link: `#`,
+                link: `${baseUrl}/tag/Одежда+и+аксессуары`,
                 title: "Одежда и аксессуары",
-                image: `${baseUrl}/static/images/anns/0.jpeg`,
+                image: `${baseUrl}/static/images/anns/clothes-cat.png`,
             }),
             category2: CategoryCard( categoryGroup, {
                 id: "jewelery",
-                link: `#`,
+                link: `${baseUrl}/tag/Украшения`,
                 title: "Украшения",
-                image: `${baseUrl}/static/images/anns/0.jpeg`,
+                image: `${baseUrl}/static/images/anns/jewelery-cat.png`,
             }),
             category3: CategoryCard( categoryGroup, {
                 id: "house",
-                link: `#`,
+                link: `${baseUrl}/tag/Дом+и+интерьер`,
                 title: "Дом и интерьер",
-                image: `${baseUrl}/static/images/anns/0.jpeg`,
+                image: `${baseUrl}/static/images/anns/house-cat.png`,
             }),
             category4: CategoryCard( categoryGroup, {
                 id: "gifts",
-                link: `#`,
+                link: `${baseUrl}/tag/Подарки`,
                 title: "Подарки",
-                image: `${baseUrl}/static/images/anns/0.jpeg`,
+                image: `${baseUrl}/static/images/anns/gifts-cat.png`,
             }),
             category5: CategoryCard( categoryGroup, {
                 id: "electronics",
-                link: `#`,
+                link: `${baseUrl}/tag/Цифровые+устройства`,
                 title: "Цифровые устройства",
-                image: `${baseUrl}/static/images/anns/0.jpeg`,
+                image: `${baseUrl}/static/images/anns/electronics-cat.png`,
             }),
         }
 
@@ -122,7 +121,7 @@ export const boardPage = (parent) => {
         const annsTitle = document.createElement('div');
         annsTitle.classList.add('main-page__text');
         mainPageContentAnns.appendChild(annsTitle);
-        annsTitle.innerText = "Популярные объявления";
+        annsTitle.innerText = "Новые объявления";
 
         // Заполнение объявлениями
         const annGroup = document.createElement('div');
@@ -133,11 +132,11 @@ export const boardPage = (parent) => {
 
         anns.forEach(ann => {
             const annCard = AnnCard(annGroup, {
-                tags: ann.tags,
                 title: ann.title,
                 price: ann.price,
                 images: ann.images,
-                link: `/ann/${ann.id}`,
+                link: `/ann/${ann.postId}`,
+                views: ann.views,
             });
             annCard.render();
         });

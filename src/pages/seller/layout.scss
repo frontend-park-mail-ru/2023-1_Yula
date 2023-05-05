@@ -1,0 +1,18 @@
+.seller-content {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 1fr;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.seller-page__text {
+    align-self: center;
+    justify-content: center;
+    font-family: 'Roboto VK';
+    font-size: 26px;
+    font-weight: bold;
+    line-height: 18px;
+    text-align: left;
+    color: var(--fg-color);
+}

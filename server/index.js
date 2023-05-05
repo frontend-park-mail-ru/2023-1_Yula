@@ -2,9 +2,9 @@ const express = require('express');
 const body = require('body-parser');
 const cookie = require('cookie-parser');
 const morgan = require('morgan');
-const uuid = require('uuid').v4;
 const path = require('path');
 const fs = require('fs');
+const jwt = require('jsonwebtoken')
 
 const app = express();
 
@@ -18,136 +18,192 @@ app.use(body.urlencoded({ limit: '500mb', extended: true }));
 
 const users = require('./static/jsonData/users.json');
 const anns = require('./static/jsonData/anns.json');
+const basket = require('./static/jsonData/basket.json');
+const favorites = require('./static/jsonData/favorites.json');
 
 /** session identificators */
 const ids = {};
 
-app.get('/api/user/:id', (req, res) => {
-    const { id } = req.params;
-    const user = users.find((user) => user.id === id);
-    if (!user) {
-        return res.status(404).json({ message: 'Пользователь не найден' });
+/** session tokens */
+const checkToken = (req, res, next) => {
+    const header = req.headers.authorization;
+
+    if (typeof header !== "undefined") {
+        const bearer = header.split(" ");
+        const token = bearer[1];
+
+        req.token = token;
+        next();
+    } else {
+        res.sendStatus(403);
     }
-    const { password, checkPassword, ...rest } = user;
-    return res.json(rest);
+};
+
+// USER API
+app.get('/api/user', checkToken, (req, res) => {
+    const emailSession = ids[req.token];
+
+    let user = users.find(user => user.Email === emailSession);
+
+    if (!emailSession || !user) {
+        return res.status(401).json({ message: 'Пользователь не найден' });
+    }
+
+    delete user.id;
+
+    return res.json({ ...user });
 });
 
 app.post('/api/user', (req, res) => {
-    const { password, login, email } = req.body;
-    if (!login || login.length < 4) {
-        return res.status(400).json({ message: 'Логин не менее 4 символов', errorFill: 'username' });
+    const { Password, Login, Email, Avatar } = req.body;
+    if (!Login || Login.length < 4) {
+        return res.status(400).json({ message: 'Логин не менее 4 символов' });
     }
-    if (!password || !password.match(/^\S{4,}$/)) {
-        return res.status(400).json({ message: 'Минимальная длина пароля 4 символа', errorFill: 'password' });
+    if (!Password || !Password.match(/^\S{4,}$/)) {
+        return res.status(400).json({ message: 'Минимальная длина пароля 4 символа' });
     }
-    if (!email) {
-        return res.status(400).json({ message: 'Невалидные данные пользователя', errorFill: 'email' });
+    if (!Email) {
+        return res.status(400).json({ message: 'Невалидные данные пользователя' });
     }
-    if (users.find((user) => user.email === email)) {
-        return res.status(400).json({ message: 'Пользователь уже существует', errorFill: 'username' });
+    if (!Avatar) {
+        return res.status(400).json({ message: 'Невалидные данные пользователя' });
+    }
+    if (users.find((user) => user.Email === Email)) {
+        return res.status(400).json({ message: 'Пользователь уже существует' });
     }
 
-    const id = uuid();
     const user = {
-        ...req.body, purchs: [], anns: [], avatar: '/default.jpg',
+        ...req.body,
+        ID: 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0,
+                v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        })
     };
 
-    ids[id] = email;
+    const token = jwt.sign({ id: user.id }, 'secret');
+    ids[token] = user.Email;
     users.push(user);
 
-    res.cookie('appuniq', id, { expires: new Date(Date.now() + 1000 * 60 * 10) });
-    return res.status(201).json({ id });
+    fs.writeFileSync(path.resolve(__dirname, 'static/jsonData/users.json'), JSON.stringify(users, null, 4));
+
+    return res.status(201).json(token);
 });
 
-app.post('/api/auth/login', (req, res) => {
+app.put('/api/user', checkToken, (req, res) => {
+    const emailSession = ids[req.token];
 
-    const { password, login } = req.body;
-    if (!password || !login) {
+    const user = users.find((user) => user.Email === emailSession);
+
+    if (!emailSession || !user) {
+        return res.status(401).json({ message: 'Пользователь не найден' });
+    }
+
+    const { Password, Login, Email } = req.body;
+    if (!Login || Login.length < 4) {
+        return res.status(400).json({ message: 'Логин не менее 4 символов' });
+    }
+    if (!Password || !Password.match(/^\S{4,}$/)) {
+        return res.status(400).json({ message: 'Минимальная длина пароля 4 символа' });
+    }
+    if (!Email) {
+        return res.status(400).json({ message: 'Невалидные данные пользователя' }); 
+    }
+
+    const newUser = {
+        ...user,
+        ...req.body,
+    };
+
+    users[users.indexOf(user)] = newUser;
+
+    fs.writeFileSync(path.resolve(__dirname, 'static/jsonData/users.json'), JSON.stringify(users, null, 4));
+
+    return res.status(200).json({ ...newUser });
+});
+
+app.delete('/api/user', checkToken, (req, res) => {
+    const emailSession = ids[req.token];
+
+    const user = users.find((user) => user.Email === emailSession);
+
+    if (!emailSession || !user) {
+        return res.status(401).json({ message: 'Пользователь не найден' });
+    }
+
+    users.splice(users.indexOf(user), 1);
+
+    fs.writeFileSync(path.resolve(__dirname, 'static/jsonData/users.json'), JSON.stringify(users, null, 4));
+
+    return res.status(200).json({ message: 'Пользователь удален' });
+});
+
+app.get('/api/user/:id', (req, res) => {
+    const { id } = req.params;
+    const user = users.find((user) => user.ID === id);
+    if (!user) {
+        return res.status(404).json({ message: 'Пользователь не найден' });
+    }
+
+    return res.json({
+        ID: user.ID,
+        Login: user.Login,
+        Name: user.Name,
+        Email: user.Email,
+        Avatar: user.Avatar,
+    });
+});
+
+// AUTH API
+app.post('/api/auth/login', (req, res) => {
+    const { Password, Login } = req.body;
+    if (!Password || !Login) {
         return res.status(400).json({ message: 'Не указан логин или пароль' });
     }
 
-    const user = users.find((user) => user.login === login);
-    if (!user || user.password !== password) {
+    const user = users.find((user) => user.Login === Login);
+    if (!user || user.Password !== Password) {
         return res.status(400).json({ message: 'Неверный логин и/или пароль' });
     }
 
-    const id = uuid();
-    ids[id] = user.email;
+    // генерируем токен
+    // const token = jwt.sign({ id: user.id }, 'signature');
+    const payload = Buffer.from(JSON.stringify({ id: user.ID })).toString('base64');
+    const token = `eyJhbGciOiJFUzI1NiIsImtpZCI6ImtleS1pZCIsInR5cCI6IkpXVCJ9.${payload}.HEwMtMk-X-0zpliKoyo2FO4bf8R4ZQ_k5rZVI_l0T2HQpAWCypd4enH1thWOfOVaEypSVZ5murpM_kOE0CEz0g`;
+    ids[token] = user.Email;
 
-    res.cookie('appuniq', id, { expires: new Date(Date.now() + 1000 * 60 * 10) });
-    return res.status(200).json({ id });
+    return res.status(200).json(token);
 });
 
-app.post('/api/logout', (req, res) => {
-    const id = req.cookies.appuniq;
-    const emailSession = ids[id];
-    const user = users.find((user) => user.email === emailSession);
-
-    if (!emailSession || !user) {
-        return res.status(401).end();
-    }
-
-    res.clearCookie('appuniq');
-    return res.end();
-});
-
+// ANNOUNCEMENTS API
 app.get('/api/sort/new/:page', (req, res) => {
-    const id = req.cookies.appuniq;
-    const emailSession = ids[id];
-
-    const page = req.params.page;
-    const user = users.find((user) => user.email === emailSession);
-
-    if (!emailSession || !user) {
-        return res.json(anns.slice((page - 1) * 12, page * 12));
-    } else {
-        const result = anns.filter(ann => ann.userId !== user.id);
-        return res.json(result.slice((page - 1) * 12, page * 12));
-    }
+    let page = req.params.page;
+    const result = anns.sort((a, b) => b.PostId - a.PostId);
+    return res.json(result.slice((page - 1) * 12, page * 12));
 });
 
-app.get('/api/post', (req, res) => {
-    const id = req.cookies.appuniq;
-    const emailSession = ids[id];
+app.post('/api/post', checkToken, (req, res) => {
+    const emailSession = ids[req.token];
 
-    const user = users.find((user) => user.email === emailSession);
-
-    if (!emailSession || !user) {
-        return res.status(401).json({ error: 'Пользователь не найден' });
-    } else {
-        return res.json(user.anns);
-    }
-});
-
-app.post('/api/post', (req, res) => {
-    const id = req.cookies.appuniq;
-    const emailSession = ids[id];
-
-    const user = users.find((user) => user.email === emailSession);
+    const user = users.find((user) => user.Email === emailSession);
 
     if (!emailSession || !user) {
-        return res.status(401).json({ error: 'Пользователь не найден' });
+        return res.status(401).json({ message: 'Пользователь не найден' });
     } else {
-        const { title, description, price, tags, image, close } = req.body;
-        if (!title || !description || !price || !tags || !image || close === undefined) {
+        const { Title, Description, Price, Tag, PathImages } = req.body;
+        if (!Title || !Description || !Price || !Tag || !PathImages) {
             return res.status(400).json({ message: 'Не все поля заполнены' });
         }
 
-        // типа сохранение файла
-        const images = image.map((img) => {
-            const path = `0.jpeg`;
-            return path;
-        });
-
         const ann = {
-            id: anns.length,
-            title,
-            description,
-            price,
-            tags,
-            images,
-            close,
-            userId: user.id,
+            PostId: anns.length,
+            UserId: user.ID,
+            Title,
+            Description,
+            Price,
+            Tag,
+            PathImages,
+            Close: false,
         };
 
         anns.push(ann);
@@ -156,120 +212,343 @@ app.post('/api/post', (req, res) => {
 });
 
 app.get('/api/post/:id', (req, res) => {
-    const id = req.params.id;
+    const id = +req.params.id;
+    const ann = anns.find(ann => ann.PostId === id);
 
-    if (!anns[id]) {
+    if (!ann) {
         return res.status(404).json({ message: 'Объявление не найдено' });
     } else {
-        return res.json(anns[id]);
+        ann.Views += 1;
+        return res.json(ann);
     }
 });
 
 app.get('/api/post/user/:id', (req, res) => {
     const id = req.params.id;
-    const user = users.find(user => user.id === id);
+    const user = users.find(user => user.ID === id);
 
     if (!user) {
-        return res.status(404).json({ message: 'Пользователь не найден' });   
+        return res.status(404).json({ message: 'Пользователь не найден' });
     } else {
-        return res.json(anns.filter(ann => ann.userId === id));
+        return res.json(anns.filter(ann => ann.UserId === id));
     }
 });
 
-app.get('/api/sellers/:id', (req, res) => {
-    const sellerId = req.params.id;
-    res.json(users[sellerId]);
-});
+app.put('/api/post/:id', checkToken, (req, res) => {
+    const emailSession = ids[req.token];
 
-app.get('/seller', (req, res) => {
-    const id = req.cookies.appuniq;
-    const emailSession = ids[id];
-    const user = users.find((user) => user.email === emailSession);
+    const user = users.find(user => user.Email === emailSession);
 
     if (!emailSession || !user) {
-        return res.status(401).json({message: 'Пользователь не найден'});
+        return res.status(401).json({ message: 'Пользователь не найден' });
     }
 
-    return res.json({
-        id: user.id,
-        username: user.username,
-        phone: user.phone,
-    });
-});
+    const id = +req.params.id;
+    const ann = anns.find(ann => ann.PostId === id);
 
-// get seller of announcement
-app.get('/api/getseller/:id', (req, res) => {
-    let sellerId = -1;
-    for (let User in users) {
-        if (users[User].anns.find(elem => elem == req.params.id)) {
-            sellerId = users[User].id;
-            break;
-        };
+    if (!ann) {
+        return res.status(404).json({ message: 'Объявление не найдено' });
     }
-    // console.log("getseller output: ", sellerId);
-    res.json({id: users[sellerId].id});
+
+    if (ann.UserId !== user.ID) {
+        return res.status(403).json({ message: 'Нет доступа' });
+    }
+
+    let { Title, Description, Price, Tag, PathImages, Close } = req.body;
+
+    const newAnn = { Title, Description, Price, Tag, PathImages, Close };
+    
+    anns[anns.indexOf(ann)] = { ...ann, ...newAnn };
+
+    return res.status(200).end();
 });
 
-app.get('/api/bucket', (req, res) => {
-    const id = req.cookies.appuniq;
-    const emailSession = ids[id];
-    const user = users.find((user) => user.email === emailSession);
+app.delete('/api/post/:id', checkToken, (req, res) => {
+    const emailSession = ids[req.token];
+
+    const user = users.find(user => user.Email === emailSession);
 
     if (!emailSession || !user) {
-        return res.status(401).json({error: 'Пользователь не найден'});
-    } else {
-        const result = anns.filter((_, i) => user.purchs.includes(i));
-        return res.json(result);
-    }
-})
-
-app.get('/api/user', (req, res) => {
-    const id = req.cookies.appuniq;
-    const emailSession = ids[id];
-    const user = users.find((user) => user.email === emailSession);
-
-    if (!emailSession || !user) {
-        return res.status(401).json({message: 'Пользователь не найден'});
+        return res.status(401).json({ message: 'Пользователь не найден' });
     }
 
-    return res.json({ ...user });
+    const id = +req.params.id;
+    const ann = anns.find(ann => ann.PostId === id);
+
+    if (ann === undefined) {
+        return res.status(404).json({ message: 'Объявление не найдено' });
+    }
+
+    if (ann.UserId !== user.ID) {
+        return res.status(403).json({ message: 'Нет доступа' });
+    }
+
+    anns.splice(anns.indexOf(ann), 1);
+
+    return res.status(200).end();
 });
 
-app.get('/api/anns/:id', (req, res) => {
+app.get('/api/post/open/user/:id/', (req, res) => {
     const id = req.params.id;
-    const user = users[id];
+
+    const user = users.find(user => user.ID === id);
 
     if (!user) {
-        return res.status(401).json({message: 'Пользователь не найден'});
+        return res.status(404).json({ message: 'Пользователь не найден' });
     }
 
-    const result = anns.filter((_, i) => user.anns.includes(i));
-    return res.json(result);
+    return res.json(anns.filter(ann => ann.UserId === id && !ann.Close));
 });
 
-app.get('/api/me/anns', (req, res) => {
-    const id = req.cookies.appuniq;
-    const emailSession = ids[id];
-    const user = users.find((user) => user.email === emailSession);
+app.get('/api/post/close/user/:id/', (req, res) => {
+    const id = req.params.id;
 
-    if (!emailSession || !user) {
-        return res.status(401).json({message: 'Пользователь не найден'});
+    const user = users.find(user => user.ID === id);
+
+    if (!user) {
+        return res.status(404).json({ message: 'Пользователь не найден' });
     }
 
-    const result = anns.filter((_, i) => user.anns.includes(i));
-    return res.json(result);
+    return res.json(anns.filter(ann => ann.UserId === id && ann.close));
 });
 
-app.get('/api/me/purchs', (req, res) => {
-    const id = req.cookies.appuniq;
-    const emailSession = ids[id];
-    const user = users.find((user) => user.email === emailSession);
+app.put('/api/post/close/:id', checkToken, (req, res) => {
+    const emailSession = ids[req.token];
+
+    const user = users.find(user => user.Email === emailSession);
 
     if (!emailSession || !user) {
-        return res.status(401).json({message: 'Пользователь не найден'});
+        return res.status(401).json({ message: 'Пользователь не найден' });
     }
 
-    const result = anns.filter((_, i) => user.purchs.includes(i));
+    const id = +req.params.id;
+    const ann = anns.find(ann => ann.PostId === id);
+
+    if (!ann) {
+        return res.status(404).json({ message: 'Объявление не найдено' });
+    }
+
+    if (ann.UserId !== user.ID) {
+        return res.status(403).json({ message: 'Нет доступа' });
+    }
+
+    anns[anns.indexOf(ann)] = { ...ann, Close: true };
+
+    return res.status(200).end();
+});
+
+app.get('/api/post/:tag/:page', (req, res) => {
+    const tag = req.params.tag;
+    let page = req.params.page;
+    const result = anns.filter(ann => ann.Tag.includes(tag) && !ann.Close);
+    return res.json(result.slice((page - 1) * 12, page * 12));
+
+    // const result = anns.filter(ann => {
+    //     const annWords = ann.Title.toLowerCase();
+    //     const annTag = ann.Tag;
+    //     return queryWords.every(word => {
+
+    //         // return ((annWords.indexOf(word) > -1));
+    //         return ((annWords.indexOf(word) > -1) || (annTag.includes(word)));
+    //     });
+    // });
+});
+
+app.get('/api/cart', checkToken, (req, res) => {
+    const emailSession = ids[req.token];
+
+    const user = users.find(user => user.Email === emailSession);
+
+    if (!emailSession || !user) {
+        return res.status(401).json({ message: 'Пользователь не найден' });
+    }
+
+    const userBasket = basket.find(item => item.UserId === user.ID);
+    if (!userBasket) {
+        return res.status(404).json([]);
+    }
+
+    const userBasketAnns = anns.filter(ann => userBasket.anns.includes(ann.PostId));
+
+    return res.json(userBasketAnns);
+});
+
+app.post('/api/cart/:id', checkToken, (req, res) => {
+    const emailSession = ids[req.token];
+
+    const user = users.find(user => user.Email === emailSession);
+
+    if (!emailSession || !user) {
+        return res.status(401).json({ message: 'Пользователь не найден' });
+    }
+
+    const annId = +req.params.id;
+
+    if (annId === undefined) {
+        return res.status(400).json({ message: 'Не указан id объявления' });
+    }
+
+    if (!anns.find(ann => ann.PostId === annId)) {
+        return res.status(404).json({ message: 'Объявление не найдено' });
+    }
+
+    const userBasket = basket.find(item => item.UserId === user.ID);
+    if (!userBasket) {
+        basket.push({ UserId: user.ID, anns: [annId] });
+    } else {
+        userBasket.anns.push(annId);
+    }
+
+    return res.status(200).end();
+});
+
+app.delete('/api/cart/clear', checkToken, (req, res) => {
+    const emailSession = ids[req.token];
+
+    const user = users.find(user => user.Email === emailSession);
+
+    if (!emailSession || !user) {
+        return res.status(401).json({ message: 'Пользователь не найден' });
+    }
+
+    const userBasket = basket.find(item => item.UserId === user.ID);
+    if (!userBasket) {
+        return res.status(404).json({ message: 'Корзина не найдена' });
+    }
+
+    userBasket.anns = [];
+
+    return res.status(200).end();
+});
+
+app.delete('/api/cart/:id', checkToken, (req, res) => {
+    const emailSession = ids[req.token];
+
+    const user = users.find(user => user.Email === emailSession);
+    
+    if (!emailSession || !user) {
+        return res.status(401).json({ message: 'Пользователь не найден' });
+    }
+
+    const annId = +req.params.id;
+    if (annId === undefined) {
+        return res.status(400).json({ message: 'Не указан id объявления' });
+    }
+
+    const userBasket = basket.find(item => item.UserId === user.ID);
+    if (!userBasket) {
+        return res.status(404).json({ message: 'Корзина не найдена' });
+    }
+
+    const inBasket = userBasket.anns.includes(annId);
+    if (!inBasket) {
+        return res.status(404).json({ message: 'Объявление не найдено' });
+    }
+
+    userBasket.anns.splice(userBasket.anns.indexOf(annId), 1);
+
+    return res.status(200).end();
+});
+
+// FAVORITES API
+app.get('/api/favorite', checkToken, (req, res) => {
+    const emailSession = ids[req.token];
+
+    const user = users.find(user => user.Email === emailSession);
+
+    if (!emailSession || !user) {
+        return res.status(401).json({ message: 'Пользователь не найден' });
+    }
+
+    const userFavorites = favorites.find(item => item.UserId === user.ID);
+
+    if (!userFavorites) {
+        return res.status(404).json([]);
+    }
+
+    const userFavoritesAnns = anns.filter(ann => userFavorites.anns.includes(ann.PostId));
+
+    return res.json(userFavoritesAnns);
+});
+
+app.post('/api/favorite/:id', checkToken, (req, res) => {
+    const emailSession = ids[req.token];
+
+    const user = users.find(user => user.Email === emailSession);
+
+    if (!emailSession || !user) {
+        return res.status(401).json({ message: 'Пользователь не найден' });
+    }
+
+    const annId = +req.params.id;
+
+    if (annId === undefined) {
+        return res.status(400).json({ message: 'Не указан id объявления' });
+    }
+
+    if (!anns.find(ann => ann.PostId === annId)) {
+        return res.status(404).json({ message: 'Объявление не найдено' });
+    }
+
+    const userFavorites = favorites.find(item => item.UserId === user.ID);
+    if (!userFavorites) {
+        favorites.push({ UserId: user.ID, anns: [annId] });
+    } else {
+        userFavorites.anns.push(annId);
+    }
+
+    return res.status(200).end();
+});
+
+app.delete('/api/favorite/:id', checkToken, (req, res) => {
+    const emailSession = ids[req.token];
+
+    const user = users.find(user => user.Email === emailSession);
+
+    if (!emailSession || !user) {
+        return res.status(401).json({ message: 'Пользователь не найден' });
+    }
+
+    const annId = +req.params.id;
+    if (annId === undefined) {
+        return res.status(400).json({ message: 'Не указан id объявления' });
+    }
+
+    const userFavorites = favorites.find(item => item.UserId === user.ID);
+    if (!userFavorites) {
+        return res.status(404).json({ message: 'Избранное не найдено' });
+    }
+
+    const inFavorites = userFavorites.anns.includes(annId);
+    if (!inFavorites) {
+        return res.status(404).json({ message: 'Объявление не найдено' });
+    }
+
+    userFavorites.anns.splice(userFavorites.anns.indexOf(annId), 1);
+
+    return res.status(200).end();
+});
+
+// SEARCH API
+app.get('/api/search', (req, res) => {
+    const query = req.query.query;
+
+    if (!query) {
+        return res.status(400).json({ message: 'Не указан поисковый запрос' });
+    }
+
+    const queryWords = query.toLowerCase().split(' ');
+    const result = anns.filter(ann => {
+        const annWords = ann.Title.toLowerCase();
+        const annTag = ann.Tag;
+        
+        return queryWords.every(word => {
+            word = word.replace(/['"«»]/g, '');
+
+            return ((annWords.indexOf(word) > -1) || (annTag.includes(word)));
+        });
+    });
+
     return res.json(result);
 });
 

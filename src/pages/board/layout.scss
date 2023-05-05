@@ -1,8 +1,5 @@
 .main-page {
     display: grid;
-    // grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    // margin-left: 2%;
-    // margin-right: 2%;
     gap: 20px;
   }
 
@@ -16,7 +13,7 @@
 
 .main-page__anns{
     grid-row: 3;
-}   
+}
 
 .main-page__text {
     align-self: center;
@@ -27,4 +24,4 @@
     line-height: 18px;
     text-align: left;
     color: var(--fg-color);
-  }
+}

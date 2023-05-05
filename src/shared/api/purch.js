@@ -2,8 +2,14 @@ export class purchApi {
     static async getPurchases() {
         let purchs = await fetch('api/bucket');
         purchs = await purchs.json();
+
+        if (!purchs) {
+            return [];
+        }
+
         purchs = purchs.map(purch => {
-            purch.images = purch.images.map(img => `http://localhost/static/images/anns/${img}`);
+            // purch.images = purch.images.map(img => `http://localhost/static/images/anns/${img}`);
+            ann.images = ann.PathImages;
             return purch;
         });
 

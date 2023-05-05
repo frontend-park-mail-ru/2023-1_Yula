@@ -26,11 +26,12 @@
 
 .purchase-card__content {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, auto);
     width: 100%;
-    padding: 8px 12px 12px 12px;
+    padding: 12px;
     text-align: center;
     align-items: center;
+    justify-content: space-between;
     background-color: var(--bg-color-strong);
     border-radius: 10px;
 }
@@ -43,21 +44,14 @@
     width: 200px;
 }
 
-.purchase-card__tags {
-    text-transform: uppercase;
-    font-size: 11px;
-    font-family: "Roboto VK Bold";
-    color: var(--secondary-color);
-}
-
 .purchase-card__title {
     font-size: 16px;
     color: var(--fg-color);
-    font-family: "Roboto VK Bold";
+    font-family: var(--text-family-bold);
 }
 
 .purchase-card__sale {
-    font-family: 'Roboto VK';
+    font-family: var(--text-family);
     font-style: normal;
     font-weight: 400;
     font-size: 15px;
@@ -114,11 +108,11 @@
     .purchase-card__title {
         font-size: 16px;
         color: var(--fg-color);
-        font-family: "Roboto VK Bold";
+        font-family: var(--text-family-bold);
     }
     
     .purchase-card__sale {
-        font-family: 'Roboto VK';
+        font-family: var(--text-family);
         font-style: normal;
         font-weight: 400;
         font-size: 15px;

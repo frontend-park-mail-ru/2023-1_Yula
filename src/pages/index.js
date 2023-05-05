@@ -4,3 +4,5 @@ export { bucketPage } from './bucket';
 export { announcementPage } from './announcement';
 export { sellerPage } from './seller';
 export { createAnnPage } from './create-ann';
+export { searchPage } from './searchpage';
+export { searchTagPage } from './searchtagpage';

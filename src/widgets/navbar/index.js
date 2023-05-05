@@ -36,8 +36,7 @@ export const Navbar = (parent) => {
         }
     }
 
-
-    const render = async () => {
+        const render = async () => {
         const nav = document.createElement('nav');
         nav.classList.add('nav');
         parent.appendChild(nav);
@@ -55,7 +54,9 @@ export const Navbar = (parent) => {
             id: "theme",
             src: (theme === 'light') ? sunSVG : moonSVG,
             invert: (theme === 'light') ? false : true,
-            size: "large",
+            size: "medium",
+            text: (theme === 'light') ? 'Светлая' : 'Темная',
+            textColor: "fg",
             actions: {
                 'click': () => {
                     const newTheme = toggleTheme();
@@ -63,6 +64,7 @@ export const Navbar = (parent) => {
                     themeIcon.changeConfig({
                         src: (newTheme === 'light') ? sunSVG : moonSVG,
                         invert: (newTheme === 'light') ? false : true,
+                        text: (newTheme === 'light') ? 'Светлая' : 'Темная',
                     });
                 },
             }
@@ -77,6 +79,15 @@ export const Navbar = (parent) => {
             leftIcon: searchSvg,
         });
         input.render();
+        input.self().addEventListener('keypress', function (e) {
+            if ((e.key === 'Enter') && (input.field().value !== "")) {
+            //   debugger
+
+            goTo(`/search/${input.field().value}`);
+            // goTo(`/ann/${field().value}`);
+            //   searchFunct();
+            }
+        });
 
         const createAnn = Button(nav, {
             id: "createAnn",

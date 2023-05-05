@@ -1,3 +1,5 @@
+import { goTo } from "@shared/lib/history";
+
 import './Input.scss';
 import template from './Input.handlebars';
 
@@ -47,6 +49,13 @@ export const Input = (parent, config = {id: ""}) => {
             const rightIcon = self().querySelectorAll(".input__icon")[1];
             rightIcon.addEventListener("click", actions.rightIcon);
         }
+
+        self().querySelector(".input__field").addEventListener("focus", () => {
+            self().classList.add("input_focus");
+        });
+        self().querySelector(".input__field").addEventListener("blur", () => {
+            self().classList.remove("input_focus");
+        });
     }
 
     const render = () => {
@@ -57,12 +66,38 @@ export const Input = (parent, config = {id: ""}) => {
         parent.insertAdjacentHTML("beforeEnd", template(config));
 
         applyActions();
+
     }
+
+    const searchFunct = () => {
+        // Declare variables
+        let input, filter, annGroup, a, i, txtValue;
+        input = document.getElementById('myInput');
+        filter = field().value.toUpperCase();
+        annGroup = document.querySelector(".announcement-group");
+
+        let li = annGroup.getElementsByClassName('announcement-card');
+        
+        // Loop through all list items, and hide those who don't match the search query
+        for (i = 0; i < li.length; i++) {
+
+            a = li[i].getElementsByClassName("announcement-card__title")[0];
+            
+            txtValue = a.textContent || a.innerText;
+
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+            }
+        }
+      }
 
     return {
         self,
         field,
         render,
+        searchFunct,
         setActions,
         destroy,
     }

@@ -2,11 +2,13 @@ import { CreateAnn } from "@features/ann";
 import { Navbar } from "@widgets/navbar";
 import { AuthWidget } from "@widgets/auth";
 import { Carousel } from "@shared/ui";
+import { annApi } from "@shared/api/anns";
+import store from "@modules/state-manager";
 
-import './layout.scss';
+import './create-ann.scss';
 import annPreview from "./ann-preview.handlebars";
 
-export const createAnnPage = (parent) => {
+export const createAnnPage = (parent, params) => {
     const header = document.createElement('header');
     const content = document.createElement('main');
 
@@ -29,44 +31,63 @@ export const createAnnPage = (parent) => {
         const contentCreater = document.createElement('div');
         content.appendChild(contentCreater);
 
-        const createAnn = CreateAnn(contentCreater);
+        const createAnn = CreateAnn(contentCreater, params ? { editId: params.id } : {});
+
         createAnn.setActions({
             titleChange: (e) => {
-                content.querySelector('.announcement-preview__title').innerText = e.target.value;
+                content.querySelector('.announcement-title').innerText = e.target.value;
             },
             priceChange: (e) => {
-                content.querySelector('.announcement-preview__price').innerText = e.target.value;
+                content.querySelector('.announcement-price').innerText = e.target.value;
             },
             descriptionChange: (e) => {
-                content.querySelector('.announcement-preview__description').innerText = e.target.value;
+                content.querySelector('.announcement-description').innerText = e.target.value;
             },
-            tagsChange: (e) => {
-                content.querySelector('.announcement-preview__tags').innerText = e.target.value;
-            },
+            // tagsChange: (e) => {
+            //     content.querySelector('.announcement-tag').innerText = e.target.value;
+            // },
             imagesChange: (images) => {
                 carousel.changeConfig({ images });
             }
         });
         createAnn.render();
+        createAnn.self().style.padding = '10px 30px';
 
         const contentPreview = document.createElement('div');
         contentPreview.classList.add('ann-characteristics');
         content.appendChild(contentPreview);
 
-        contentPreview.insertAdjacentHTML('beforeend', annPreview({
-            title: 'Картина Ван Гога',
-            price: '1 000 000',
-            description: 'Картина славится своей...',
-            tags: 'Живопись',
-            images: []
-        }));
+        const user = store.getState('user');
+
+        let ann;
+        if (params && params.id !== undefined) {
+            ann = await annApi.getById(params.id);
+
+            createAnn.setAnnouncement({ ...ann });
+        }
+
+        const title = document.createElement('h1');
+        title.classList.add('announcement-title');
+        title.innerText = ann ? ann.title : 'Картина Ван Гога';
+        contentPreview.appendChild(title);
 
         const annCarousel = document.createElement('div');
-        annCarousel.classList.add('announcement-carousel');
-        annCarousel.style.maxWidth = '500px';
-        content.appendChild(annCarousel);
-        const carousel = Carousel(annCarousel, { images: [] });
+        annCarousel.classList.add('create-ann-carousel');
+        contentPreview.appendChild(annCarousel);
+        const carousel = Carousel(annCarousel, {
+            images: ann ? ann.images : ['https://artworld.ru/images/cms/content/catalog4/kartina_maslom_van_gogh_kopiay_olivkovye_derevja_na_fone_alp_vg230207.jpg', 'https://zimamagazine.com/wp-content/uploads/2019/05/zvezdnaya-noch-nad-ronoi-600x400.jpg'],
+            outbound: true
+        });
         carousel.render();
+        
+        contentPreview.insertAdjacentHTML('beforeend', annPreview({
+            price: ann ? ann.price : '1 000 000',
+            description: ann ? ann.description : 'Картина славится своей...',
+            category: ann ? ann.tag : 'Живопись',
+            sellerId: user.id,
+            sellerName: user.name,
+            sellerAvatar: user.avatar
+        }));
     }
 
     headerFilling();

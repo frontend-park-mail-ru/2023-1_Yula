@@ -1,4 +1,5 @@
 import { userApi } from "../shared/api/users.js";
+import { basketApi } from "../shared/api/basket.js";
 import store from "../modules/state-manager.js";
 
 export const Router = (parent) => {
@@ -68,6 +69,15 @@ export const Router = (parent) => {
         const user = await userApi.getMe();
         store.setState('user', user);
 
+        // получаем корзину пользователя
+        if (user) {
+            const basket = await basketApi.getBasket();
+
+            store.setState('basket', basket);
+        } else {
+            store.setState('basket', []);
+        }
+
         // изменяем историю браузера при клике по ссылке
         parent.addEventListener('click', (event) => {
             let link = event.target.closest('a');
@@ -80,21 +90,23 @@ export const Router = (parent) => {
             }
         });
 
+        
         // изменяем содержимое страницы при переходе по истории (назад/вперед)
         window.addEventListener('popstate', function(e) {
+            
             const pageObj = findRoute(window.location.pathname);
             const params = e.state ? e.state.params : null;
 
             if (pageObj) {
                 if (pageObj.isPrivate) {
                     if (store.getState('user')) {
-                        pageObj.page(parent, params).render(); 
+                        pageObj.page(parent, pageObj.params).render(); 
                     } else {
                         const redirectPage = findRoute(pageObj.redirect);
-                        redirectPage.page(parent, params).render();
+                        redirectPage.page(parent, pageObj.params).render();
                     }
                 } else {
-                    pageObj.page(parent, params).render(); 
+                    pageObj.page(parent, pageObj.params).render(); 
                 }
             }
         });

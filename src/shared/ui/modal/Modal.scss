@@ -77,7 +77,7 @@
 }
 
 .modal__title {
-    font-family: 'Roboto VK bold';
+    font-family: var(--text-family-bold);
     font-size: clamp(1rem, 5vw, 20px);
     justify-self: center;
     grid-column: 2;
@@ -130,7 +130,7 @@
 }
 
 .modal__text {
-    font-family: 'Roboto VK';
+    font-family: var(--text-family);
     font-size: 14px;
     color: var(--secondary-color-strong);
 }

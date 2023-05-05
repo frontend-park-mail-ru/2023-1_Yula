@@ -106,7 +106,7 @@ export const MenuPanelMobile = (parent) => {
 
             user: Icon(menu, {
                 id: "user",
-                src: user ? user.pathtoavatar : userSvg,
+                src: user ? user.avatar : userSvg,
                 size: "large",
                 invert: user ? false : invert,
                 link: user ? '/profile' : null,
@@ -151,7 +151,7 @@ export const MenuPanelMobile = (parent) => {
             if (user) {
                 Icons.user.changeConfig({
                     circular: true,
-                    src: user.pathtoavatar,
+                    src: user.avatar,
                     link: `/profile`,
                     invert: false,
                 });
