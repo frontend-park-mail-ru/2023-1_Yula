@@ -62,7 +62,6 @@ export const createAnnPage = (parent, params) => {
         let ann;
         if (params && params.id !== undefined) {
             ann = await annApi.getById(params.id);
-            console.log(ann);
 
             createAnn.setAnnouncement({ ...ann });
         }

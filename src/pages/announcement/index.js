@@ -44,7 +44,6 @@ export const announcementPage = (parent, params) => {
 
         const basket = store.getState("basket");
         const ann = await annApi.getById(params.id);
-        console.log(ann);
         const seller = await userApi.getById(ann.userId);
         
         const title = document.createElement('h1');

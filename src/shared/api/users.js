@@ -27,7 +27,6 @@ export class userApi {
             // const imageUrl = `${baseUrl}/static/images/users/${user.avatar}`;
             // user.avatar = imageUrl;
             user.id = parseJwt(token).id;
-            console.log(user);
             return user;
         } else {
             user = null;

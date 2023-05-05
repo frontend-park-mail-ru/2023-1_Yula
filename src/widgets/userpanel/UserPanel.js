@@ -90,7 +90,6 @@ export const UserPanel = (parent) => {
 
         inputs.elem6.setActions({
             click: () => {
-                console.log("inputs");
                 for (let input in inputs) {
                     inputs[input].destroy();
                 }
@@ -100,7 +99,6 @@ export const UserPanel = (parent) => {
             }
         });
         // задаем элемeнты боковой панели
-        console.log(user);
         const elements = {
             elem0: Icon(userPanel, {
                 id: "user",
@@ -170,7 +168,6 @@ export const UserPanel = (parent) => {
         
         elements.elem6.setActions({
             click: () => {
-                console.log("inputs");
                 for (let input in inputs) {
                     inputs[input].render();
                 }
@@ -179,18 +176,6 @@ export const UserPanel = (parent) => {
                 }
             }
         });
-
-        // store.subscribe('edit_profile', (showEdit) => {
-        //     if (!showEdit) {
-        //         for (let element in elements) {
-        //             elements[element].render();
-        //         }
-        //     } else {
-        //         for (let input in inputs) {
-        //             inputs[input].render();
-        //         }
-        //     }
-        // });
 
         for (let element in elements) {
             elements[element].render();

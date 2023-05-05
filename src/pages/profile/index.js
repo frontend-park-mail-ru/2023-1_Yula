@@ -29,7 +29,6 @@ export const profilePage = (parent) => {
 
         const user = await store.getState('user');
         const anns = await annApi.getFromUser(user.id);
-        // console.log(anns);
 
         anns.forEach(ann => {
             const annCard = AnnCard(annGroup, {
@@ -38,6 +37,7 @@ export const profilePage = (parent) => {
                 price: ann.price,
                 images: ann.images,
                 link: `/ann/${ann.postId}`,
+                views: ann.views,
             });
             annCard.render();
         });
@@ -50,7 +50,6 @@ export const profilePage = (parent) => {
         annGroup.innerHTML = '';
 
         const anns = await favoritesApi.getFavorites();
-        console.log(anns);
 
         anns.forEach(ann => {
             const annCard = AnnCard(annGroup, {
@@ -59,6 +58,7 @@ export const profilePage = (parent) => {
                 price: ann.price,
                 images: ann.images,
                 link: `/ann/${ann.postId}`,
+                views: ann.views,
             });
             annCard.render();
         });

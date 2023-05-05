@@ -1,9 +1,8 @@
-import { PricePanel } from "./ui/price-panel/PricePanel";
 import { Button } from "../../shared/ui";
-import store from "@modules/state-manager.js"
-import "./index.scss";
-import { goTo } from "../../shared/lib/history";
 import { buyModal } from "../../features/buy";
+import store from "@modules/state-manager.js"
+
+import "./index.scss";
 
 export const Price = (parent) => {
     const actions = {};
@@ -42,7 +41,6 @@ export const Price = (parent) => {
         const prices = basket.map(item => +item.price);
         const totalPrice = prices.reduce((acc, val) => acc + val, 0);
 
-        console.log(totalPrice);
         money.innerHTML = 'Итого: ' + totalPrice + ' ₽';
 
 

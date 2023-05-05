@@ -340,7 +340,6 @@ app.put('/api/post/close/:id', checkToken, (req, res) => {
 app.get('/api/post/:tag/:page', (req, res) => {
     const tag = req.params.tag;
     let page = req.params.page;
-    console.log(tag, page);
     const result = anns.filter(ann => ann.Tag.includes(tag) && !ann.Close);
     return res.json(result.slice((page - 1) * 12, page * 12));
 
@@ -546,8 +545,6 @@ app.get('/api/search', (req, res) => {
         return queryWords.every(word => {
             word = word.replace(/['"«»]/g, '');
 
-            console.log((annWords.indexOf(word) > -1));
-            // return ((annWords.indexOf(word) > -1));
             return ((annWords.indexOf(word) > -1) || (annTag.includes(word)));
         });
     });
